@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSTAFA KALAYCI - VATANDAŞ PORTALI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090e1a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --warm-gold: #f59e0b;
+            --warm-orange: #ea580c;
+            --app-bg: #fffaf5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(245, 158, 11, 0.28);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(234, 88, 12, 0.24) 0%, transparent 45%),
+                radial-gradient(circle at 88% 82%, rgba(245, 158, 11, 0.18) 0%, transparent 45%),
+                linear-gradient(180deg, #090e1a 0%, #141c2f 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ticker-bar {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            z-index: 20;
+        }
+
+        .ticker-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .ticker-item strong { color: #fbbf24; margin-right: 4px; }
+        .ticker-domain { color: #94a3b8; font-weight: 600; font-size: 0.74rem; }
+
+        .main-stage {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 20px;
+        }
+
+        .showcase-container {
+            max-width: 1240px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 36px;
+            align-items: center;
+        }
+
+        @media (max-width: 992px) {
+            .showcase-container { grid-template-columns: 1fr; text-align: center; }
+            .phone-wrapper { margin: 0 auto; }
+        }
+
+        .promo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            padding: 7px 14px;
+            border-radius: 16px;
+            margin-bottom: 14px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: #fbbf24;
+            letter-spacing: 0.5px;
+        }
+
+        .promo-title {
+            font-size: 2.35rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .promo-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .tour-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #fbbf24;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tour-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 560px) {
+            .tour-cards { grid-template-columns: 1fr; }
+        }
+
+        .tour-btn {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 10px 12px;
+            border-radius: 14px;
+            color: #ffffff;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tour-btn:hover, .tour-btn.active {
+            background: linear-gradient(135deg, rgba(234, 88, 12, 0.28), rgba(245, 158, 11, 0.16));
+            border-color: var(--warm-gold);
+            transform: translateY(-2px);
+        }
+
+        .tour-btn i {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ea580c, #f59e0b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            flex-shrink: 0;
+        }
+
+        .tour-btn-text strong { display: block; font-size: 0.8rem; }
+        .tour-btn-text span { font-size: 0.68rem; color: var(--text-muted); }
+
+        .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+        .store-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+            color: #ffffff;
+            padding: 11px 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+        }
+
+        .store-btn.secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .phone-wrapper { position: relative; display: flex; justify-content: center; }
+
+        .phone-frame {
+            width: 390px;
+            max-width: 100%;
+            height: 740px;
+            background: #1e293b;
+            border-radius: 46px;
+            padding: 12px;
+            box-shadow: 0 0 0 2px #475569, 0 0 0 5px #0f172a, 0 25px 55px rgba(0, 0, 0, 0.75);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 716px;
+            background: var(--app-bg);
+            border-radius: 35px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            color: #1e293b;
+        }
+
+        .dynamic-island {
+            width: 112px;
+            height: 24px;
+            background: #090d16;
+            border-radius: 18px;
+            position: absolute;
+            top: 9px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 9px;
+        }
+
+        .camera-dot { width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; }
+
+        .app-top-bar {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #7c2d12 0%, #c2410c 48%, #d97706 100%);
+            color: #ffffff;
+            padding: 40px 14px 12px 14px;
+            border-bottom-left-radius: 22px;
+            border-bottom-right-radius: 22px;
+        }
+
+        .official-seal-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .brand-text h2 { font-size: 0.84rem; font-weight: 800; }
+        .brand-text span { font-size: 0.6rem; font-weight: 600; color: #ffedd5; display: block; }
+
+        .live-pill {
+            background: rgba(0, 0, 0, 0.28);
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 0.63rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            color: #ffffff;
+        }
+
+        .live-dot { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; }
+
+        .app-search { position: relative; display: flex; align-items: center; }
+
+        .app-search input {
+            width: 100%;
+            padding: 7px 52px 7px 32px;
+            border-radius: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: #ffffff;
+            font-size: 0.74rem;
+            color: #1e293b;
+            outline: none;
+        }
+
+        .app-search i.fa-search {
+            position: absolute;
+            left: 10px;
+            color: #c2410c;
+            font-size: 0.78rem;
+            pointer-events: none;
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 6px;
+            background: #ffedd5;
+            color: #9a3412;
+            border: none;
+            border-radius: 7px;
+            padding: 3px 7px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .priority-strip {
+            flex-shrink: 0;
+            background: #fff3e6;
+            border-bottom: 1px solid #fed7aa;
+            padding: 6px 10px;
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+        }
+
+        .p-chip {
+            border: 1px solid #fdba74;
+            background: #ffffff;
+            color: #7c2d12;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .p-chip.active { background: #c2410c; color: #ffffff; border-color: transparent; }
+
+        .app-body {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 10px 12px 14px 12px;
+            scroll-behavior: smooth;
+        }
+
+        .group-block { margin-bottom: 12px; }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4px 0 8px 0;
+            padding: 5px 8px;
+            border-radius: 10px;
+            background: #fff2e5;
+            border-left: 3.5px solid #ea580c;
+        }
+
+        .group-header.urg-1 { border-left-color: #dc2626; background: #fef2f2; }
+        .group-header.urg-2 { border-left-color: #1d4ed8; background: #eff6ff; }
+        .group-header.urg-3 { border-left-color: #0f766e; background: #f0fdfa; }
+        .group-header.urg-4 { border-left-color: #ea580c; background: #fff7ed; }
+        .group-header.urg-5 { border-left-color: #d97706; background: #fffbeb; }
+
+        .group-title { font-size: 0.67rem; font-weight: 800; color: #1e293b; }
+
+        .group-tag {
+            font-size: 0.56rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #7c2d12;
+            border: 1px solid rgba(251, 146, 60, 0.35);
+        }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+        .app-card {
+            background: #ffffff;
+            border-radius: 13px;
+            padding: 8px 5px;
+            text-align: center;
+            border: 1px solid #ffedd5;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .app-card:hover { transform: translateY(-2px); border-color: #f97316; }
+
+        .platform-logo-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .card-title { font-size: 0.65rem; font-weight: 800; color: #1e293b; line-height: 1.15; }
+        .card-sub { font-size: 0.54rem; color: #64748b; margin-top: 2px; font-weight: 600; }
+
+        .sub-screen {
+            position: absolute;
+            inset: 0;
+            background: var(--app-bg);
+            z-index: 90;
+            display: none;
+            flex-direction: column;
+        }
+
+        .sub-screen.open { display: flex; }
+
+        .sub-header {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #7c2d12, #c2410c);
+            color: #ffffff;
+            padding: 40px 14px 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sub-content { flex: 1; min-height: 0; padding: 12px; overflow-y: auto; }
+
+        .official-card-box {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 13px;
+            border: 1px solid #fed7aa;
+            text-align: center;
+        }
+
+        .verified-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.63rem;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .sub-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; }
+
+        .sub-tab-btn {
+            padding: 6px 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid #fed7aa;
+            background: #fffaf5;
+            color: #7c2d12;
+            cursor: pointer;
+        }
+
+        .sub-tab-btn.active { background: #c2410c; color: #ffffff; }
+        .filter-row { display: flex; gap: 5px; margin-bottom: 8px; }
+
+        .filter-chip {
+            flex: 1;
+            padding: 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid #fed7aa;
+            background: #fffaf5;
+            color: #9a3412;
+            cursor: pointer;
+        }
+
+        .filter-chip.active { background: #c2410c; color: #ffffff; }
+        .input-box { margin-bottom: 8px; text-align: left; }
+        .input-box label { display: block; font-size: 0.68rem; font-weight: 700; color: #7c2d12; margin-bottom: 3px; }
+
+        .input-box input, .input-box select {
+            width: 100%;
+            padding: 7px 9px;
+            border-radius: 9px;
+            border: 1px solid #fdba74;
+            background: #fffaf5;
+            font-size: 0.75rem;
+            color: #1e293b;
+        }
+
+        .grid-2-inp { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+        .primary-btn {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, #c2410c, #d97706);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.76rem;
+            cursor: pointer;
+            margin-top: 4px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .secondary-action-btn {
+            width: 100%;
+            padding: 7px;
+            background: #fff7ed;
+            color: #9a3412;
+            border: 1px solid #fdba74;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        .copy-summary-area {
+            width: 100%;
+            min-height: 82px;
+            margin-top: 6px;
+            padding: 7px;
+            border-radius: 9px;
+            border: 1px solid #fdba74;
+            background: #fffaf5;
+            font-size: 0.68rem;
+            color: #1e293b;
+        }
+
+        .copy-status { font-size: 0.66rem; font-weight: 700; color: #047857; margin-top: 4px; }
+
+        .output-panel {
+            margin-top: 9px;
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            border-left: 4px solid #c2410c;
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 0.72rem;
+            text-align: left;
+            line-height: 1.45;
+        }
+
+        .quake-item {
+            background: #fffaf5;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            padding: 7px 9px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+
+        .mag-badge {
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.78rem;
+            padding: 4px 7px;
+            border-radius: 8px;
+            min-width: 42px;
+            text-align: center;
+        }
+
+        .mag-mid { background: #ea580c; }
+        .mag-high { background: #dc2626; }
+
+        .mat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fffaf5;
+            border: 1px solid #ffedd5;
+            padding: 7px 9px;
+            border-radius: 9px;
+            margin-bottom: 6px;
+            font-size: 0.72rem;
+            text-align: left;
+        }
+
+        .app-tabbar {
+            flex-shrink: 0;
+            background: #ffffff;
+            border-top: 1px solid #ffedd5;
+            display: flex;
+            justify-content: space-around;
+            padding: 7px 0 11px 0;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            text-align: center;
+            font-size: 0.63rem;
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tab-btn.active { color: #c2410c; font-weight: 800; }
+        .tab-btn i { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+    </style>
+</head>
+<body>
+    <div class="ticker-bar">
+        <div class="ticker-items">
+            <span class="ticker-item"><strong>USD/TRY:</strong> 34,42 ₺</span>
+            <span class="ticker-item"><strong>EUR/TRY:</strong> 37,18 ₺</span>
+            <span class="ticker-item"><strong>GRAM ALTIN:</strong> 2.985,50 ₺</span>
+            <span class="ticker-item"><strong>ACİL:</strong> 112</span>
+        </div>
+        <div class="ticker-domain">mustafakalayci.xyz</div>
+    </div>
+
+    <div class="main-stage">
+        <div class="showcase-container">
+            <div>
+                <div class="promo-badge">
+                    <i class="fas fa-mobile-alt"></i> ETKİLEŞİMLİ MOBİL UYGULAMA SİMÜLATÖRÜ
+                </div>
+                <h1 class="promo-title">MUSTAFA KALAYCI<br>VATANDAŞ PORTALI</h1>
+                <p class="promo-desc">
+                    Sağdaki telefon ekranındaki tüm modüller aktif olarak çalışır. Öncelik gruplarına tıklayarak doğrudan ilgili bölüme gidebilir, hesaplama araçlarını ve resmi bağlantıları kullanabilirsiniz.
+                </p>
+
+                <div class="tour-label">
+                    <i class="fas fa-bolt"></i> ÖNCELİK GRUPLARINI SEÇİN:
+                </div>
+
+                <div class="tour-cards">
+                    <button type="button" class="tour-btn" data-tour="p1">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="tour-btn-text">
+                            <strong>1. Öncelik • Acil &amp; Deprem</strong>
+                            <span>112 Acil, Son Depremler, Sayaç</span>
+                        </div>
+                    </button>
+                    <button type="button" class="tour-btn" data-tour="p2">
+                        <i class="fas fa-landmark"></i>
+                        <div class="tour-btn-text">
+                            <strong>2. Öncelik • Kamu &amp; Belediye</strong>
+                            <span>e-Devlet, e-Nabız, UYAP, Düziçi</span>
+                        </div>
+                    </button>
+                    <button type="button" class="tour-btn" data-tour="p3">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div class="tour-btn-text">
+                            <strong>3. Öncelik • Eğitim, İş &amp; İhale</strong>
+                            <span>e-Okul, MEBBİS, MEB, İŞKUR, EKAP</span>
+                        </div>
+                    </button>
+                    <button type="button" class="tour-btn" data-tour="p4">
+                        <i class="fas fa-drafting-compass"></i>
+                        <div class="tour-btn-text">
+                            <strong>4. Öncelik • İnşaat &amp; Metraj</strong>
+                            <span>Çatı/Beton, Liste, Toplam &amp; Kopya</span>
+                        </div>
+                    </button>
+                    <button type="button" class="tour-btn" data-tour="p5">
+                        <i class="fas fa-calculator"></i>
+                        <div class="tour-btn-text">
+                            <strong>5. Öncelik • Finans &amp; Yaşam</strong>
+                            <span>Döviz, 81 İl, Mesafe, Mesai, Alan</span>
+                        </div>
+                    </button>
+                    <button type="button" class="tour-btn active" data-tour="all">
+                        <i class="fas fa-th-large"></i>
+                        <div class="tour-btn-text">
+                            <strong>Tüm Gruplar (1 – 5)</strong>
+                            <span>Filtreyi sıfırla ve en üste kaydır</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="cta-row">
+                    <button type="button" class="store-btn" data-action="metraj">
+                        <i class="fas fa-play"></i> Simülatörde Metraj Aç
+                    </button>
+                    <button type="button" class="store-btn secondary" data-action="visitors">
+                        <i class="fas fa-users"></i> Ziyaretçi Sayacı
+                    </button>
+                </div>
+            </div>
+
+            <div class="phone-wrapper">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="dynamic-island"><div class="camera-dot"></div></div>
+
+                        <div class="app-top-bar">
+                            <div class="official-seal-row">
+                                <div class="brand-text">
+                                    <h2>MUSTAFA KALAYCI</h2>
+                                    <span>VATANDAŞ PORTALI</span>
+                                </div>
+                                <button type="button" class="live-pill" data-action="visitors">
+                                    <span class="live-dot"></span> <span id="topVisitorCount">1.428</span>
+                                </button>
+                            </div>
+                            <div class="app-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="searchInput" placeholder="Modül veya kurum ara...">
+                                <button type="button" class="clear-search-btn" id="clearSearchBtn">Temizle</button>
+                            </div>
+                        </div>
+
+                        <div class="priority-strip">
+                            <button type="button" class="p-chip active" data-p="all">Tümü</button>
+                            <button type="button" class="p-chip" data-p="p1">1. Acil</button>
+                            <button type="button" class="p-chip" data-p="p2">2. Kamu</button>
+                            <button type="button" class="p-chip" data-p="p3">3. Eğitim/İhale</button>
+                            <button type="button" class="p-chip" data-p="p4">4. İnşaat</button>
+                            <button type="button" class="p-chip" data-p="p5">5. Yaşam</button>
+                        </div>
+
+                        <div class="app-body" id="modulesBody">
+                            <div class="group-block" id="group-p1" data-group="p1">
+                                <div class="group-header urg-1">
+                                    <span class="group-title">1. ÖNCELİK • ACİL &amp; ANLIK DURUM</span>
+                                    <span class="group-tag">ACİL</span>
+                                </div>
+                                <div class="grid-3">
+                                    <button type="button" class="app-card" data-action="emergency">
+                                        <div class="platform-logo-box" style="background:#dc2626;"><i class="fas fa-phone-alt"></i></div>
+                                        <div class="card-title">112 Acil</div>
+                                        <div class="card-sub">Acil Çağrı</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="quakes">
+                                        <div class="platform-logo-box" style="background:#991b1b;"><i class="fas fa-wave-square"></i></div>
+                                        <div class="card-title">Son Depremler</div>
+                                        <div class="card-sub">Sismik Kayıt</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="visitors">
+                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-users"></i></div>
+                                        <div class="card-title">Ziyaretçi</div>
+                                        <div class="card-sub">Sayaç</div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="group-block" id="group-p2" data-group="p2">
+                                <div class="group-header urg-2">
+                                    <span class="group-title">2. ÖNCELİK • KAMU &amp; BELEDİYE</span>
+                                    <span class="group-tag">RESMİ</span>
+                                </div>
+                                <div class="grid-3">
+                                    <button type="button" class="app-card" data-action="official" data-name="e-Devlet Kapısı" data-url="https://www.turkiye.gov.tr" data-desc="T.C. Cumhurbaşkanlığı resmi dijital kamu hizmetleri portalı.">
+                                        <div class="platform-logo-box" style="background:#e11d48; font-weight:900; font-size:0.74rem;">e-TR</div>
+                                        <div class="card-title">e-Devlet</div>
+                                        <div class="card-sub">turkiye.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="e-Nabız" data-url="https://enabiz.gov.tr" data-desc="Kişisel sağlık kayıtları, tahliller ve randevu sistemi.">
+                                        <div class="platform-logo-box" style="background:#be123c;"><i class="fas fa-heartbeat"></i></div>
+                                        <div class="card-title">e-Nabız</div>
+                                        <div class="card-sub">enabiz.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="UYAP Vatandaş" data-url="https://vatandas.uyap.gov.tr" data-desc="Adli ve idari dosya sorgulama ve e-Tebligat ekranı.">
+                                        <div class="platform-logo-box" style="background:#1e3a8a;"><i class="fas fa-balance-scale"></i></div>
+                                        <div class="card-title">UYAP</div>
+                                        <div class="card-sub">uyap.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="Düziçi Belediyesi" data-url="https://www.duzici.bel.tr" data-desc="Osmaniye Düziçi Belediyesi resmi web portalı ve e-Belediye.">
+                                        <div class="platform-logo-box" style="background:#c2410c;"><i class="fas fa-city"></i></div>
+                                        <div class="card-title">Düziçi Bld.</div>
+                                        <div class="card-sub">duzici.bel.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="Sanayi Bakanlığı" data-url="https://www.sanayi.gov.tr" data-desc="T.C. Sanayi ve Teknoloji Bakanlığı resmi portalı.">
+                                        <div class="platform-logo-box" style="background:#1d4ed8;"><i class="fas fa-industry"></i></div>
+                                        <div class="card-title">Sanayi.gov.tr</div>
+                                        <div class="card-sub">Bakanlık</div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="group-block" id="group-p3" data-group="p3">
+                                <div class="group-header urg-3">
+                                    <span class="group-title">3. ÖNCELİK • EĞİTİM, İŞ &amp; İHALE</span>
+                                    <span class="group-tag">KURUMSAL</span>
+                                </div>
+                                <div class="grid-3">
+                                    <button type="button" class="app-card" data-action="official" data-name="e-Okul" data-url="https://eokul.meb.gov.tr" data-desc="MEB e-Okul veli bilgilendirme sistemi.">
+                                        <div class="platform-logo-box" style="background:#1e40af; font-weight:900; font-size:0.65rem;">e-OKUL</div>
+                                        <div class="card-title">e-Okul</div>
+                                        <div class="card-sub">meb.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="MEB" data-url="https://www.meb.gov.tr" data-desc="T.C. Milli Eğitim Bakanlığı resmi duyuru portalı.">
+                                        <div class="platform-logo-box" style="background:#991b1b; font-weight:900; font-size:0.74rem;">MEB</div>
+                                        <div class="card-title">MEB</div>
+                                        <div class="card-sub">meb.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="İŞKUR" data-url="https://www.iskur.gov.tr" data-desc="Türkiye İş Kurumu açık iş ilanları ve hizmetleri.">
+                                        <div class="platform-logo-box" style="background:#1e3a8a; font-weight:900; font-size:0.65rem;">İŞKUR</div>
+                                        <div class="card-title">İŞKUR</div>
+                                        <div class="card-sub">iskur.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="KOSGEB" data-url="https://www.kosgeb.gov.tr" data-desc="KOBİ ve girişimci destek programları.">
+                                        <div class="platform-logo-box" style="background:#0f766e; font-weight:900; font-size:0.58rem;">KOSGEB</div>
+                                        <div class="card-title">KOSGEB</div>
+                                        <div class="card-sub">kosgeb.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="EKAP" data-url="https://ekap.kik.gov.tr" data-desc="Elektronik Kamu Alımları Platformu.">
+                                        <div class="platform-logo-box" style="background:#c2410c; font-weight:900; font-size:0.68rem;">EKAP</div>
+                                        <div class="card-title">EKAP</div>
+                                        <div class="card-sub">kik.gov.tr</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="official" data-name="TÜBİTAK" data-url="https://www.tubitak.gov.tr" data-desc="Bilim ve teknoloji proje/burs destekleri.">
+                                        <div class="platform-logo-box" style="background:#0e7490;"><i class="fas fa-atom"></i></div>
+                                        <div class="card-title">TÜBİTAK</div>
+                                        <div class="card-sub">tubitak.gov.tr</div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="group-block" id="group-p4" data-group="p4">
+                                <div class="group-header urg-4">
+                                    <span class="group-title">4. ÖNCELİK • İNŞAAT METRAJ &amp; MALZEME</span>
+                                    <span class="group-tag">HESAP</span>
+                                </div>
+                                <div class="grid-3">
+                                    <button type="button" class="app-card" data-action="metraj">
+                                        <div class="platform-logo-box" style="background:#ea580c;"><i class="fas fa-home"></i></div>
+                                        <div class="card-title">Metraj</div>
+                                        <div class="card-sub">Çatı &amp; Beton</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="materials">
+                                        <div class="platform-logo-box" style="background:#d97706;"><i class="fas fa-list"></i></div>
+                                        <div class="card-title">Malzeme</div>
+                                        <div class="card-sub">Liste &amp; Kopya</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="total">
+                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-calculator"></i></div>
+                                        <div class="card-title">Toplam</div>
+                                        <div class="card-sub">KDV &amp; Özet</div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="group-block" id="group-p5" data-group="p5">
+                                <div class="group-header urg-5">
+                                    <span class="group-title">5. ÖNCELİK • FİNANS, REHBER &amp; YAŞAM</span>
+                                    <span class="group-tag">ARAÇ</span>
+                                </div>
+                                <div class="grid-3">
+                                    <button type="button" class="app-card" data-action="currency">
+                                        <div class="platform-logo-box" style="background:#f59e0b; font-weight:900;">₺/$</div>
+                                        <div class="card-title">Döviz</div>
+                                        <div class="card-sub">Kur Çevirici</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="cities">
+                                        <div class="platform-logo-box" style="background:#dc2626; font-weight:900; font-size:0.78rem;">81 İL</div>
+                                        <div class="card-title">81 İl</div>
+                                        <div class="card-sub">Plaka &amp; Kod</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="distance">
+                                        <div class="platform-logo-box" style="background:#0284c7;"><i class="fas fa-route"></i></div>
+                                        <div class="card-title">Mesafe</div>
+                                        <div class="card-sub">Km Hesap</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="overtime">
+                                        <div class="platform-logo-box" style="background:#ea580c;"><i class="fas fa-clock"></i></div>
+                                        <div class="card-title">Mesai</div>
+                                        <div class="card-sub">Fazla Mesai</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="area">
+                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-vector-square"></i></div>
+                                        <div class="card-title">Alan</div>
+                                        <div class="card-sub">m² &amp; Dönüm</div>
+                                    </button>
+                                    <button type="button" class="app-card" data-action="recipes">
+                                        <div class="platform-logo-box" style="background:#e11d48;"><i class="fas fa-utensils"></i></div>
+                                        <div class="card-title">Tarifler</div>
+                                        <div class="card-sub">Yöresel</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-tabbar">
+                            <button type="button" class="tab-btn active" data-action="reset"><i class="fas fa-th-large"></i>Portal</button>
+                            <button type="button" class="tab-btn" data-action="emergency"><i class="fas fa-plus-circle"></i>112 Acil</button>
+                            <button type="button" class="tab-btn" data-action="metraj"><i class="fas fa-home"></i>Metraj</button>
+                            <button type="button" class="tab-btn" data-action="total"><i class="fas fa-calculator"></i>Toplam</button>
+                        </div>
+
+                        <div class="sub-screen" id="subScreen">
+                            <div class="sub-header">
+                                <button type="button" class="back-circle" id="backSubBtn"><i class="fas fa-arrow-left"></i></button>
+                                <div id="subTitle" style="font-weight:800; font-size:0.86rem;">Modül</div>
+                            </div>
+                            <div class="sub-content" id="subContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const FX_RATES = { USD: 34.42, EUR: 37.18, GOLD: 2985.50 };
+            let currentPriorityFilter = "all";
+            let totalVisitors = 1428;
+            let quakeMinMag = 0;
+
+            const all81Cities = [
+                { p: "01", n: "Adana", t: "0322", z: "01000" },
+                { p: "06", n: "Ankara", t: "0312", z: "06000" },
+                { p: "34", n: "İstanbul", t: "0212 / 0216", z: "34000" },
+                { p: "35", n: "İzmir", t: "0232", z: "35000" },
+                { p: "80", n: "Osmaniye (Düziçi: 80600)", t: "0328", z: "80000" }
+            ];
+
+            let materials = [
+                { name: "Çimento (Torba)", qty: 25, price: 210 },
+                { name: "İnşaat Demiri (Ton)", qty: 2, price: 26500 },
+                { name: "Bims / Tuğla (Adet)", qty: 1000, price: 14 }
+            ];
+
+            const sampleQuakes = [
+                { mag: 4.3, loc: "Göksun / Kahramanmaraş", depth: "11.4 km", time: "15:40" },
+                { mag: 3.5, loc: "Düziçi / Osmaniye", depth: "7.2 km", time: "14:22" },
+                { mag: 2.9, loc: "Saimbeyli / Adana", depth: "9.8 km", time: "12:55" },
+                { mag: 4.1, loc: "Ege Denizi - Bodrum Açıkları", depth: "14.0 km", time: "10:15" }
+            ];
+
+            function openSub(title, html) {
+                const subScreen = document.getElementById("subScreen");
+                const subTitle = document.getElementById("subTitle");
+                const subContent = document.getElementById("subContent");
+                if (!subScreen || !subTitle || !subContent) return;
+                subTitle.textContent = title;
+                subContent.innerHTML = html;
+                subScreen.classList.add("open");
+            }
+
+            function closeSub() {
+                const subScreen = document.getElementById("subScreen");
+                if (subScreen) subScreen.classList.remove("open");
+            }
+
+            function applySearchAndPriority() {
+                const input = document.getElementById("searchInput");
+                const q = (input ? input.value : "").toLowerCase().trim();
+                document.querySelectorAll(".group-block").forEach((block) => {
+                    const grp = block.dataset.group;
+                    const groupMatches = currentPriorityFilter === "all" || currentPriorityFilter === grp;
+                    if (!groupMatches) {
+                        block.style.display = "none";
+                        return;
+                    }
+                    let anyVisible = false;
+                    block.querySelectorAll(".app-card").forEach((card) => {
+                        const match = !q || card.innerText.toLowerCase().includes(q);
+                        card.style.display = match ? "flex" : "none";
+                        if (match) anyVisible = true;
+                    });
+                    block.style.display = anyVisible ? "block" : "none";
+                });
+            }
+
+            function filterPriorityGroup(groupKey, shouldScroll) {
+                currentPriorityFilter = groupKey;
+                document.querySelectorAll(".p-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.p === groupKey));
+                document.querySelectorAll(".tour-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.tour === groupKey));
+                applySearchAndPriority();
+                if (shouldScroll) {
+                    closeSub();
+                    const bodyEl = document.getElementById("modulesBody");
+                    if (!bodyEl) return;
+                    if (groupKey === "all") {
+                        bodyEl.scrollTo({ top: 0, behavior: "smooth" });
+                    } else {
+                        const target = document.getElementById("group-" + groupKey);
+                        if (target && target.style.display !== "none") {
+                            bodyEl.scrollTo({ top: Math.max(0, target.offsetTop - bodyEl.offsetTop - 4), behavior: "smooth" });
+                        }
+                    }
+                }
+            }
+
+            function resetAllFiltersAndScroll() {
+                const input = document.getElementById("searchInput");
+                if (input) input.value = "";
+                filterPriorityGroup("all", true);
+            }
+
+            function renderQuakes() {
+                const filtered = sampleQuakes.filter((item) => item.mag >= quakeMinMag);
+                openSub("Son Depremler", `
+                    <div class="official-card-box" style="text-align:left;">
+                        <div class="filter-row">
+                            <button type="button" class="filter-chip ${quakeMinMag === 0 ? "active" : ""}" data-qmag="0">Tümü</button>
+                            <button type="button" class="filter-chip ${quakeMinMag === 3 ? "active" : ""}" data-qmag="3">3.0+ ML</button>
+                            <button type="button" class="filter-chip ${quakeMinMag === 4 ? "active" : ""}" data-qmag="4">4.0+ ML</button>
+                        </div>
+                        <div>${filtered.map((item) => `
+                            <div class="quake-item">
+                                <div><strong>${item.loc}</strong><br><span style="font-size:0.64rem;color:#64748b;">Saat: ${item.time} • Derinlik: ${item.depth}</span></div>
+                                <div class="mag-badge ${item.mag >= 4 ? "mag-high" : "mag-mid"}">${item.mag.toFixed(1)}</div>
+                            </div>
+                        `).join("")}</div>
+                    </div>
+                `);
+            }
+
+            function buildMaterialsSummary() {
+                const lines = ["MALZEME LİSTESİ ÖZETİ", "---------------------"];
+                let sum = 0;
+                materials.forEach((m, i) => {
+                    const t = m.qty * m.price;
+                    sum += t;
+                    lines.push(`${i + 1}. ${m.name}: ${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${t.toLocaleString("tr-TR")} ₺`);
+                });
+                lines.push(`TOPLAM: ${sum.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺`);
+                return lines.join("\n");
+            }
+
+            function renderMaterials() {
+                const rows = materials.map((m, i) => `
+                    <div class="mat-row">
+                        <div><strong>${m.name}</strong><br><span style="color:#64748b;">${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${(m.qty * m.price).toLocaleString("tr-TR")} ₺</span></div>
+                        <button type="button" data-del-mat="${i}" style="background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:4px 8px;cursor:pointer;">Sil</button>
+                    </div>
+                `).join("");
+
+                openSub("Malzeme Listesi", `
+                    <div class="official-card-box" style="text-align:left;">
+                        <div class="input-box"><label>Malzeme Adı</label><input type="text" id="matName" placeholder="Örn: Kum, Çivi, Boya"></div>
+                        <div class="grid-2-inp">
+                            <div class="input-box"><label>Miktar</label><input type="number" id="matQty" value="10"></div>
+                            <div class="input-box"><label>Birim Fiyat (₺)</label><input type="number" id="matPrice" value="150"></div>
+                        </div>
+                        <button type="button" class="primary-btn" id="addMatBtn">Listeye Ekle</button>
+                        <div style="margin-top:8px;">${rows}</div>
+                        <textarea id="matSummaryArea" class="copy-summary-area" readonly>${buildMaterialsSummary()}</textarea>
+                        <button type="button" class="secondary-action-btn" id="copyMatBtn">Özeti Kopyala</button>
+                        <div id="matCopyStatus" class="copy-status"></div>
+                    </div>
+                `);
+            }
+
+            function renderTotalCalc() {
+                const listSum = materials.reduce((acc, item) => acc + item.qty * item.price, 0);
+                openSub("Toplam Hesaplama", `
+                    <div class="official-card-box" style="text-align:left;">
+                        <div class="input-box"><label>Malzeme Toplamı (₺)</label><input type="number" id="calcSub" value="${listSum.toFixed(2)}"></div>
+                        <div class="input-box"><label>Ek İşçilik (₺)</label><input type="number" id="calcExtra" value="0"></div>
+                        <div class="input-box"><label>KDV Oranı</label>
+                            <select id="calcVat">
+                                <option value="0">%0</option>
+                                <option value="0.10">%10</option>
+                                <option value="0.20" selected>%20</option>
+                            </select>
+                        </div>
+                        <div id="grandTotalBox" class="output-panel"></div>
+                    </div>
+                `);
+                const updateTotal = () => {
+                    const sub = parseFloat(document.getElementById("calcSub").value) || 0;
+                    const extra = parseFloat(document.getElementById("calcExtra").value) || 0;
+                    const vat = parseFloat(document.getElementById("calcVat").value) || 0;
+                    const total = (sub + extra) * (1 + vat);
+                    document.getElementById("grandTotalBox").innerHTML = `GENEL TOPLAM: <strong style="color:#ea580c;">${total.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
+                };
+                updateTotal();
+                ["calcSub", "calcExtra", "calcVat"].forEach((id) => document.getElementById(id).addEventListener("input", updateTotal));
+                document.getElementById("calcVat").addEventListener("change", updateTotal);
+            }
+
+            function renderMetraj(tab) {
+                openSub("İnşaat Metraj Hesap", `
+                    <div class="official-card-box" style="text-align:left;">
+                        <div class="sub-tabs">
+                            <button type="button" class="sub-tab-btn ${tab === "roof" ? "active" : ""}" data-mtab="roof">Çatı Alanı</button>
+                            <button type="button" class="sub-tab-btn ${tab === "concrete" ? "active" : ""}" data-mtab="concrete">Beton Hacmi</button>
+                        </div>
+                        <div id="metrajBody"></div>
+                    </div>
+                `);
+                const body = document.getElementById("metrajBody");
+                if (tab === "roof") {
+                    body.innerHTML = `
+                        <div class="grid-2-inp">
+                            <div class="input-box"><label>Genişlik (m)</label><input type="number" id="rW" value="10"></div>
+                            <div class="input-box"><label>Uzunluk (m)</label><input type="number" id="rL" value="14"></div>
+                        </div>
+                        <div id="roofOut" class="output-panel"></div>
+                    `;
+                    const calcRoof = () => {
+                        const w = parseFloat(document.getElementById("rW").value) || 0;
+                        const l = parseFloat(document.getElementById("rL").value) || 0;
+                        document.getElementById("roofOut").innerHTML = `Eğimli Çatı Alanı: <strong style="color:#ea580c;">${(w * l * 1.15).toFixed(2)} m²</strong>`;
+                    };
+                    calcRoof();
+                    document.getElementById("rW").addEventListener("input", calcRoof);
+                    document.getElementById("rL").addEventListener("input", calcRoof);
+                } else {
+                    body.innerHTML = `
+                        <div class="grid-2-inp">
+                            <div class="input-box"><label>En (m)</label><input type="number" id="cW" value="10"></div>
+                            <div class="input-box"><label>Boy (m)</label><input type="number" id="cL" value="12"></div>
+                        </div>
+                        <div class="input-box"><label>Kalınlık (cm)</label><input type="number" id="cT" value="12"></div>
+                        <div id="concOut" class="output-panel"></div>
+                    `;
+                    const calcConc = () => {
+                        const w = parseFloat(document.getElementById("cW").value) || 0;
+                        const l = parseFloat(document.getElementById("cL").value) || 0;
+                        const t = parseFloat(document.getElementById("cT").value) || 0;
+                        document.getElementById("concOut").innerHTML = `Hazır Beton Hacmi: <strong style="color:#ea580c;">${(w * l * (t / 100)).toFixed(2)} m³</strong>`;
+                    };
+                    calcConc();
+                    ["cW", "cL", "cT"].forEach((id) => document.getElementById(id).addEventListener("input", calcConc));
+                }
+            }
+
+            function handleAction(el) {
+                const action = el.dataset.action;
+                if (!action) return;
+                if (action === "reset") return resetAllFiltersAndScroll();
+                if (action === "emergency") {
+                    return openSub("112 Acil Çağrı Merkezi", `
+                        <div class="official-card-box">
+                            <div class="verified-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;">7/24 Tek Numara Acil Yardım</div>
+                            <p style="font-size:0.76rem;color:#475569;margin-bottom:10px;">Ambulans, İtfaiye, Polis, Jandarma ve AFAD çağrı hattı.</p>
+                            <a href="tel:112" class="primary-btn" style="background:#dc2626;">112 ACİL ÇAĞRI ARA</a>
+                        </div>
+                    `);
+                }
+                if (action === "quakes") return renderQuakes();
+                if (action === "visitors") {
+                    return openSub("Ziyaretçi Sayacı", `
+                        <div class="official-card-box">
+                            <div class="verified-tag">Canlı Portal Sayacı</div>
+                            <div style="font-size:1.85rem;font-weight:800;color:#c2410c;margin:6px 0;">${totalVisitors.toLocaleString("tr-TR")}</div>
+                            <p style="font-size:0.72rem;color:#64748b;">Toplam Ziyaretçi Kaydı</p>
+                        </div>
+                    `);
+                }
+                if (action === "official") {
+                    return openSub(el.dataset.name || "Resmi Bağlantı", `
+                        <div class="official-card-box">
+                            <div class="verified-tag">Resmi Kurum Bağlantısı</div>
+                            <h3 style="font-size:0.9rem;margin-bottom:6px;">${el.dataset.name || ""}</h3>
+                            <p style="font-size:0.74rem;color:#475569;margin-bottom:10px;">${el.dataset.desc || ""}</p>
+                            <a href="${el.dataset.url || "#"}" target="_blank" rel="noopener noreferrer" class="primary-btn">Resmi Siteye Git</a>
+                        </div>
+                    `);
+                }
+                if (action === "metraj") return renderMetraj("roof");
+                if (action === "materials") return renderMaterials();
+                if (action === "total") return renderTotalCalc();
+                if (action === "currency") {
+                    openSub("Canlı Döviz", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>Tutar</label><input type="number" id="fxAmount" value="1000"></div>
+                            <div class="input-box"><label>Birim</label>
+                                <select id="fxPair">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GOLD">Gram Altın</option>
+                                </select>
+                            </div>
+                            <div id="fxOut" class="output-panel"></div>
+                        </div>
+                    `);
+                    const calcFx = () => {
+                        const amt = parseFloat(document.getElementById("fxAmount").value) || 0;
+                        const pair = document.getElementById("fxPair").value;
+                        const val = amt * (FX_RATES[pair] || 1);
+                        document.getElementById("fxOut").innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
+                    };
+                    calcFx();
+                    document.getElementById("fxAmount").addEventListener("input", calcFx);
+                    document.getElementById("fxPair").addEventListener("change", calcFx);
+                    return;
+                }
+                if (action === "cities") {
+                    const opts = all81Cities.map((c, i) => `<option value="${i}">${c.p} - ${c.n}</option>`).join("");
+                    openSub("81 İl Rehberi", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>İl Seçiniz</label><select id="selCity">${opts}</select></div>
+                            <div id="cityOut" class="output-panel"></div>
+                        </div>
+                    `);
+                    const sel = document.getElementById("selCity");
+                    sel.value = "4";
+                    const renderCity = () => {
+                        const c = all81Cities[sel.value];
+                        document.getElementById("cityOut").innerHTML = `<strong>İl:</strong> ${c.n}<br><strong>Plaka:</strong> ${c.p}<br><strong>Alan Kodu:</strong> ${c.t}<br><strong>Posta Kodu:</strong> ${c.z}`;
+                    };
+                    renderCity();
+                    sel.addEventListener("change", renderCity);
+                    return;
+                }
+                if (action === "distance") {
+                    openSub("Şehir Mesafe", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>Güzergah</label>
+                                <select id="distSel">
+                                    <option value="Düziçi → Adana: 95 km">Düziçi → Adana (95 km)</option>
+                                    <option value="Düziçi → Gaziantep: 115 km">Düziçi → Gaziantep (115 km)</option>
+                                    <option value="Düziçi → Ankara: 575 km">Düziçi → Ankara (575 km)</option>
+                                </select>
+                            </div>
+                            <div id="distOut" class="output-panel">Mesafe: <strong>Düziçi → Adana: 95 km</strong></div>
+                        </div>
+                    `);
+                    document.getElementById("distSel").addEventListener("change", (e) => {
+                        document.getElementById("distOut").innerHTML = `Mesafe: <strong>${e.target.value}</strong>`;
+                    });
+                    return;
+                }
+                if (action === "overtime") {
+                    openSub("Mesai Hesaplama", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>Aylık Maaş (₺)</label><input type="number" id="otSal" value="28000"></div>
+                            <div class="input-box"><label>Fazla Mesai (Saat)</label><input type="number" id="otHr" value="10"></div>
+                            <div id="otOut" class="output-panel"></div>
+                        </div>
+                    `);
+                    const calcOt = () => {
+                        const sal = parseFloat(document.getElementById("otSal").value) || 0;
+                        const hr = parseFloat(document.getElementById("otHr").value) || 0;
+                        document.getElementById("otOut").innerHTML = `Mesai Tutarı: <strong style="color:#ea580c;">${((sal / 225) * 1.5 * hr).toFixed(2)} ₺</strong>`;
+                    };
+                    calcOt();
+                    document.getElementById("otSal").addEventListener("input", calcOt);
+                    document.getElementById("otHr").addEventListener("input", calcOt);
+                    return;
+                }
+                if (action === "area") {
+                    openSub("Alan Hesaplama", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>Metrekare (m²)</label><input type="number" id="aSqm" value="2500"></div>
+                            <div id="aOut" class="output-panel"></div>
+                        </div>
+                    `);
+                    const calcArea = () => {
+                        const sqm = parseFloat(document.getElementById("aSqm").value) || 0;
+                        document.getElementById("aOut").innerHTML = `Dönüm: <strong>${(sqm / 1000).toFixed(3)} Dönüm</strong>`;
+                    };
+                    calcArea();
+                    document.getElementById("aSqm").addEventListener("input", calcArea);
+                    return;
+                }
+                if (action === "recipes") {
+                    openSub("Yemek Tarifleri", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="mat-row"><div><strong>Düziçi Usulü Etli Kömbe</strong><br><span style="color:#64748b;">İnce hamur, kavrulmuş kıyma ve baharat.</span></div></div>
+                            <div class="mat-row"><div><strong>Osmaniye Yer Fıstıklı Köme</strong><br><span style="color:#64748b;">Pekmez, nişasta ve yer fıstığı.</span></div></div>
+                        </div>
+                    `);
+                }
+            }
+
+            document.addEventListener("click", (e) => {
+                const actionEl = e.target.closest("[data-action]");
+                if (actionEl) {
+                    handleAction(actionEl);
+                    return;
+                }
+                const tourBtn = e.target.closest(".tour-btn");
+                if (tourBtn) {
+                    filterPriorityGroup(tourBtn.dataset.tour, true);
+                    return;
+                }
+                const chipBtn = e.target.closest(".p-chip");
+                if (chipBtn) {
+                    filterPriorityGroup(chipBtn.dataset.p, true);
+                    return;
+                }
+                const qmagBtn = e.target.closest("[data-qmag]");
+                if (qmagBtn) {
+                    quakeMinMag = parseFloat(qmagBtn.dataset.qmag) || 0;
+                    renderQuakes();
+                    return;
+                }
+                const mtabBtn = e.target.closest("[data-mtab]");
+                if (mtabBtn) {
+                    renderMetraj(mtabBtn.dataset.mtab);
+                    return;
+                }
+                if (e.target.closest("#backSubBtn")) {
+                    closeSub();
+                    return;
+                }
+                if (e.target.closest("#clearSearchBtn")) {
+                    resetAllFiltersAndScroll();
+                    return;
+                }
+                if (e.target.closest("#addMatBtn")) {
+                    const n = document.getElementById("matName").value.trim();
+                    const q = parseFloat(document.getElementById("matQty").value) || 0;
+                    const p = parseFloat(document.getElementById("matPrice").value) || 0;
+                    if (n && q > 0) {
+                        materials.push({ name: n, qty: q, price: p });
+                        renderMaterials();
+                    }
+                    return;
+                }
+                const delMat = e.target.closest("[data-del-mat]");
+                if (delMat) {
+                    materials.splice(parseInt(delMat.dataset.delMat, 10), 1);
+                    renderMaterials();
+                    return;
+                }
+                if (e.target.closest("#copyMatBtn")) {
+                    const ta = document.getElementById("matSummaryArea");
+                    const st = document.getElementById("matCopyStatus");
+                    if (ta) {
+                        ta.focus();
+                        ta.select();
+                        try { document.execCommand("copy"); } catch (_) {}
+                        if (st) st.textContent = "Özet kopyalandı.";
+                    }
+                }
+            });
+
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.addEventListener("input", applySearchAndPriority);
+        })();
+    </script>
+</body>
+</html>
