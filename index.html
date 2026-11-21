@@ -920,7 +920,353 @@
                             <button type="button" class="p-chip" data-p="p4">4. İnşaat</button>
                             <button type="button" class="p-chip" data-p="p5">5. Yaşam</button>
                         </div>
+<!-- MOBİL SİMÜLASYON: HAVA DURUMU & TÜVTÜRK MUAYENE MODÜLLERİ -->
+<div id="vp-sim-modules">
+  <style>
+    #vp-sim-modules {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      color: #f8fafc;
+    }
 
+    .vp-sim-card {
+      background: rgba(9, 14, 26, 0.88);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .vp-sim-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .vp-sim-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fde68a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .vp-sim-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.16);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .vp-weather-controls,
+    .vp-tuv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .vp-sim-select,
+    .vp-sim-input,
+    .vp-sim-btn {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 9px;
+      font-size: 11px;
+      font-family: inherit;
+    }
+
+    .vp-sim-select,
+    .vp-sim-input {
+      padding: 7px 9px;
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      outline: none;
+    }
+
+    .vp-sim-btn {
+      grid-column: span 2;
+      padding: 8px 10px;
+      font-weight: 700;
+      color: #090e1a;
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .vp-sim-btn:hover {
+      opacity: 0.94;
+    }
+
+    .vp-sim-btn:active {
+      transform: scale(0.99);
+    }
+
+    .vp-weather-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(245, 158, 11, 0.14);
+    }
+
+    .vp-temp-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f59e0b;
+      line-height: 1.1;
+    }
+
+    .vp-weather-desc {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .vp-weather-meta {
+      text-align: right;
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+
+    .vp-tuv-result {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(245, 158, 11, 0.14);
+      font-size: 11px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .vp-tuv-highlight {
+      color: #fde68a;
+      font-weight: 700;
+    }
+
+    .vp-tuv-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #f59e0b;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .vp-tuv-link:hover {
+      text-decoration: underline;
+    }
+
+    .vp-tuv-note {
+      margin-top: 6px;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+  </style>
+
+  <!-- 1. HAVA DURUMU MODÜLÜ -->
+  <section class="vp-sim-card" aria-label="Hava Durumu Modülü">
+    <div class="vp-sim-head">
+      <div class="vp-sim-title">🌤️ Hava Durumu</div>
+      <span id="vp-wx-city-badge" class="vp-sim-badge">Ankara</span>
+    </div>
+
+    <div class="vp-weather-controls">
+      <select id="vp-wx-city" class="vp-sim-select" aria-label="Şehir Seç">
+        <option value="39.9334,32.8597,Ankara" selected>Ankara</option>
+        <option value="41.0082,28.9784,İstanbul">İstanbul</option>
+        <option value="38.4237,27.1428,İzmir">İzmir</option>
+        <option value="40.1885,29.0610,Bursa">Bursa</option>
+        <option value="36.8969,30.7133,Antalya">Antalya</option>
+        <option value="37.0000,35.3213,Adana">Adana</option>
+        <option value="41.0027,39.7168,Trabzon">Trabzon</option>
+      </select>
+
+      <button type="button" id="vp-wx-refresh" class="vp-sim-btn" style="grid-column: auto;">
+        Güncelle
+      </button>
+    </div>
+
+    <div class="vp-weather-main">
+      <div>
+        <div id="vp-wx-temp" class="vp-temp-val">--°C</div>
+        <div id="vp-wx-desc" class="vp-weather-desc">Veri alınıyor...</div>
+      </div>
+      <div class="vp-weather-meta">
+        <div>Nem: <strong id="vp-wx-hum" style="color:#fde68a;">--%</strong></div>
+        <div>Rüzgar: <strong id="vp-wx-wind" style="color:#fde68a;">-- km/s</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. TÜVTÜRK ARAÇ MUAYENE MODÜLÜ -->
+  <section class="vp-sim-card" aria-label="TÜVTÜRK Araç Muayene Modülü">
+    <div class="vp-sim-head">
+      <div class="vp-sim-title">🚗 TÜVTÜRK Muayene</div>
+      <span class="vp-sim-badge">Planlayıcı</span>
+    </div>
+
+    <div class="vp-tuv-grid">
+      <input
+        type="date"
+        id="vp-tuv-last-date"
+        class="vp-sim-input"
+        aria-label="Son Muayene Tarihi"
+      />
+
+      <select id="vp-tuv-period" class="vp-sim-select" aria-label="Muayene Periyodu">
+        <option value="2" selected>2 Yılda Bir (Otomobil vb.)</option>
+        <option value="1">Her Yıl (Ticari / Ağır vb.)</option>
+      </select>
+
+      <button type="button" id="vp-tuv-calc-btn" class="vp-sim-btn">
+        Muayene Tarihini Hesapla
+      </button>
+    </div>
+
+    <div id="vp-tuv-output" class="vp-tuv-result">
+      Son muayene tarihini seçerek tahmini sonraki muayene tarihini ve kalan süreyi görebilirsin.
+    </div>
+
+    <a
+      href="https://www.tuvturk.com.tr/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="vp-tuv-link"
+    >
+      Resmi TÜVTÜRK Sitesine Git →
+    </a>
+    <div class="vp-tuv-note">
+      * Hesaplama bilgilendirme amaçlıdır; kesin ruhsat/muayene kaydı için resmi kanalları kontrol edin.
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const citySel = document.getElementById("vp-wx-city");
+      const cityBadge = document.getElementById("vp-wx-city-badge");
+      const refreshBtn = document.getElementById("vp-wx-refresh");
+      const tempEl = document.getElementById("vp-wx-temp");
+      const descEl = document.getElementById("vp-wx-desc");
+      const humEl = document.getElementById("vp-wx-hum");
+      const windEl = document.getElementById("vp-wx-wind");
+
+      const weatherCodes = {
+        0: "Açık / Güneşli",
+        1: "Az Bulutlu",
+        2: "Parçalı Bulutlu",
+        3: "Kapalı / Bulutlu",
+        45: "Sisli",
+        48: "Kırağı / Yoğun Sis",
+        51: "Hafif Çiseleyen Yağmur",
+        53: "Orta Çiseleyen Yağmur",
+        55: "Yoğun Çiseleyen Yağmur",
+        61: "Hafif Yağmurlu",
+        63: "Orta Şiddetli Yağmur",
+        65: "Kuvvetli Yağmurlu",
+        71: "Hafif Kar Yağışlı",
+        73: "Orta Kar Yağışlı",
+        75: "Yoğun Kar Yağışlı",
+        80: "Sağanak Yağışlı",
+        95: "Gök Gürültülü Sağanak"
+      };
+
+      async function loadWeather() {
+        if (!citySel) return;
+        const [lat, lon, cityName] = citySel.value.split(",");
+        if (cityBadge) cityBadge.textContent = cityName;
+        if (descEl) descEl.textContent = "Güncelleniyor...";
+
+        try {
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`;
+          const res = await fetch(url, { cache: "no-store" });
+          if (!res.ok) throw new Error("Hava durumu alınamadı");
+          const data = await res.json();
+          const cur = data.current;
+
+          if (cur) {
+            if (tempEl) tempEl.textContent = `${Math.round(cur.temperature_2m)}°C`;
+            if (descEl) descEl.textContent = weatherCodes[cur.weather_code] || "Güncel Durum";
+            if (humEl) humEl.textContent = `%${cur.relative_humidity_2m}`;
+            if (windEl) windEl.textContent = `${Math.round(cur.wind_speed_10m)} km/s`;
+          }
+        } catch (_) {
+          if (descEl) descEl.textContent = "Bağlantı şu an kurulamadı";
+        }
+      }
+
+      const dateInput = document.getElementById("vp-tuv-last-date");
+      const periodSel = document.getElementById("vp-tuv-period");
+      const calcBtn = document.getElementById("vp-tuv-calc-btn");
+      const outEl = document.getElementById("vp-tuv-output");
+
+      // Varsayılan olarak 1 yıl öncesi bir tarih koyalım ki kullanıcı ilk açılışta örnek görsün
+      if (dateInput && !dateInput.value) {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() - 1);
+        dateInput.value = d.toISOString().split("T")[0];
+      }
+
+      function calcInspection() {
+        if (!dateInput || !periodSel || !outEl) return;
+        if (!dateInput.value) {
+          outEl.textContent = "Lütfen geçerli bir son muayene tarihi seçin.";
+          return;
+        }
+
+        const parts = dateInput.value.split("-");
+        const start = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        const years = Number(periodSel.value) || 2;
+        const nextDate = new Date(start.getFullYear() + years, start.getMonth(), start.getDate());
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diffDays = Math.round((nextDate - today) / (1000 * 60 * 60 * 24));
+
+        const formattedNext = nextDate.toLocaleDateString("tr-TR", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        });
+
+        let statusText = "";
+        if (diffDays > 0) {
+          statusText = `Tahmini sonraki muayeneye <span class="vp-tuv-highlight">${diffDays} gün</span> kaldı.`;
+        } else if (diffDays === 0) {
+          statusText = `<span class="vp-tuv-highlight">Tahmini muayene tarihi bugün!</span>`;
+        } else {
+          statusText = `Tahmini muayene tarihi <span class="vp-tuv-highlight">${Math.abs(diffDays)} gün</span> geçmiş görünüyor.`;
+        }
+
+        outEl.innerHTML = `
+          <div>Sonraki Tahmini Tarih: <span class="vp-tuv-highlight">${formattedNext}</span></div>
+          <div>${statusText}</div>
+        `;
+      }
+
+      if (citySel) citySel.addEventListener("change", loadWeather);
+      if (refreshBtn) refreshBtn.addEventListener("click", loadWeather);
+      if (calcBtn) calcBtn.addEventListener("click", calcInspection);
+
+      loadWeather();
+      calcInspection();
+    })();
+  </script>
+</div>
                         <div class="app-body" id="modulesBody">
                             <div class="group-block" id="group-p1" data-group="p1">
                                 <div class="group-header urg-1">
