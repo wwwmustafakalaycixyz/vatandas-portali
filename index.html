@@ -991,6 +991,152 @@
                                         <div class="card-sub">Bakanlık</div>
                                     </button>
                                 </div>
+                                <div id="vp-kamu-ek-paneller" style="grid-column: 1 / -1; margin-top: 8px;">
+  <style>
+    .vp-mod-panel {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(9, 14, 26, 0.92);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+    .vp-mod-panel.acik { display: block; }
+    .vp-mod-satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+    .vp-mod-giris {
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-family: inherit;
+    }
+    .vp-mod-buton {
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      color: #090e1a;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
+  </style>
+
+  <div id="vp-panel-hava" class="vp-mod-panel">
+    <div class="vp-mod-satir">
+      <select id="vp-hava-sehir" class="vp-mod-giris">
+        <option value="39.9334,32.8597,Ankara" selected>Ankara</option>
+        <option value="41.0082,28.9784,İstanbul">İstanbul</option>
+        <option value="38.4237,27.1428,İzmir">İzmir</option>
+        <option value="40.1885,29.0610,Bursa">Bursa</option>
+        <option value="36.8969,30.7133,Antalya">Antalya</option>
+      </select>
+      <button type="button" id="vp-hava-yenile" class="vp-mod-buton">Yenile</button>
+    </div>
+    <div id="vp-hava-sonuc">Hava durumu yükleniyor...</div>
+  </div>
+
+  <div id="vp-panel-tuv" class="vp-mod-panel">
+    <div class="vp-mod-satir">
+      <input type="date" id="vp-tuv-tarih" class="vp-mod-giris" />
+      <select id="vp-tuv-periyot" class="vp-mod-giris">
+        <option value="2" selected>2 Yılda Bir</option>
+        <option value="1">Her Yıl</option>
+      </select>
+      <button type="button" id="vp-tuv-hesapla" class="vp-mod-buton">Hesapla</button>
+    </div>
+    <div id="vp-tuv-sonuc"></div>
+    <div style="margin-top:6px;">
+      <a href="https://www.tuvturk.com.tr/" target="_blank" rel="noopener noreferrer" style="color:#f59e0b; font-weight:700; text-decoration:none;">
+        Resmi TÜVTÜRK Sayfası →
+      </a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const kartlar = document.querySelectorAll(".vp-mod-card");
+      const paneller = document.querySelectorAll(".vp-mod-panel");
+
+      kartlar.forEach((kart) => {
+        kart.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const hedef = document.getElementById(kart.getAttribute("data-vp-target"));
+          const acikMi = hedef && hedef.classList.contains("acik");
+          paneller.forEach((p) => p.classList.remove("acik"));
+          if (!acikMi && hedef) hedef.classList.add("acik");
+        });
+      });
+
+      const sehirSel = document.getElementById("vp-hava-sehir");
+      const yenileBtn = document.getElementById("vp-hava-yenile");
+      const havaSonuc = document.getElementById("vp-hava-sonuc");
+      const kodlar = {
+        0: "Açık", 1: "Az Bulutlu", 2: "Parçalı Bulutlu", 3: "Bulutlu",
+        45: "Sisli", 61: "Hafif Yağmurlu", 63: "Yağmurlu", 65: "Kuvvetli Yağmurlu",
+        71: "Kar Yağışlı", 80: "Sağanak Yağışlı", 95: "Gök Gürültülü Sağanak"
+      };
+
+      async function havaGetir() {
+        if (!sehirSel || !havaSonuc) return;
+        const [lat, lon, ad] = sehirSel.value.split(",");
+        havaSonuc.textContent = `${ad} için veri alınıyor...`;
+        try {
+          const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`);
+          const d = await r.json();
+          const c = d.current;
+          if (c) {
+            havaSonuc.innerHTML = `<span class="vp-mod-vurgu">${ad}: ${Math.round(c.temperature_2m)}°C</span> • ${kodlar[c.weather_code] || "Güncel"} • Nem: %${c.relative_humidity_2m} • Rüzgar: ${Math.round(c.wind_speed_10m)} km/s`;
+          }
+        } catch (_) {
+          havaSonuc.textContent = "Hava durumu bilgisi alınamadı.";
+        }
+      }
+
+      const tarihInput = document.getElementById("vp-tuv-tarih");
+      const periyotSel = document.getElementById("vp-tuv-periyot");
+      const hesaplaBtn = document.getElementById("vp-tuv-hesapla");
+      const tuvSonuc = document.getElementById("vp-tuv-sonuc");
+
+      if (tarihInput && !tarihInput.value) {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() - 1);
+        tarihInput.value = d.toISOString().split("T")[0];
+      }
+
+      function tuvHesapla() {
+        if (!tarihInput || !periyotSel || !tuvSonuc || !tarihInput.value) return;
+        const [y, m, g] = tarihInput.value.split("-").map(Number);
+        const yilEkle = Number(periyotSel.value) || 2;
+        const sonraki = new Date(y + yilEkle, m - 1, g);
+        const simdi = new Date();
+        const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+        const gunFarki = Math.round((sonraki - bugun) / 86400000);
+        const tarihMetni = sonraki.toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" });
+        const durum = gunFarki > 0
+          ? `Tahmini <span class="vp-mod-vurgu">${gunFarki} gün</span> kaldı.`
+          : gunFarki === 0
+            ? `<span class="vp-mod-vurgu">Tahmini muayene tarihi bugün!</span>`
+            : `Tahmini tarih <span class="vp-mod-vurgu">${Math.abs(gunFarki)} gün</span> geçmiş.`;
+        tuvSonuc.innerHTML = `Sonraki Tahmini Tarih: <span class="vp-mod-vurgu">${tarihMetni}</span> — ${durum}`;
+      }
+
+      if (sehirSel) sehirSel.addEventListener("change", havaGetir);
+      if (yenileBtn) yenileBtn.addEventListener("click", havaGetir);
+      if (hesaplaBtn) hesaplaBtn.addEventListener("click", tuvHesapla);
+
+      havaGetir();
+      tuvHesapla();
+    })();
+  </script>
+</div>
                             </div>
 
                             <div class="group-block" id="group-p3" data-group="p3">
