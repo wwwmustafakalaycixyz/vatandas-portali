@@ -618,19 +618,56 @@
 
         .tab-btn.active { color: #c2410c; font-weight: 800; }
         .tab-btn i { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+
+        #vp-top-ticker {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            height: 36px;
+            padding: 0 14px;
+            background: rgba(9, 14, 26, 0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+            color: #f8fafc;
+            font-size: 12px;
+            overflow: hidden;
+        }
+        .vp-datetime-box { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0; color: #fde68a; font-weight: 600; }
+        .vp-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 8px #f59e0b; flex-shrink: 0; }
+        .vp-marquee-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+        .vp-marquee-track { display: inline-flex; align-items: center; gap: 28px; white-space: nowrap; will-change: transform; animation: vpMarqueeScroll 26s linear infinite; }
+        .vp-marquee-wrap:hover .vp-marquee-track { animation-play-state: paused; }
+        .vp-rate-item { display: inline-flex; align-items: center; gap: 6px; color: #cbd5e1; }
+        .vp-rate-item strong { color: #f59e0b; font-weight: 700; }
+        @keyframes vpMarqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (max-width: 640px) {
+            #vp-top-ticker { height: auto; min-height: 34px; padding: 4px 10px; gap: 8px; font-size: 11px; }
+            .vp-datetime-box { max-width: 52%; overflow: hidden; text-overflow: ellipsis; }
+        }
+
+        .vp-mod-panel { display: none; padding: 10px 12px; border-radius: 12px; background: rgba(9, 14, 26, 0.92); border: 1px solid rgba(245, 158, 11, 0.28); color: #f8fafc; font-size: 11px; margin-bottom: 8px; }
+        .vp-mod-panel.acik { display: block; }
+        .vp-mod-satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+        .vp-mod-giris { background: #0f172a; color: #f8fafc; border: 1px solid rgba(245, 158, 11, 0.28); border-radius: 8px; padding: 5px 8px; font-size: 11px; }
+        .vp-mod-buton { background: linear-gradient(135deg, #f59e0b, #ea580c); color: #090e1a; border: none; border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
     </style>
 </head>
 <body>
     <div style="width: 100%; padding: 8px 16px; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(245, 158, 11, 0.25); display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 14px;">
         <a href="tel:+905416429094" style="color: #f8fafc; text-decoration: none;">
-            İletişim: +90 (541) 642 90 94
+            İletişim:&nbsp;+90&nbsp;(541)&nbsp;642&nbsp;90&nbsp;94
         </a>
     </div>
     <div class="ticker-bar">
         <div class="ticker-items">
         </div>
         <!-- ÜST CANLI TARIH/SAAT VE KAYAN DÖVIZ SERIDI -->
-<div id="vp-top-ticker" aria-label="Güncel Tarih, Saat ve Döviz Kurları">
+<div id="vp-top-ticker" role="region" aria-label="Güncel Tarih, Saat ve Döviz Kurları">
   <div class="vp-datetime-box">
     <span class="vp-live-dot"></span>
     <span id="vp-live-datetime" class="vp-datetime-text">Yükleniyor...</span>
@@ -646,7 +683,7 @@
   </div>
 </div>
 
-<style>
+<template>
   #vp-top-ticker {
     position: sticky;
     top: 0;
@@ -754,7 +791,7 @@
       text-overflow: ellipsis;
     }
   }
-</style>
+  </template>
 
 <script>
   (function () {
@@ -829,9 +866,10 @@
         <div class="showcase-container">
             <div>
                 <div class="promo-badge">
- <h1 class="promo-title">MUSTAFA KALAYCI<br>VATANDAŞ PORTALI</h1>
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>TÜM MODÜLLER TEK PLATFORMDA</span>
                 </div>
-                                  <i class="fas fa-mobile-alt"></i> TÜM MODÜLLER TEK PLATFORMDA 
+                <h1 class="promo-title">MUSTAFA KALAYCI<br>VATANDAŞ PORTALI</h1>
                 <p class="promo-desc">
                    Onlarca farklı kurumun uygulamasını ayrı ayrı yükleyip telefonunuzu kalabalıklaştırmak ve her biri için ayrı şifre/veri riski yönetmek yerine, www.mustafakalayci.xyz alt yapısına güvenli şekilde bağlanan MUSTAFA KALAYCI — VATANDAŞ PORTALI'nı yükleyin. Tüm kamu, belediye, eğitim ve sağlık hizmetlerine tek bir noktadan, kolaylıkla ve güvenle erişin
                 </p>
@@ -1008,7 +1046,7 @@
 </button>
                                 </div>
                                 <div id="vp-kamu-ek-paneller" style="grid-column: 1 / -1; margin-top: 8px;">
-  <style>
+  <template>
     .vp-mod-panel {
       display: none;
       padding: 10px 12px;
@@ -1042,7 +1080,7 @@
       cursor: pointer;
     }
     .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
-  </style>
+  </template>
 
   <div id="vp-panel-hava" class="vp-mod-panel">
     <div class="vp-mod-satir">
@@ -1060,7 +1098,7 @@
 
   <div id="vp-panel-tuv" class="vp-mod-panel">
     <div class="vp-mod-satir">
-      <input type="date" id="vp-tuv-tarih" class="vp-mod-giris" />
+      <input type="date" id="vp-tuv-tarih" class="vp-mod-giris">
       <select id="vp-tuv-periyot" class="vp-mod-giris">
         <option value="2" selected>2 Yılda Bir</option>
         <option value="1">Her Yıl</option>
@@ -1267,7 +1305,7 @@
 
                         <div class="sub-screen" id="subScreen">
                             <div class="sub-header">
-                                <button type="button" class="back-circle" id="backSubBtn"><i class="fas fa-arrow-left"></i></button>
+                                <button type="button" class="back-circle" id="backSubBtn" aria-label="Önceki ekrana dön"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
                                 <div id="subTitle" style="font-weight:800; font-size:0.86rem;">Modül</div>
                             </div>
                             <div class="sub-content" id="subContent"></div>
@@ -1374,13 +1412,6 @@
                 { name: "Bims / Tuğla (Adet)", qty: 1000, price: 14 }
             ];
 
-            const sampleQuakes = [
-                { mag: 4.3, loc: "Göksun / Kahramanmaraş", depth: "11.4 km", time: "15:40" },
-                { mag: 3.5, loc: "Düziçi / Osmaniye", depth: "7.2 km", time: "14:22" },
-                { mag: 2.9, loc: "Saimbeyli / Adana", depth: "9.8 km", time: "12:55" },
-                { mag: 4.1, loc: "Ege Denizi - Bodrum Açıkları", depth: "14.0 km", time: "10:15" }
-            ];
-
             function openSub(title, html) {
                 const subScreen = document.getElementById("subScreen");
                 const subTitle = document.getElementById("subTitle");
@@ -1443,7 +1474,6 @@
             }
 
             function renderQuakes() {
-                const filtered = sampleQuakes.filter((item) => item.mag >= quakeMinMag);
                 openSub("Son Depremler", `
                     <div class="official-card-box" style="text-align:left;">
                         <div class="filter-row">
@@ -1451,14 +1481,37 @@
                             <button type="button" class="filter-chip ${quakeMinMag === 3 ? "active" : ""}" data-qmag="3">3.0+ ML</button>
                             <button type="button" class="filter-chip ${quakeMinMag === 4 ? "active" : ""}" data-qmag="4">4.0+ ML</button>
                         </div>
-                        <div>${filtered.map((item) => `
+                        <div id="quakeLiveList">Deprem verileri yükleniyor...</div>
+                    </div>
+                `);
+                const list = document.getElementById("quakeLiveList");
+                fetch("https://api.orhanaydogdu.com.tr/deprem/kandilli/live")
+                    .then((response) => {
+                        if (!response.ok) throw new Error("Deprem verisine erişilemedi");
+                        return response.json();
+                    })
+                    .then((data) => {
+                        const items = Array.isArray(data.result) ? data.result : [];
+                        const filtered = items
+                            .map((item) => ({
+                                mag: Number(item.mag) || 0,
+                                loc: item.title || item.location || "Konum bilgisi yok",
+                                depth: `${Number(item.depth || 0).toFixed(1)} km`,
+                                time: item.date ? new Date(item.date).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) : "--:--"
+                            }))
+                            .filter((item) => item.mag >= quakeMinMag)
+                            .slice(0, 20);
+                        if (!list) return;
+                        list.innerHTML = filtered.length ? filtered.map((item) => `
                             <div class="quake-item">
                                 <div><strong>${item.loc}</strong><br><span style="font-size:0.64rem;color:#64748b;">Saat: ${item.time} • Derinlik: ${item.depth}</span></div>
                                 <div class="mag-badge ${item.mag >= 4 ? "mag-high" : "mag-mid"}">${item.mag.toFixed(1)}</div>
                             </div>
-                        `).join("")}</div>
-                    </div>
-                `);
+                        `).join("") : "Bu ölçekte deprem kaydı bulunamadı.";
+                    })
+                    .catch(() => {
+                        if (list) list.textContent = "Canlı deprem verisi alınamadı.";
+                    });
             }
 
             function buildMaterialsSummary() {
@@ -1799,47 +1852,6 @@
             if (searchInput) searchInput.addEventListener("input", applySearchAndPriority);
         })();
     </script>
-   <style>
-  #vp-top-ticker {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: auto !important;
-    z-index: 999999 !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    height: 36px;
-    padding: 0 14px;
-    background: rgba(9, 14, 26, 0.94);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-    color: #f8fafc;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    font-size: 12px;
-    overflow: hidden;
-  }
-  body {
-    padding-top: 36px !important;
-  }
-  .tanitim-galerisi {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    margin: 24px auto;
-    max-width: 1100px;
-  }
-  .tanitim-galerisi img {
-    display: block;
-    width: 220px;
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  </style>
   <footer style="width:100%;text-align:center;padding:12px;color:#94a3b8;font-size:12px;">
     Copyright © 2026 www.mustafakalayci.xyz Tüm hakları saklıdır.
   </footer>
