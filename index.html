@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#090e1a">
-    <meta name="description" content="Vatandaş hizmetlerine tek noktadan erişim sağlayan Mustafa Kalaycı Vatandaş Portalı.">
+    <meta name="description" content="Kamu kurumlarının resmi bağlantıları ve ücretsiz vatandaş hesaplama araçları. Bağımsız Mustafa Kalaycı Vatandaş Portalı.">
     <title>MUSTAFA KALAYCI - VATANDAŞ PORTALI</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <meta property="og:title" content="Mustafa Kalaycı Vatandaş Portalı">
+    <meta property="og:description" content="Resmi kurum bağlantıları ve ücretsiz hesaplama araçları sunan bağımsız vatandaş portalı.">
+    <meta property="og:image" content="https://www.mustafakalayci.xyz/TANITIM%205.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -26,6 +31,26 @@
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+
+        :focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 3px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 100000;
+            transform: translateY(-160%);
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #090e1a;
+            font-weight: 800;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
 
         body {
             background-color: var(--bg-dark);
@@ -59,7 +84,8 @@
         }
 
         .ticker-item strong { color: #fbbf24; margin-right: 4px; }
-        .ticker-domain { color: #94a3b8; font-weight: 600; font-size: 0.74rem; }
+        .ticker-domain { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px 14px; color: #94a3b8; font-weight: 600; font-size: 0.68rem; }
+        .ticker-domain a { color: #fbbf24; text-decoration: none; }
 
         .promo-gallery {
             position: relative;
@@ -330,6 +356,19 @@
         .tour-btn-text span { font-size: 0.68rem; color: var(--text-muted); }
 
         .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+        .simulation-notice {
+            margin-top: 9px;
+            color: #cbd5e1;
+            font-size: 0.75rem;
+        }
+        .simulation-note {
+            margin-top: 10px;
+            color: #475569;
+            font-size: 0.72rem;
+            line-height: 1.5;
+        }
+
+        .cta-row .store-btn[hidden] { display: none; }
 
         .store-btn {
             display: inline-flex;
@@ -794,17 +833,22 @@
             font-size: 12px;
             overflow: hidden;
         }
-        .vp-datetime-box { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0; color: #fde68a; font-weight: 600; }
+        .vp-datetime-box { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0; color: #fde68a; font-weight: 600; animation: vpFadePulse 3s ease-in-out infinite; }
         .vp-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 8px #f59e0b; flex-shrink: 0; }
-        .vp-marquee-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+        .vp-marquee-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
         .vp-marquee-track { display: inline-flex; align-items: center; gap: 28px; white-space: nowrap; will-change: transform; animation: vpMarqueeScroll 26s linear infinite; }
         .vp-marquee-wrap:hover .vp-marquee-track { animation-play-state: paused; }
         .vp-rate-item { display: inline-flex; align-items: center; gap: 6px; color: #cbd5e1; }
         .vp-rate-item strong { color: #f59e0b; font-weight: 700; }
         @keyframes vpMarqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes vpFadePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.78; } }
         @media (max-width: 640px) {
             #vp-top-ticker { height: auto; min-height: 34px; padding: 4px 10px; gap: 8px; font-size: 11px; }
             .vp-datetime-box { max-width: 52%; overflow: hidden; text-overflow: ellipsis; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .vp-marquee-track,
+            .vp-datetime-box { animation: none; }
         }
 
         .vp-mod-panel { display: none; padding: 10px 12px; border-radius: 12px; background: rgba(9, 14, 26, 0.92); border: 1px solid rgba(245, 158, 11, 0.28); color: #f8fafc; font-size: 11px; margin-bottom: 8px; }
@@ -956,6 +1000,20 @@
         }
 
         .feedback-form label.full-width { grid-column: 1 / -1; }
+        .feedback-form .feedback-consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            color: #475569;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .feedback-form .feedback-consent input {
+            width: auto;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
 
         .feedback-form input,
         .feedback-form select,
@@ -1022,6 +1080,7 @@
     </style>
 </head>
 <body id="top">
+    <a class="skip-link" href="#mainContent">Ana içeriğe geç</a>
     <div class="contact-row">
         <h1 class="site-brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</h1>
         <a class="whatsapp-link" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 541 642 90 94 numarasına ulaşın">
@@ -1049,120 +1108,11 @@
   </div>
 </div>
 
-<template>
-  #vp-top-ticker {
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    height: 36px;
-    padding: 0 14px;
-    background: rgba(9, 14, 26, 0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-    color: #f8fafc;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    font-size: 12px;
-    overflow: hidden;
-  }
-
-  .vp-datetime-box {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    color: #fde68a;
-    font-weight: 600;
-    animation: vpFadePulse 3s ease-in-out infinite;
-  }
-
-  .vp-live-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #f59e0b;
-    box-shadow: 0 0 8px #f59e0b;
-    flex-shrink: 0;
-  }
-
-  .vp-marquee-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-  }
-
-  .vp-marquee-track {
-    display: inline-flex;
-    align-items: center;
-    gap: 28px;
-    white-space: nowrap;
-    will-change: transform;
-    animation: vpMarqueeScroll 26s linear infinite;
-  }
-
-  .vp-marquee-wrap:hover .vp-marquee-track {
-    animation-play-state: paused;
-  }
-
-  .vp-rate-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #cbd5e1;
-    transition: transform 0.25s ease, color 0.25s ease;
-  }
-
-  .vp-rate-item strong {
-    color: #f59e0b;
-    font-weight: 700;
-  }
-
-  @keyframes vpMarqueeScroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  @keyframes vpFadePulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.78;
-    }
-  }
-
-  @media (max-width: 640px) {
-    #vp-top-ticker {
-      height: auto;
-      min-height: 34px;
-      padding: 4px 10px;
-      gap: 8px;
-      font-size: 11px;
-    }
-
-    .vp-datetime-box {
-      max-width: 52%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-  </template>
-
 <script>
   (function () {
     const dtEl = document.getElementById("vp-live-datetime");
     const trackEl = document.getElementById("vp-marquee-track");
+    const ratesUpdatedEl = document.getElementById("vp-rates-updated");
 
     function updateDateTime() {
       if (!dtEl) return;
@@ -1214,9 +1164,20 @@
         const data = await res.json();
         if (data && data.rates && data.rates.TRY) {
           renderRates(data.rates);
+          if (ratesUpdatedEl) {
+            const updated = new Date(data.time_last_update_utc);
+            ratesUpdatedEl.textContent = Number.isNaN(updated.getTime())
+              ? "zaman bilgisi yok"
+              : updated.toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
+          }
+        } else {
+          throw new Error("Kur verisi bulunamadı");
         }
-      } catch (_) {
-        // Ağ hatasında mevcut görünümü koru
+      } catch (error) {
+        if (ratesUpdatedEl && ratesUpdatedEl.textContent === "yükleniyor") {
+          ratesUpdatedEl.textContent = "şu an alınamıyor";
+        }
+        console.error("ExchangeRate-API kurları alınamadı:", error);
       }
     }
 
@@ -1226,26 +1187,29 @@
     setInterval(fetchRates, 15 * 60 * 1000);
   })();
 </script>
-<div class="ticker-domain">GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR </div>
+<div class="ticker-domain">
+    <span>GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR</span>
+    <span>Döviz kaynağı: <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a> • Güncelleme: <time id="vp-rates-updated">yükleniyor</time></span>
+</div>
     </div>
     <section class="promo-gallery" id="promoGallery" aria-label="Vatandaş Portalı tanıtım görselleri">
         <div class="promo-gallery-slide active" role="group" aria-label="1 / 6" aria-hidden="false">
-            <img src="./TANITIM%205.jpg" alt="Mustafa Kalaycı Vatandaş Portalı genel tanıtımı" fetchpriority="high">
+            <img src="./TANITIM%205.jpg" width="1376" height="768" alt="Mustafa Kalaycı Vatandaş Portalı genel tanıtımı" fetchpriority="high" decoding="async">
         </div>
         <div class="promo-gallery-slide" role="group" aria-label="2 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m.jpg" alt="Vatandaş Portalı mobil uygulama tanıtımı" loading="lazy">
+            <img src="./tan%C4%B1t%C4%B1m.jpg" width="912" height="1147" alt="Vatandaş Portalı mobil uygulama tanıtımı" loading="lazy" decoding="async">
         </div>
         <div class="promo-gallery-slide" role="group" aria-label="3 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%201.jpg" alt="Vatandaş Portalı kamu ve belediye hizmetleri" loading="lazy">
+            <img src="./tan%C4%B1t%C4%B1m%201.jpg" width="928" height="1152" alt="Vatandaş Portalı kamu ve belediye hizmetleri" loading="lazy" decoding="async">
         </div>
         <div class="promo-gallery-slide" role="group" aria-label="4 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%202.jpg" alt="Vatandaş Portalı hizmet modülleri tanıtımı" loading="lazy">
+            <img src="./tan%C4%B1t%C4%B1m%202.jpg" width="928" height="1152" alt="Vatandaş Portalı hizmet modülleri tanıtımı" loading="lazy" decoding="async">
         </div>
         <div class="promo-gallery-slide" role="group" aria-label="5 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%203.jpg" alt="Vatandaş Portalı günlük yaşam hizmetleri" loading="lazy">
+            <img src="./tan%C4%B1t%C4%B1m%203.jpg" width="928" height="1152" alt="Vatandaş Portalı günlük yaşam hizmetleri" loading="lazy" decoding="async">
         </div>
         <div class="promo-gallery-slide" role="group" aria-label="6 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%204.jpg" alt="Vatandaş Portalı uygulama ekranı tanıtımı" loading="lazy">
+            <img src="./tan%C4%B1t%C4%B1m%204.jpg" width="928" height="1152" alt="Vatandaş Portalı uygulama ekranı tanıtımı" loading="lazy" decoding="async">
         </div>
         <div class="promo-gallery-controls">
             <button type="button" class="promo-gallery-control" data-gallery-prev aria-label="Önceki tanıtım görseli">
@@ -1326,7 +1290,7 @@
             startTimer();
         })();
     </script>
-    <div class="main-stage">
+    <main class="main-stage" id="mainContent" tabindex="-1">
         <div class="showcase-container">
             <div>
                 <div class="promo-badge">
@@ -1334,7 +1298,7 @@
                     <span>TÜM MODÜLLER TEK PLATFORMDA</span>
                 </div>
                 <p class="promo-desc">
-                   Onlarca farklı kurumun uygulamasını ayrı ayrı yükleyip telefonunuzu kalabalıklaştırmak ve her biri için ayrı şifre/veri riski yönetmek yerine, www.mustafakalayci.xyz alt yapısına güvenli şekilde bağlanan MUSTAFA KALAYCI — VATANDAŞ PORTALI'nı yükleyin. Tüm kamu, belediye, eğitim ve sağlık hizmetlerine tek bir noktadan, kolaylıkla ve güvenle erişin
+                    Kamu, belediye, eğitim ve sağlık hizmetlerinin resmi bağlantılarını tek bir ekranda bulun. Kurum işlemleri ilgili kurumun kendi sitesinde gerçekleştirilir; portal sizden parola veya işlem bilgisi istemez.
                 </p>
 
                 <div class="tour-label">
@@ -1346,7 +1310,7 @@
                         <i class="fas fa-exclamation-triangle"></i>
                         <div class="tour-btn-text">
                             <strong>1. Öncelik • Acil &amp; Deprem</strong>
-                            <span>112 Acil, Son Depremler, Sayaç</span>
+                            <span>112 Acil, Son Depremler, Gizlilik</span>
                         </div>
                     </button>
                     <button type="button" class="tour-btn" data-tour="p2">
@@ -1386,18 +1350,23 @@
                     </button>
                 </div>
 
-                <div class="cta-row">
-                    <button type="button" class="store-btn" data-action="metraj">
-                        <i class="fas fa-play"></i> Simülatörde Metraj Aç
+                <div class="cta-row" id="simulasyon">
+                    <button type="button" class="store-btn" data-action="metraj" aria-describedby="simulationNotice">
+                        <i class="fas fa-play" aria-hidden="true"></i> Ücretsiz Simülasyonu Başlat
                     </button>
-                    <button type="button" class="store-btn secondary" data-action="visitors">
-                        <i class="fas fa-users"></i> Ziyaretçi Sayacı
+                    <button type="button" class="store-btn secondary" data-action="privacy">
+                        <i class="fas fa-shield-halved" aria-hidden="true"></i> Gizlilik Bilgisi
+                    </button>
+                    <button type="button" class="store-btn secondary" id="installAppBtn" hidden>
+                        <i class="fas fa-download" aria-hidden="true"></i> Uygulamayı Yükle
                     </button>
                 </div>
+                <p class="simulation-notice" id="simulationNotice" role="note">Ücretsizdir, hesap açmadan kullanılır. Hesaplamalar tarayıcınızda yapılır.</p>
+                <p class="simulation-notice" id="pwaStatus">Desteklenen tarayıcılarda yükleme düğmesi görünür. iPhone/iPad'de Paylaş menüsünden Ana Ekrana Ekle'yi seçebilirsiniz.</p>
                 <div class="trust-strip" role="list" aria-label="Portal özellikleri">
                     <div class="trust-item">
                         <i class="fas fa-shield-halved"></i>
-                        <div><strong>Güvenli Erişim</strong><span>Resmi kurum bağlantıları</span></div>
+                        <div><strong>Resmi Bağlantılar</strong><span>Kurumların kendi siteleri</span></div>
                     </div>
                     <div class="trust-item">
                         <i class="fas fa-layer-group"></i>
@@ -1421,9 +1390,9 @@
                                     <h2>MUSTAFA KALAYCI</h2>
                                     <span>VATANDAŞ PORTALI</span>
                                 </div>
-                                <button type="button" class="live-pill" data-action="visitors">
-                                    <span class="live-dot"></span> <span id="topVisitorCount">1.428</span>
-                                </button>
+                                <span class="live-pill" aria-label="Hesap açmadan ücretsiz kullanım">
+                                    <span class="live-dot"></span> <span>Ücretsiz</span>
+                                </span>
                             </div>
                             <div class="app-search">
                                 <i class="fas fa-search"></i>
@@ -1458,10 +1427,10 @@
                                         <div class="card-title">Son Depremler</div>
                                         <div class="card-sub">Sismik Kayıt</div>
                                     </button>
-                                    <button type="button" class="app-card" data-action="visitors">
-                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-users"></i></div>
-                                        <div class="card-title">Ziyaretçi</div>
-                                        <div class="card-sub">Sayaç</div>
+                                    <button type="button" class="app-card" data-action="privacy">
+                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-shield-halved"></i></div>
+                                        <div class="card-title">Gizlilik</div>
+                                        <div class="card-sub">Veri Kullanımı</div>
                                     </button>
                                 </div>
                             </div>
@@ -1523,42 +1492,6 @@
 </button>
                                 </div>
                                 <div id="vp-kamu-ek-paneller" style="grid-column: 1 / -1; margin-top: 8px;">
-  <template>
-    .vp-mod-panel {
-      display: none;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(9, 14, 26, 0.92);
-      border: 1px solid rgba(245, 158, 11, 0.28);
-      color: #f8fafc;
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-    .vp-mod-panel.acik { display: block; }
-    .vp-mod-satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
-    .vp-mod-giris {
-      background: #0f172a;
-      color: #f8fafc;
-      border: 1px solid rgba(245, 158, 11, 0.28);
-      border-radius: 8px;
-      padding: 5px 8px;
-      font-size: 11px;
-      font-family: inherit;
-    }
-    .vp-mod-buton {
-      background: linear-gradient(135deg, #f59e0b, #ea580c);
-      color: #090e1a;
-      border: none;
-      border-radius: 8px;
-      padding: 5px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
-  </template>
-
   <div id="vp-panel-hava" class="vp-mod-panel">
     <div class="vp-mod-satir">
       <select id="vp-hava-sehir" class="vp-mod-giris">
@@ -1570,7 +1503,8 @@
       </select>
       <button type="button" id="vp-hava-yenile" class="vp-mod-buton">Yenile</button>
     </div>
-    <div id="vp-hava-sonuc">Hava durumu yükleniyor...</div>
+    <div id="vp-hava-sonuc" role="status" aria-live="polite">Hava durumu yükleniyor...</div>
+    <small>Kaynak: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></small>
   </div>
 
   <div id="vp-panel-tuv" class="vp-mod-panel">
@@ -1588,7 +1522,7 @@
         Resmi TÜVTÜRK Sayfası →
       </a>
     </div>
-  </div>
+  </main>
 
   <script>
     (function () {
@@ -1621,13 +1555,15 @@
         havaSonuc.textContent = `${ad} için veri alınıyor...`;
         try {
           const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`);
+          if (!r.ok) throw new Error("Hava durumu servisine erişilemedi");
           const d = await r.json();
           const c = d.current;
-          if (c) {
-            havaSonuc.innerHTML = `<span class="vp-mod-vurgu">${ad}: ${Math.round(c.temperature_2m)}°C</span> • ${kodlar[c.weather_code] || "Güncel"} • Nem: %${c.relative_humidity_2m} • Rüzgar: ${Math.round(c.wind_speed_10m)} km/s`;
-          }
-        } catch (_) {
+          if (!c) throw new Error("Güncel hava durumu bulunamadı");
+          const updated = c.time ? `${c.time.replace("T", " ")} (İstanbul)` : "zaman bilgisi yok";
+          havaSonuc.innerHTML = `<span class="vp-mod-vurgu">${ad}: ${Math.round(c.temperature_2m)}°C</span> • ${kodlar[c.weather_code] || "Güncel"} • Nem: %${c.relative_humidity_2m} • Rüzgar: ${Math.round(c.wind_speed_10m)} km/s<br><small>Ölçüm zamanı: ${updated}</small>`;
+        } catch (error) {
           havaSonuc.textContent = "Hava durumu bilgisi alınamadı.";
+          console.error("Open-Meteo hava durumu alınamadı:", error);
         }
       }
 
@@ -1796,8 +1732,37 @@
     <script>
         (function () {
             let currentPriorityFilter = "all";
-            let totalVisitors = 1428;
             let quakeMinMag = 0;
+            let latestQuakes = null;
+            let quakeRequest = null;
+            let exchangeRates = null;
+            let exchangeRatesLoadedAt = 0;
+            let exchangeRequest = null;
+
+            async function getExchangeRates() {
+                if (exchangeRates && Date.now() - exchangeRatesLoadedAt < 15 * 60 * 1000) {
+                    return exchangeRates;
+                }
+                if (!exchangeRequest) {
+                    exchangeRequest = fetch("https://open.er-api.com/v6/latest/USD")
+                        .then((response) => {
+                            if (!response.ok) throw new Error("Kur servisine erişilemedi");
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (!data.rates || !Number.isFinite(data.rates.TRY) || !Number.isFinite(data.rates.EUR)) {
+                                throw new Error("Geçerli kur verisi bulunamadı");
+                            }
+                            exchangeRates = data.rates;
+                            exchangeRatesLoadedAt = Date.now();
+                            return exchangeRates;
+                        })
+                        .finally(() => {
+                            exchangeRequest = null;
+                        });
+                }
+                return exchangeRequest;
+            }
 
             const all81Cities = [
                 { p: "01", n: "Adana", t: "0322", z: "01000" },
@@ -1889,6 +1854,14 @@
                 { name: "Bims / Tuğla (Adet)", qty: 1000, price: 14 }
             ];
 
+            const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#39;"
+            })[character]);
+
             function openSub(title, html) {
                 const subScreen = document.getElementById("subScreen");
                 const subTitle = document.getElementById("subTitle");
@@ -1954,40 +1927,85 @@
                 openSub("Son Depremler", `
                     <div class="official-card-box" style="text-align:left;">
                         <div class="filter-row">
-                            <button type="button" class="filter-chip ${quakeMinMag === 0 ? "active" : ""}" data-qmag="0">Tümü</button>
-                            <button type="button" class="filter-chip ${quakeMinMag === 3 ? "active" : ""}" data-qmag="3">3.0+ ML</button>
-                            <button type="button" class="filter-chip ${quakeMinMag === 4 ? "active" : ""}" data-qmag="4">4.0+ ML</button>
+                                                <button type="button" class="filter-chip ${quakeMinMag === 0 ? "active" : ""}" data-qmag="0">Tümü</button>
+                                                <button type="button" class="filter-chip ${quakeMinMag === 3 ? "active" : ""}" data-qmag="3">3.0+ M</button>
+                                                <button type="button" class="filter-chip ${quakeMinMag === 4 ? "active" : ""}" data-qmag="4">4.0+ M</button>
                         </div>
-                        <div id="quakeLiveList">Deprem verileri yükleniyor...</div>
+                                            <p id="quakeFeedUpdated" style="font-size:0.64rem;color:#64748b;" role="status" aria-live="polite"></p>
+                                            <small>Kaynak: <a href="https://earthquake.usgs.gov/" target="_blank" rel="noopener noreferrer">USGS • Son 24 saat</a></small>
+                                            <div id="quakeLiveList" role="status" aria-live="polite">Deprem verileri yükleniyor...</div>
                     </div>
                 `);
-                const list = document.getElementById("quakeLiveList");
-                fetch("https://api.orhanaydogdu.com.tr/deprem/kandilli/live")
+                const renderItems = () => {
+                    const list = document.getElementById("quakeLiveList");
+                    if (!list || !latestQuakes) return;
+                    const filtered = latestQuakes.filter((item) => item.mag >= quakeMinMag).slice(0, 20);
+                    list.replaceChildren();
+                    if (!filtered.length) {
+                                            list.textContent = "Bu ölçekte deprem kaydı bulunamadı.";
+                                            return;
+                    }
+                    filtered.forEach((item) => {
+                                            const row = document.createElement("div");
+                                            row.className = "quake-item";
+                                            const details = document.createElement("div");
+                                            const location = document.createElement("strong");
+                                            location.textContent = item.location;
+                                            const metadata = document.createElement("span");
+                                            metadata.style.cssText = "font-size:0.64rem;color:#64748b;";
+                                            metadata.textContent = `Saat: ${item.time} • Derinlik: ${item.depth} km`;
+                                            details.append(location, document.createElement("br"), metadata);
+                                            const magnitude = document.createElement("div");
+                                            magnitude.className = `mag-badge ${item.mag >= 4 ? "mag-high" : "mag-mid"}`;
+                                            magnitude.textContent = item.mag.toFixed(1);
+                                            row.append(details, magnitude);
+                                            list.append(row);
+                    });
+                };
+
+                if (latestQuakes) {
+                    const updated = document.getElementById("quakeFeedUpdated");
+                    if (updated && latestQuakes.generatedAt) {
+                                            updated.textContent = `Akış oluşturulma: ${latestQuakes.generatedAt.toLocaleString("tr-TR")}`;
+                    }
+                    renderItems();
+                    return;
+                }
+                if (quakeRequest) return;
+                quakeRequest = fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
                     .then((response) => {
-                        if (!response.ok) throw new Error("Deprem verisine erişilemedi");
-                        return response.json();
+                                            if (!response.ok) throw new Error("Deprem verisine erişilemedi");
+                                            return response.json();
                     })
                     .then((data) => {
-                        const items = Array.isArray(data.result) ? data.result : [];
-                        const filtered = items
-                            .map((item) => ({
-                                mag: Number(item.mag) || 0,
-                                loc: item.title || item.location || "Konum bilgisi yok",
-                                depth: `${Number(item.depth || 0).toFixed(1)} km`,
-                                time: item.date ? new Date(item.date).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) : "--:--"
-                            }))
-                            .filter((item) => item.mag >= quakeMinMag)
-                            .slice(0, 20);
-                        if (!list) return;
-                        list.innerHTML = filtered.length ? filtered.map((item) => `
-                            <div class="quake-item">
-                                <div><strong>${item.loc}</strong><br><span style="font-size:0.64rem;color:#64748b;">Saat: ${item.time} • Derinlik: ${item.depth}</span></div>
-                                <div class="mag-badge ${item.mag >= 4 ? "mag-high" : "mag-mid"}">${item.mag.toFixed(1)}</div>
-                            </div>
-                        `).join("") : "Bu ölçekte deprem kaydı bulunamadı.";
+                                            latestQuakes = (Array.isArray(data.features) ? data.features : [])
+                                                .map((feature) => {
+                                                    const properties = feature.properties || {};
+                                                    const coordinates = feature.geometry && feature.geometry.coordinates;
+                                                    return {
+                                                        mag: Number(properties.mag),
+                                                        location: properties.place || "Konum bilgisi yok",
+                                                        depth: Number(coordinates && coordinates[2]),
+                                                        time: properties.time ? new Date(properties.time).toLocaleString("tr-TR") : "Saat bilgisi yok"
+                                                    };
+                                                })
+                                                .filter((item) => Number.isFinite(item.mag) && Number.isFinite(item.depth));
+                                            latestQuakes.generatedAt = data.metadata && data.metadata.generated
+                                                ? new Date(data.metadata.generated)
+                                                : null;
+                                            const updated = document.getElementById("quakeFeedUpdated");
+                                            if (updated && latestQuakes.generatedAt) {
+                                                updated.textContent = `Akış oluşturulma: ${latestQuakes.generatedAt.toLocaleString("tr-TR")}`;
+                                            }
+                                            renderItems();
                     })
-                    .catch(() => {
-                        if (list) list.textContent = "Canlı deprem verisi alınamadı.";
+                    .catch((error) => {
+                                            const list = document.getElementById("quakeLiveList");
+                                            if (list) list.textContent = "Deprem verisi şu anda alınamıyor. İnternet bağlantınızı kontrol edip yeniden deneyin.";
+                                            console.error("USGS deprem akışı yüklenemedi:", error);
+                    })
+                    .finally(() => {
+                                            quakeRequest = null;
                     });
             }
 
@@ -2006,21 +2024,22 @@
             function renderMaterials() {
                 const rows = materials.map((m, i) => `
                     <div class="mat-row">
-                        <div><strong>${m.name}</strong><br><span style="color:#64748b;">${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${(m.qty * m.price).toLocaleString("tr-TR")} ₺</span></div>
+                        <div><strong>${escapeHtml(m.name)}</strong><br><span style="color:#64748b;">${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${(m.qty * m.price).toLocaleString("tr-TR")} ₺</span></div>
                         <button type="button" data-del-mat="${i}" style="background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:4px 8px;cursor:pointer;">Sil</button>
                     </div>
                 `).join("");
 
                 openSub("Malzeme Listesi", `
                     <div class="official-card-box" style="text-align:left;">
-                        <div class="input-box"><label>Malzeme Adı</label><input type="text" id="matName" placeholder="Örn: Kum, Çivi, Boya"></div>
+                        <div class="input-box"><label for="matName">Malzeme Adı</label><input type="text" id="matName" placeholder="Örn: Kum, Çivi, Boya"></div>
                         <div class="grid-2-inp">
-                            <div class="input-box"><label>Miktar</label><input type="number" id="matQty" value="10"></div>
-                            <div class="input-box"><label>Birim Fiyat (₺)</label><input type="number" id="matPrice" value="150"></div>
+                            <div class="input-box"><label for="matQty">Miktar</label><input type="number" id="matQty" value="10" min="0" step="any"></div>
+                            <div class="input-box"><label for="matPrice">Birim Fiyat (₺)</label><input type="number" id="matPrice" value="150" min="0" step="any"></div>
                         </div>
                         <button type="button" class="primary-btn" id="addMatBtn">Listeye Ekle</button>
+                        <div id="matInputStatus" class="copy-status" role="status" aria-live="polite"></div>
                         <div style="margin-top:8px;">${rows}</div>
-                        <textarea id="matSummaryArea" class="copy-summary-area" readonly>${buildMaterialsSummary()}</textarea>
+                        <textarea id="matSummaryArea" class="copy-summary-area" readonly>${escapeHtml(buildMaterialsSummary())}</textarea>
                         <button type="button" class="secondary-action-btn" id="copyMatBtn">Özeti Kopyala</button>
                         <div id="matCopyStatus" class="copy-status"></div>
                     </div>
@@ -2031,9 +2050,9 @@
                 const listSum = materials.reduce((acc, item) => acc + item.qty * item.price, 0);
                 openSub("Toplam Hesaplama", `
                     <div class="official-card-box" style="text-align:left;">
-                        <div class="input-box"><label>Malzeme Toplamı (₺)</label><input type="number" id="calcSub" value="${listSum.toFixed(2)}"></div>
-                        <div class="input-box"><label>Ek İşçilik (₺)</label><input type="number" id="calcExtra" value="0"></div>
-                        <div class="input-box"><label>KDV Oranı</label>
+                        <div class="input-box"><label for="calcSub">Malzeme Toplamı (₺)</label><input type="number" id="calcSub" value="${listSum.toFixed(2)}" min="0" step="any"></div>
+                        <div class="input-box"><label for="calcExtra">Ek İşçilik (₺)</label><input type="number" id="calcExtra" value="0" min="0" step="any"></div>
+                        <div class="input-box"><label for="calcVat">KDV Oranı</label>
                             <select id="calcVat">
                                 <option value="0">%0</option>
                                 <option value="0.10">%10</option>
@@ -2044,11 +2063,20 @@
                     </div>
                 `);
                 const updateTotal = () => {
-                    const sub = parseFloat(document.getElementById("calcSub").value) || 0;
-                    const extra = parseFloat(document.getElementById("calcExtra").value) || 0;
+                    const sub = document.getElementById("calcSub").valueAsNumber;
+                    const extra = document.getElementById("calcExtra").valueAsNumber;
+                    const output = document.getElementById("grandTotalBox");
+                    if (![sub, extra].every((value) => Number.isFinite(value) && value >= 0)) {
+                        output.textContent = "Lütfen sıfır veya pozitif tutarlar girin.";
+                        return;
+                    }
                     const vat = parseFloat(document.getElementById("calcVat").value) || 0;
                     const total = (sub + extra) * (1 + vat);
-                    document.getElementById("grandTotalBox").innerHTML = `GENEL TOPLAM: <strong style="color:#ea580c;">${total.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
+                    if (!Number.isFinite(total)) {
+                        output.textContent = "Tutar hesaplanamayacak kadar büyük. Daha küçük değerler girin.";
+                        return;
+                    }
+                    output.innerHTML = `GENEL TOPLAM: <strong style="color:#ea580c;">${total.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
                 };
                 updateTotal();
                 ["calcSub", "calcExtra", "calcVat"].forEach((id) => document.getElementById(id).addEventListener("input", updateTotal));
@@ -2063,21 +2091,27 @@
                             <button type="button" class="sub-tab-btn ${tab === "concrete" ? "active" : ""}" data-mtab="concrete">Beton Hacmi</button>
                         </div>
                         <div id="metrajBody"></div>
+                        <p class="simulation-note">Sonuç yaklaşık bilgilendirme amaçlıdır. Çatı alanı hesabında gerçek eğim ve geometri yerine varsayılan 1,15 katsayısı kullanılır; fire ve yapısal gereklilikler hesaba katılmaz.</p>
                     </div>
                 `);
                 const body = document.getElementById("metrajBody");
                 if (tab === "roof") {
                     body.innerHTML = `
                         <div class="grid-2-inp">
-                            <div class="input-box"><label>Genişlik (m)</label><input type="number" id="rW" value="10"></div>
-                            <div class="input-box"><label>Uzunluk (m)</label><input type="number" id="rL" value="14"></div>
+                            <div class="input-box"><label for="rW">Genişlik (m)</label><input type="number" id="rW" value="10" min="0" max="1000000" step="any"></div>
+                            <div class="input-box"><label for="rL">Uzunluk (m)</label><input type="number" id="rL" value="14" min="0" max="1000000" step="any"></div>
                         </div>
                         <div id="roofOut" class="output-panel"></div>
                     `;
                     const calcRoof = () => {
-                        const w = parseFloat(document.getElementById("rW").value) || 0;
-                        const l = parseFloat(document.getElementById("rL").value) || 0;
-                        document.getElementById("roofOut").innerHTML = `Eğimli Çatı Alanı: <strong style="color:#ea580c;">${(w * l * 1.15).toFixed(2)} m²</strong>`;
+                        const w = document.getElementById("rW").valueAsNumber;
+                        const l = document.getElementById("rL").valueAsNumber;
+                        const output = document.getElementById("roofOut");
+                        if (![w, l].every((value) => Number.isFinite(value) && value >= 0)) {
+                            output.textContent = "Geçerli, sıfır veya pozitif ölçüler girin.";
+                            return;
+                        }
+                        output.innerHTML = `Eğimli Çatı Alanı: <strong style="color:#ea580c;">${(w * l * 1.15).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m²</strong>`;
                     };
                     calcRoof();
                     document.getElementById("rW").addEventListener("input", calcRoof);
@@ -2085,17 +2119,22 @@
                 } else {
                     body.innerHTML = `
                         <div class="grid-2-inp">
-                            <div class="input-box"><label>En (m)</label><input type="number" id="cW" value="10"></div>
-                            <div class="input-box"><label>Boy (m)</label><input type="number" id="cL" value="12"></div>
+                            <div class="input-box"><label for="cW">En (m)</label><input type="number" id="cW" value="10" min="0" max="1000000" step="any"></div>
+                            <div class="input-box"><label for="cL">Boy (m)</label><input type="number" id="cL" value="12" min="0" max="1000000" step="any"></div>
                         </div>
-                        <div class="input-box"><label>Kalınlık (cm)</label><input type="number" id="cT" value="12"></div>
+                        <div class="input-box"><label for="cT">Kalınlık (cm)</label><input type="number" id="cT" value="12" min="0" max="1000000" step="any"></div>
                         <div id="concOut" class="output-panel"></div>
                     `;
                     const calcConc = () => {
-                        const w = parseFloat(document.getElementById("cW").value) || 0;
-                        const l = parseFloat(document.getElementById("cL").value) || 0;
-                        const t = parseFloat(document.getElementById("cT").value) || 0;
-                        document.getElementById("concOut").innerHTML = `Hazır Beton Hacmi: <strong style="color:#ea580c;">${(w * l * (t / 100)).toFixed(2)} m³</strong>`;
+                        const w = document.getElementById("cW").valueAsNumber;
+                        const l = document.getElementById("cL").valueAsNumber;
+                        const t = document.getElementById("cT").valueAsNumber;
+                        const output = document.getElementById("concOut");
+                        if (![w, l, t].every((value) => Number.isFinite(value) && value >= 0)) {
+                            output.textContent = "Geçerli, sıfır veya pozitif ölçüler girin.";
+                            return;
+                        }
+                        output.innerHTML = `Hazır Beton Hacmi: <strong style="color:#ea580c;">${(w * l * (t / 100)).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m³</strong>`;
                     };
                     calcConc();
                     ["cW", "cL", "cT"].forEach((id) => document.getElementById(id).addEventListener("input", calcConc));
@@ -2116,12 +2155,12 @@
                     `);
                 }
                 if (action === "quakes") return renderQuakes();
-                if (action === "visitors") {
-                    return openSub("Ziyaretçi Sayacı", `
+                if (action === "privacy") {
+                    return openSub("Gizlilik ve Veri Kullanımı", `
                         <div class="official-card-box">
-                            <div class="verified-tag">Canlı Portal Sayacı</div>
-                            <div style="font-size:1.85rem;font-weight:800;color:#c2410c;margin:6px 0;">${totalVisitors.toLocaleString("tr-TR")}</div>
-                            <p style="font-size:0.72rem;color:#64748b;">Toplam Ziyaretçi Kaydı</p>
+                            <div class="verified-tag">Ücretsiz • Hesap açmadan kullanım</div>
+                            <p style="font-size:0.74rem;color:#475569;margin:8px 0;">Hesaplama araçları tarayıcınızda çalışır. Portal ziyaretçi sayımı veya analiz çerezi kullanmaz. Geri bildirim formu WhatsApp'ı açar; bu site mesajı kaydetmez.</p>
+                            <a href="./privacy.html" class="primary-btn">Gizlilik ve Kullanım Bilgilendirmesi</a>
                         </div>
                     `);
                 }
@@ -2150,7 +2189,7 @@
                 if (action === "currency") {
                     openSub("Canlı Döviz", `
                         <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Tutar</label><input type="number" id="fxAmount" value="1000"></div>
+                            <div class="input-box"><label>Tutar</label><input type="number" id="fxAmount" value="1000" min="0" step="any"></div>
                             <div class="input-box"><label>Birim</label>
                                 <select id="fxPair">
                                     <option value="USD">USD</option>
@@ -2161,21 +2200,23 @@
                         </div>
                     `);
                     const calcFx = async () => {
-                        const amt = parseFloat(document.getElementById("fxAmount").value) || 0;
-                        const pair = document.getElementById("fxPair").value;
-                        document.getElementById("fxOut").textContent = "Kur bilgisi yükleniyor...";
+                        const output = document.getElementById("fxOut");
+                        output.textContent = "Kur bilgisi yükleniyor...";
                         try {
-                            const response = await fetch("https://open.er-api.com/v6/latest/USD");
-                            if (!response.ok) throw new Error("Kur servisine erişilemedi");
-                            const data = await response.json();
-                            const usdTry = data.rates && data.rates.TRY;
-                            const eurTry = usdTry && data.rates.EUR ? usdTry / data.rates.EUR : null;
-                            const rate = pair === "USD" ? usdTry : pair === "EUR" ? eurTry : null;
+                            const rates = await getExchangeRates();
+                            const amt = document.getElementById("fxAmount").valueAsNumber;
+                            const pair = document.getElementById("fxPair").value;
+                            if (!Number.isFinite(amt) || amt < 0) {
+                                output.textContent = "Sıfır veya pozitif bir tutar girin.";
+                                return;
+                            }
+                            const rate = pair === "USD" ? rates.TRY : pair === "EUR" ? rates.TRY / rates.EUR : null;
                             if (!rate) throw new Error("Kur bulunamadı");
                             const val = amt * rate;
-                            document.getElementById("fxOut").innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
-                        } catch (_) {
-                            document.getElementById("fxOut").textContent = "Kur bilgisi alınamadı.";
+                            output.innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
+                        } catch (error) {
+                            output.textContent = "Kur bilgisi alınamadı.";
+                            console.error("Döviz dönüştürücü kuru alınamadı:", error);
                         }
                     };
                     calcFx();
@@ -2222,15 +2263,20 @@
                 if (action === "overtime") {
                     openSub("Mesai Hesaplama", `
                         <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Aylık Maaş (₺)</label><input type="number" id="otSal" value="28000"></div>
-                            <div class="input-box"><label>Fazla Mesai (Saat)</label><input type="number" id="otHr" value="10"></div>
+                            <div class="input-box"><label>Aylık Maaş (₺)</label><input type="number" id="otSal" value="28000" min="0" step="any"></div>
+                            <div class="input-box"><label>Fazla Mesai (Saat)</label><input type="number" id="otHr" value="10" min="0" step="any"></div>
                             <div id="otOut" class="output-panel"></div>
                         </div>
                     `);
                     const calcOt = () => {
-                        const sal = parseFloat(document.getElementById("otSal").value) || 0;
-                        const hr = parseFloat(document.getElementById("otHr").value) || 0;
-                        document.getElementById("otOut").innerHTML = `Mesai Tutarı: <strong style="color:#ea580c;">${((sal / 225) * 1.5 * hr).toFixed(2)} ₺</strong>`;
+                        const sal = document.getElementById("otSal").valueAsNumber;
+                        const hr = document.getElementById("otHr").valueAsNumber;
+                        const output = document.getElementById("otOut");
+                        if (![sal, hr].every((value) => Number.isFinite(value) && value >= 0)) {
+                            output.textContent = "Geçerli, sıfır veya pozitif değerler girin.";
+                            return;
+                        }
+                        output.innerHTML = `Mesai Tutarı: <strong style="color:#ea580c;">${((sal / 225) * 1.5 * hr).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
                     };
                     calcOt();
                     document.getElementById("otSal").addEventListener("input", calcOt);
@@ -2240,13 +2286,18 @@
                 if (action === "area") {
                     openSub("Alan Hesaplama", `
                         <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Metrekare (m²)</label><input type="number" id="aSqm" value="2500"></div>
+                            <div class="input-box"><label>Metrekare (m²)</label><input type="number" id="aSqm" value="2500" min="0" step="any"></div>
                             <div id="aOut" class="output-panel"></div>
                         </div>
                     `);
                     const calcArea = () => {
-                        const sqm = parseFloat(document.getElementById("aSqm").value) || 0;
-                        document.getElementById("aOut").innerHTML = `Dönüm: <strong>${(sqm / 1000).toFixed(3)} Dönüm</strong>`;
+                        const sqm = document.getElementById("aSqm").valueAsNumber;
+                        const output = document.getElementById("aOut");
+                        if (!Number.isFinite(sqm) || sqm < 0) {
+                            output.textContent = "Sıfır veya pozitif bir alan girin.";
+                            return;
+                        }
+                        output.innerHTML = `Dönüm: <strong>${(sqm / 1000).toLocaleString("tr-TR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Dönüm</strong>`;
                     };
                     calcArea();
                     document.getElementById("aSqm").addEventListener("input", calcArea);
@@ -2299,11 +2350,16 @@
                 }
                 if (e.target.closest("#addMatBtn")) {
                     const n = document.getElementById("matName").value.trim();
-                    const q = parseFloat(document.getElementById("matQty").value) || 0;
-                    const p = parseFloat(document.getElementById("matPrice").value) || 0;
-                    if (n && q > 0) {
+                    const q = document.getElementById("matQty").valueAsNumber;
+                    const p = document.getElementById("matPrice").valueAsNumber;
+                    const status = document.getElementById("matInputStatus");
+                    const itemTotal = q * p;
+                    const currentTotal = materials.reduce((sum, item) => sum + item.qty * item.price, 0);
+                    if (n && Number.isFinite(q) && q > 0 && Number.isFinite(p) && p >= 0 && Number.isFinite(itemTotal) && Number.isFinite(currentTotal + itemTotal)) {
                         materials.push({ name: n, qty: q, price: p });
                         renderMaterials();
+                    } else if (status) {
+                        status.textContent = "Geçerli bir ad, pozitif miktar ve sıfır veya pozitif birim fiyat girin; toplam tutar sonlu olmalıdır.";
                     }
                     return;
                 }
@@ -2356,11 +2412,11 @@
                 <form class="feedback-form" id="feedbackForm">
                     <label>
                         Ad Soyad
-                        <input type="text" id="feedbackName" name="name" autocomplete="name" required placeholder="Adınız ve soyadınız">
+                        <input type="text" id="feedbackName" name="name" autocomplete="name" maxlength="100" required placeholder="Adınız ve soyadınız">
                     </label>
                     <label>
                         İletişim
-                        <input type="text" id="feedbackContact" name="contact" autocomplete="tel" placeholder="Telefon veya e-posta">
+                        <input type="text" id="feedbackContact" name="contact" autocomplete="tel" maxlength="120" placeholder="Telefon veya e-posta">
                     </label>
                     <label class="full-width">
                         Bildirim Türü
@@ -2373,7 +2429,11 @@
                     </label>
                     <label class="full-width">
                         Mesajınız
-                        <textarea id="feedbackMessage" name="message" required placeholder="Mesajınızı buraya yazın"></textarea>
+                        <textarea id="feedbackMessage" name="message" maxlength="2000" required placeholder="Mesajınızı buraya yazın"></textarea>
+                    </label>
+                    <label class="feedback-consent">
+                        <input type="checkbox" id="feedbackConsent" required>
+                        <span>Bu mesajın WhatsApp'a aktarılmasını onaylıyorum. Portal mesajı kaydetmez; <a href="./privacy.html">gizlilik bilgilendirmesini</a> okudum.</span>
                     </label>
                     <button class="feedback-submit" type="submit">
                         <i class="fab fa-whatsapp"></i> WhatsApp ile Gönder
@@ -2394,8 +2454,9 @@
                 const type = document.getElementById("feedbackType").value;
                 const message = document.getElementById("feedbackMessage").value.trim();
                 const status = document.getElementById("feedbackStatus");
-                if (!name || !message) {
-                    if (status) status.textContent = "Lütfen adınızı ve mesajınızı girin.";
+                const consent = document.getElementById("feedbackConsent").checked;
+                if (!name || !message || !consent) {
+                    if (status) status.textContent = "Lütfen adınızı ve mesajınızı girin, WhatsApp aktarımına onay verin.";
                     return;
                 }
                 const text = [
@@ -2407,13 +2468,52 @@
                     "",
                     message
                 ].join("\n");
-                if (status) status.textContent = "WhatsApp açılıyor...";
-                window.open(`https://wa.me/905416429094?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+                const whatsappWindow = window.open(`https://wa.me/905416429094?text=${encodeURIComponent(text)}`, "_blank");
+                if (whatsappWindow) {
+                    whatsappWindow.opener = null;
+                    if (status) status.textContent = "WhatsApp açıldı. Mesajı kontrol edip uygulamadan göndermeniz gerekir.";
+                } else if (status) {
+                    status.textContent = "Açılır pencere engellendi. WhatsApp iletişim bağlantısını kullanarak mesajı gönderin.";
+                }
             });
+        })();
+    </script>
+    <script>
+        (function () {
+            const installButton = document.getElementById("installAppBtn");
+            let installPrompt = null;
+            if (installButton) {
+                window.addEventListener("beforeinstallprompt", (event) => {
+                    event.preventDefault();
+                    installPrompt = event;
+                    installButton.hidden = false;
+                });
+                installButton.addEventListener("click", async () => {
+                    if (!installPrompt) return;
+                    const prompt = installPrompt;
+                    installPrompt = null;
+                    try {
+                        await prompt.prompt();
+                        await prompt.userChoice;
+                        installButton.hidden = true;
+                    } catch (error) {
+                        console.error("Uygulama yükleme penceresi açılamadı:", error);
+                    }
+                });
+                window.addEventListener("appinstalled", () => {
+                    installButton.hidden = true;
+                });
+            }
+
+            if ("serviceWorker" in navigator && window.isSecureContext) {
+                navigator.serviceWorker.register("./service-worker.js")
+                    .catch((error) => console.error("Service Worker kaydedilemedi:", error));
+            }
         })();
     </script>
   <footer style="width:100%;text-align:center;padding:18px 12px;background:#090e1a;color:#94a3b8;font-size:12px;border-top:1px solid rgba(245,158,11,0.18);">
     Copyright © 2026 www.mustafakalayci.xyz Tüm hakları saklıdır.
+    <a href="./privacy.html" style="color:#fbbf24;margin-left:12px;">Gizlilik ve Kullanım</a>
   </footer>
 </body>
 </html>

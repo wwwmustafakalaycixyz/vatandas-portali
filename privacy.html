@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090e1a">
+  <meta name="description" content="Vatandaş Portalı'nın gizlilik, veri kullanımı ve kullanım koşulları hakkında bilgilendirme.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <title>Gizlilik ve Kullanım Bilgilendirmesi | Vatandaş Portalı</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f1f5f9; color: #0f172a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.65; }
+    header { padding: 18px 24px; background: #090e1a; color: #fff; }
+    header a { color: #fbbf24; text-decoration: none; font-weight: 700; }
+    main { max-width: 900px; margin: 36px auto; padding: 0 20px; }
+    article { padding: clamp(22px, 5vw, 48px); border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 40px rgba(15, 23, 42, .07); }
+    h1 { margin-top: 0; line-height: 1.2; }
+    h2 { margin: 30px 0 8px; font-size: 1.2rem; }
+    p, li { color: #334155; }
+    a { color: #9a3412; }
+    .notice { padding: 14px 16px; border-left: 4px solid #ea580c; border-radius: 8px; background: #fff7ed; }
+    footer { padding: 20px; text-align: center; color: #64748b; font-size: .85rem; }
+    @media (max-width: 600px) { header { padding: 16px; } main { margin: 18px auto; padding: 0 12px; } }
+  </style>
+</head>
+<body>
+  <header><a href="./">← Vatandaş Portalı ana sayfası</a></header>
+  <main>
+    <article>
+      <h1>Gizlilik ve Kullanım Bilgilendirmesi</h1>
+      <p><strong>Son güncelleme:</strong> 24 Kasım 2026</p>
+      <p class="notice"><strong>Bağımsız bilgilendirme portalı:</strong> Bu site herhangi bir kamu kurumu veya resmi hizmetin parçası değildir. Kurum işlemleri için ilgili kurumun kendi resmi sitesini kullanın.</p>
+
+      <h2>Portal ne yapar?</h2>
+      <p>Portal, kamu kurumlarının dış sitelerine bağlantılar ve tarayıcınızda çalışan genel amaçlı hesaplama araçları sunar. e-Devlet, sağlık, hukuk veya başka bir hizmet için kullanıcı adı, parola, T.C. kimlik numarası ya da işlem bilgisi istemez. Kurum bağlantısına geçtiğinizde o kurumun gizlilik ve kullanım koşulları geçerlidir.</p>
+
+      <h2>Bu sitede hangi bilgiler işlenir?</h2>
+      <ul>
+        <li>Portalda hesap, ziyaretçi izleme sayacı, reklam profili veya analiz çerezi kullanılmaz.</li>
+        <li>Metraj ve hesaplama araçlarına girdiğiniz değerler tarayıcınızda hesaplanır; portal sunucusuna gönderilmez.</li>
+        <li>Geri bildirim düğmesi, ad, isteğe bağlı iletişim bilgisi, bildirim türü ve mesajı içeren bir WhatsApp bağlantısı açar. Bağlantı açıldığında bu metin WhatsApp hizmetine gider; sohbet mesajının gönderilmesi için WhatsApp içinde ayrıca sizin işlem yapmanız gerekir. Portal form içeriğini almaz veya kaydetmez.</li>
+        <li>Site, GitHub Pages üzerinde barındırılır. Barındırma sağlayıcısı, hizmeti sunmak ve güvenliğini sağlamak için bağlantı günlükleri gibi teknik verileri kendi koşullarına göre işleyebilir.</li>
+      </ul>
+
+      <h2>Harici servisler ve veri kaynakları</h2>
+      <p>Döviz kuru akışı ana sayfa açıldığında ExchangeRate-API'den istenir; hava durumu ve deprem akışları ilgili modül açıldığında yüklenir. Bu servisler istek sırasında IP adresinizi ve teknik bağlantı bilgilerini görebilir. Hava durumu modülünde seçtiğiniz şehrin sabit koordinatları Open-Meteo'ya gönderilir; portal cihazınızın GPS konumunu almaz.</p>
+      <ul>
+        <li>Döviz: <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>. Kurlar servis sağlayıcısının son güncelleme zamanıyla gösterilir; anlık piyasa verisi veya resmi finansal fiyat değildir.</li>
+        <li>Hava durumu: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></li>
+        <li>Deprem: <a href="https://earthquake.usgs.gov/" target="_blank" rel="noopener noreferrer">USGS dünya genelindeki son 24 saat akışı</a></li>
+        <li>Yazı tipi ve simgeler: Google Fonts ve cdnjs (Cloudflare) CDN servisleri; sayfa açılırken yüklenebilir.</li>
+        <li>WhatsApp bağlantısı: <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">WhatsApp gizlilik bilgilendirmesi</a></li>
+      </ul>
+
+      <h2>Çerezler, çevrimdışı kullanım ve uygulama önbelleği</h2>
+      <p>Site reklam veya analiz çerezi oluşturmaz. Uygulamayı yükleme ve çevrimdışı temel sayfa erişimi için tarayıcının Service Worker/Cache API özelliği kullanılır; ana sayfa, bilgilendirme sayfası, simge ve tanıtım görselleri cihazınızda önbelleğe alınabilir. Canlı döviz, hava durumu, deprem verileri ve kurum siteleri çevrimiçi bağlantı gerektirir.</p>
+
+      <h2>Güvenlik ve hassas bilgiler</h2>
+      <p>Bu portal resmi işlem yapmaz ve profesyonel, hukuki, tıbbi veya finansal danışmanlık sunmaz. Parola, T.C. kimlik numarası, sağlık/hukuk bilgisi, ödeme bilgisi gibi hassas verileri bu siteye veya WhatsApp geri bildirimine yazmayın. Hesaplama sonuçları yaklaşık bilgilendirme amaçlıdır; resmi/uzman doğrulaması yerine geçmez.</p>
+
+      <h2>Geri bildirim ve iletişim</h2>
+      <p>Geri bildirimler WhatsApp uygulaması veya web sayfası üzerinden sizin tarafınızdan gönderilir; gönderme işlemini tamamlamak sizin kontrolünüzdedir. Portalda merkezi geri bildirim veritabanı bulunmamaktadır. İletişim: <a href="https://wa.me/905416429094">+90 541 642 90 94</a>.</p>
+
+      <h2>Değişiklikler</h2>
+      <p>Bu bilgilendirme, sitedeki özellikler değiştikçe güncellenebilir. Önemli değişikliklerde güncelleme tarihi bu sayfada yenilenir.</p>
+    </article>
+  </main>
+  <footer>© 2026 Mustafa Kalaycı Vatandaş Portalı</footer>
+  <script>
+    if ("serviceWorker" in navigator && location.protocol === "https:") {
+      navigator.serviceWorker.register("./service-worker.js")
+        .catch((error) => console.error("Service Worker kaydedilemedi:", error));
+    }
+  </script>
+</body>
+</html>

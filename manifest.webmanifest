@@ -1,0 +1,29 @@
+{
+  "id": "./",
+  "name": "Mustafa Kalaycı Vatandaş Portalı",
+  "short_name": "Vatandaş Portalı",
+  "description": "Kamu bağlantıları ve ücretsiz vatandaş araçları",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090e1a",
+  "theme_color": "#090e1a",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Metraj Simülasyonu",
+      "short_name": "Metraj",
+      "url": "./#simulasyon",
+      "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
