@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090e1a">
+    <meta name="description" content="Vatandaş hizmetlerine tek noktadan erişim sağlayan Mustafa Kalaycı Vatandaş Portalı.">
     <title>MUSTAFA KALAYCI - VATANDAŞ PORTALI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,11 +28,6 @@
         }
 
         body {
-     <div style="width: 100%; padding: 8px 16px; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(245, 158, 11, 0.25); display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 14px;">
-  <a href="tel:+905416429094" style="color: #f8fafc; text-decoration: none;">
-    İletişim: +90 (541) 642 90 94
-  </a>
-</div>  
             background-color: var(--bg-dark);
             background-image:
                 radial-gradient(circle at 12% 18%, rgba(234, 88, 12, 0.24) 0%, transparent 45%),
@@ -624,6 +621,11 @@
     </style>
 </head>
 <body>
+    <div style="width: 100%; padding: 8px 16px; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(245, 158, 11, 0.25); display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 14px;">
+        <a href="tel:+905416429094" style="color: #f8fafc; text-decoration: none;">
+            İletişim: +90 (541) 642 90 94
+        </a>
+    </div>
     <div class="ticker-bar">
         <div class="ticker-items">
         </div>
@@ -820,30 +822,9 @@
     fetchRates();
     setInterval(fetchRates, 15 * 60 * 1000);
   })();
-    <div style="width: 100%; padding: 8px 16px; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(245, 158, 11, 0.25); display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 14px;">
-  <a href="tel:+905551234567" style="color: #f8fafc; text-decoration: none;">
-    İletişim: +90 (555) 123 45 67
-  </a>
-</div>
 </script>
-        <script language="javascript" src="http://ir.sitekodlari.com/tarihtebugun1.js"></script>
 <div class="ticker-domain">GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR </div>
     </div>
-.tanitim-galerisi {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin: 24px auto;
-  max-width: 1100px;
-}
-.tanitim-galerisi img {
-  display: block;
-  width: 220px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
     <div class="main-stage">
         <div class="showcase-container">
             <div>
@@ -1299,17 +1280,92 @@
 
     <script>
         (function () {
-            const FX_RATES = { USD: 34.42, EUR: 37.18, GOLD: 2985.50 };
             let currentPriorityFilter = "all";
             let totalVisitors = 1428;
             let quakeMinMag = 0;
 
             const all81Cities = [
                 { p: "01", n: "Adana", t: "0322", z: "01000" },
+                { p: "02", n: "Adıyaman", t: "0416", z: "02000" },
+                { p: "03", n: "Afyonkarahisar", t: "0272", z: "03000" },
+                { p: "04", n: "Ağrı", t: "0472", z: "04000" },
+                { p: "05", n: "Amasya", t: "0358", z: "05000" },
                 { p: "06", n: "Ankara", t: "0312", z: "06000" },
+                { p: "07", n: "Antalya", t: "0242", z: "07000" },
+                { p: "08", n: "Artvin", t: "0466", z: "08000" },
+                { p: "09", n: "Aydın", t: "0256", z: "09000" },
+                { p: "10", n: "Balıkesir", t: "0266", z: "10000" },
+                { p: "11", n: "Bilecik", t: "0228", z: "11000" },
+                { p: "12", n: "Bingöl", t: "0426", z: "12000" },
+                { p: "13", n: "Bitlis", t: "0434", z: "13000" },
+                { p: "14", n: "Bolu", t: "0374", z: "14000" },
+                { p: "15", n: "Burdur", t: "0248", z: "15000" },
+                { p: "16", n: "Bursa", t: "0224", z: "16000" },
+                { p: "17", n: "Çanakkale", t: "0286", z: "17000" },
+                { p: "18", n: "Çankırı", t: "0376", z: "18000" },
+                { p: "19", n: "Çorum", t: "0364", z: "19000" },
+                { p: "20", n: "Denizli", t: "0258", z: "20000" },
+                { p: "21", n: "Diyarbakır", t: "0412", z: "21000" },
+                { p: "22", n: "Edirne", t: "0284", z: "22000" },
+                { p: "23", n: "Elazığ", t: "0424", z: "23000" },
+                { p: "24", n: "Erzincan", t: "0446", z: "24000" },
+                { p: "25", n: "Erzurum", t: "0442", z: "25000" },
+                { p: "26", n: "Eskişehir", t: "0222", z: "26000" },
+                { p: "27", n: "Gaziantep", t: "0342", z: "27000" },
+                { p: "28", n: "Giresun", t: "0454", z: "28000" },
+                { p: "29", n: "Gümüşhane", t: "0456", z: "29000" },
+                { p: "30", n: "Hakkari", t: "0438", z: "30000" },
+                { p: "31", n: "Hatay", t: "0326", z: "31000" },
+                { p: "32", n: "Isparta", t: "0246", z: "32000" },
+                { p: "33", n: "Mersin", t: "0324", z: "33000" },
                 { p: "34", n: "İstanbul", t: "0212 / 0216", z: "34000" },
                 { p: "35", n: "İzmir", t: "0232", z: "35000" },
-                { p: "80", n: "Osmaniye (Düziçi: 80600)", t: "0328", z: "80000" }
+                { p: "36", n: "Kars", t: "0474", z: "36000" },
+                { p: "37", n: "Kastamonu", t: "0366", z: "37000" },
+                { p: "38", n: "Kayseri", t: "0352", z: "38000" },
+                { p: "39", n: "Kırklareli", t: "0288", z: "39000" },
+                { p: "40", n: "Kırşehir", t: "0386", z: "40000" },
+                { p: "41", n: "Kocaeli", t: "0262", z: "41000" },
+                { p: "42", n: "Konya", t: "0332", z: "42000" },
+                { p: "43", n: "Kütahya", t: "0274", z: "43000" },
+                { p: "44", n: "Malatya", t: "0422", z: "44000" },
+                { p: "45", n: "Manisa", t: "0236", z: "45000" },
+                { p: "46", n: "Kahramanmaraş", t: "0344", z: "46000" },
+                { p: "47", n: "Mardin", t: "0482", z: "47000" },
+                { p: "48", n: "Muğla", t: "0252", z: "48000" },
+                { p: "49", n: "Muş", t: "0436", z: "49000" },
+                { p: "50", n: "Nevşehir", t: "0384", z: "50000" },
+                { p: "51", n: "Niğde", t: "0388", z: "51000" },
+                { p: "52", n: "Ordu", t: "0452", z: "52000" },
+                { p: "53", n: "Rize", t: "0464", z: "53000" },
+                { p: "54", n: "Sakarya", t: "0264", z: "54000" },
+                { p: "55", n: "Samsun", t: "0362", z: "55000" },
+                { p: "56", n: "Siirt", t: "0484", z: "56000" },
+                { p: "57", n: "Sinop", t: "0368", z: "57000" },
+                { p: "58", n: "Sivas", t: "0346", z: "58000" },
+                { p: "59", n: "Tekirdağ", t: "0282", z: "59000" },
+                { p: "60", n: "Tokat", t: "0356", z: "60000" },
+                { p: "61", n: "Trabzon", t: "0462", z: "61000" },
+                { p: "62", n: "Tunceli", t: "0428", z: "62000" },
+                { p: "63", n: "Şanlıurfa", t: "0414", z: "63000" },
+                { p: "64", n: "Uşak", t: "0276", z: "64000" },
+                { p: "65", n: "Van", t: "0432", z: "65000" },
+                { p: "66", n: "Yozgat", t: "0354", z: "66000" },
+                { p: "67", n: "Zonguldak", t: "0372", z: "67000" },
+                { p: "68", n: "Aksaray", t: "0382", z: "68000" },
+                { p: "69", n: "Bayburt", t: "0458", z: "69000" },
+                { p: "70", n: "Karaman", t: "0338", z: "70000" },
+                { p: "71", n: "Kırıkkale", t: "0318", z: "71000" },
+                { p: "72", n: "Batman", t: "0488", z: "72000" },
+                { p: "73", n: "Şırnak", t: "0486", z: "73000" },
+                { p: "74", n: "Bartın", t: "0378", z: "74000" },
+                { p: "75", n: "Ardahan", t: "0478", z: "75000" },
+                { p: "76", n: "Iğdır", t: "0476", z: "76000" },
+                { p: "77", n: "Yalova", t: "0226", z: "77000" },
+                { p: "78", n: "Karabük", t: "0370", z: "78000" },
+                { p: "79", n: "Kilis", t: "0348", z: "79000" },
+                { p: "80", n: "Osmaniye", t: "0328", z: "80000" },
+                { p: "81", n: "Düzce", t: "0380", z: "81000" }
             ];
 
             let materials = [
@@ -1539,6 +1595,15 @@
                         </div>
                     `);
                 }
+                if (action === "pharmacy") {
+                    return openSub("Nöbetçi Eczaneler", `
+                        <div class="official-card-box">
+                            <div class="verified-tag">Konum Tabanlı Eczane Bilgisi</div>
+                            <p style="font-size:0.74rem;color:#475569;margin-bottom:10px;">En yakın nöbetçi eczaneyi il/ilçe ve konumunuza göre görüntüleyin.</p>
+                            <a href="https://eczaneler.gen.tr/nobetci-eczaneler" target="_blank" rel="noopener noreferrer" class="primary-btn">Eczane Sorgula</a>
+                        </div>
+                    `);
+                }
                 if (action === "official") {
                     return openSub(el.dataset.name || "Resmi Bağlantı", `
                         <div class="official-card-box">
@@ -1560,17 +1625,28 @@
                                 <select id="fxPair">
                                     <option value="USD">USD</option>
                                     <option value="EUR">EUR</option>
-                                    <option value="GOLD">Gram Altın</option>
                                 </select>
                             </div>
-                            <div id="fxOut" class="output-panel"></div>
+                            <div id="fxOut" class="output-panel">Kur bilgisi yükleniyor...</div>
                         </div>
                     `);
-                    const calcFx = () => {
+                    const calcFx = async () => {
                         const amt = parseFloat(document.getElementById("fxAmount").value) || 0;
                         const pair = document.getElementById("fxPair").value;
-                        const val = amt * (FX_RATES[pair] || 1);
-                        document.getElementById("fxOut").innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
+                        document.getElementById("fxOut").textContent = "Kur bilgisi yükleniyor...";
+                        try {
+                            const response = await fetch("https://open.er-api.com/v6/latest/USD");
+                            if (!response.ok) throw new Error("Kur servisine erişilemedi");
+                            const data = await response.json();
+                            const usdTry = data.rates && data.rates.TRY;
+                            const eurTry = usdTry && data.rates.EUR ? usdTry / data.rates.EUR : null;
+                            const rate = pair === "USD" ? usdTry : pair === "EUR" ? eurTry : null;
+                            if (!rate) throw new Error("Kur bulunamadı");
+                            const val = amt * rate;
+                            document.getElementById("fxOut").innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</strong>`;
+                        } catch (_) {
+                            document.getElementById("fxOut").textContent = "Kur bilgisi alınamadı.";
+                        }
                     };
                     calcFx();
                     document.getElementById("fxAmount").addEventListener("input", calcFx);
@@ -1724,7 +1800,7 @@
         })();
     </script>
    <style>
-       #vp-top-ticker {
+  #vp-top-ticker {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -1744,24 +1820,28 @@
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     font-size: 12px;
     overflow: hidden;
-  } body {
+  }
+  body {
     padding-top: 36px !important;
-      </style>
-    .tanitim-galerisi {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin: 24px auto;
-  max-width: 1100px;
-}
-.tanitim-galerisi img {
-  display: block;
-  width: 220px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-  Copyright © 2026 www.mustafakalayci.xyz Tüm hakları saklıdır.
+  }
+  .tanitim-galerisi {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 24px auto;
+    max-width: 1100px;
+  }
+  .tanitim-galerisi img {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  </style>
+  <footer style="width:100%;text-align:center;padding:12px;color:#94a3b8;font-size:12px;">
+    Copyright © 2026 www.mustafakalayci.xyz Tüm hakları saklıdır.
+  </footer>
 </body>
 </html>
