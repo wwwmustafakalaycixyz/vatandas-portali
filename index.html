@@ -1252,6 +1252,63 @@
             .feedback-submit,
             .feedback-status { grid-column: 1; }
         }
+
+        /* Mobil ve dar ekranlarda yan yana kırılan tüm ana bloklar dikey akışta kalır. */
+        .showcase-container {
+            max-width: 760px;
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+
+        .showcase-container > div:first-child,
+        .showcase-container > .phone-wrapper {
+            order: initial;
+            width: 100%;
+        }
+
+        .showcase-container > div:first-child {
+            text-align: center;
+        }
+
+        .tour-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .tour-btn {
+            width: 100%;
+        }
+
+        .trust-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .phone-wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .feedback-heading {
+            display: block;
+            text-align: center;
+        }
+
+        .feedback-heading p {
+            margin: 10px auto 0;
+        }
+
+        .feedback-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .feedback-form {
+            grid-template-columns: 1fr;
+        }
+
+        .feedback-form label.full-width,
+        .feedback-submit,
+        .feedback-status {
+            grid-column: 1;
+        }
     </style>
 </head>
 <body id="top">
