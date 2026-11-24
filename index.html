@@ -1351,7 +1351,6 @@
   (function () {
     const dtEl = document.getElementById("vp-live-datetime");
     const trackEl = document.getElementById("vp-marquee-track");
-    const ratesUpdatedEl = document.getElementById("vp-rates-updated");
 
     function updateDateTime() {
       if (!dtEl) return;
@@ -1403,19 +1402,10 @@
         const data = await res.json();
         if (data && data.rates && data.rates.TRY) {
           renderRates(data.rates);
-          if (ratesUpdatedEl) {
-            const updated = new Date(data.time_last_update_utc);
-            ratesUpdatedEl.textContent = Number.isNaN(updated.getTime())
-              ? "zaman bilgisi yok"
-              : updated.toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
-          }
         } else {
           throw new Error("Kur verisi bulunamadı");
         }
       } catch (error) {
-        if (ratesUpdatedEl && ratesUpdatedEl.textContent === "yükleniyor") {
-          ratesUpdatedEl.textContent = "şu an alınamıyor";
-        }
         console.error("ExchangeRate-API kurları alınamadı:", error);
       }
     }
@@ -1426,10 +1416,6 @@
     setInterval(fetchRates, 15 * 60 * 1000);
   })();
 </script>
-<div class="ticker-domain">
-    <span>GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR</span>
-    <span>Döviz kaynağı: <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a> • Güncelleme: <time id="vp-rates-updated">yükleniyor</time></span>
-</div>
     </div>
     <section class="visitor-stats" aria-label="Ziyaretçi istatistikleri">
         <span><i class="visitor-live-dot" aria-hidden="true"></i> Şu an aktif: <strong id="activeVisitorCount">--</strong></span>
