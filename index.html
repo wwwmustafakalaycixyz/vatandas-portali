@@ -655,12 +655,47 @@
         .vp-mod-giris { background: #0f172a; color: #f8fafc; border: 1px solid rgba(245, 158, 11, 0.28); border-radius: 8px; padding: 5px 8px; font-size: 11px; }
         .vp-mod-buton { background: linear-gradient(135deg, #f59e0b, #ea580c); color: #090e1a; border: none; border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
         .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
+
+        .contact-row {
+            width: 100%;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .whatsapp-link i {
+            color: #25d366;
+            font-size: 1.35rem;
+        }
+
+        @media (max-width: 560px) {
+            .contact-row {
+                justify-content: center;
+                padding: 8px 10px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <div style="width: 100%; padding: 8px 16px; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(245, 158, 11, 0.25); display: flex; justify-content: flex-end; align-items: center; gap: 16px; font-size: 14px;">
-        <a href="tel:+905416429094" style="color: #f8fafc; text-decoration: none;">
-            İletişim:&nbsp;+90&nbsp;(541)&nbsp;642&nbsp;90&nbsp;94
+    <div class="contact-row">
+        <a class="whatsapp-link" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 541 642 90 94 numarasına ulaşın">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+            <span>WhatsApp: +90&nbsp;541&nbsp;642&nbsp;90&nbsp;94</span>
         </a>
     </div>
     <div class="ticker-bar">
