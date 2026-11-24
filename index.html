@@ -61,6 +61,118 @@
         .ticker-item strong { color: #fbbf24; margin-right: 4px; }
         .ticker-domain { color: #94a3b8; font-weight: 600; font-size: 0.74rem; }
 
+        .promo-gallery {
+            position: relative;
+            width: min(1120px, calc(100% - 32px));
+            height: clamp(220px, 31vw, 360px);
+            margin: 18px auto 0;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.32);
+            border-radius: 20px;
+            background: radial-gradient(circle at center, #1e293b, #090e1a 72%);
+            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+            isolation: isolate;
+        }
+
+        .promo-gallery-slide {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 700ms ease, visibility 700ms ease;
+        }
+
+        .promo-gallery-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .promo-gallery-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .promo-gallery-controls {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 9px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            background: rgba(9, 14, 26, 0.78);
+            backdrop-filter: blur(8px);
+        }
+
+        .promo-gallery-control,
+        .promo-gallery-dot {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .promo-gallery-control:hover,
+        .promo-gallery-control:focus-visible,
+        .promo-gallery-dot:hover,
+        .promo-gallery-dot:focus-visible {
+            background: rgba(245, 158, 11, 0.28);
+            outline: 2px solid #fbbf24;
+            outline-offset: 2px;
+        }
+
+        .promo-gallery-dots {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .promo-gallery-dot {
+            width: 9px;
+            height: 9px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.55);
+        }
+
+        .promo-gallery-dot[aria-current="true"] {
+            width: 20px;
+            border-radius: 999px;
+            background: #fbbf24;
+        }
+
+        @media (max-width: 560px) {
+            .promo-gallery {
+                width: calc(100% - 24px);
+                height: 230px;
+                margin-top: 12px;
+                border-radius: 14px;
+            }
+
+            .promo-gallery-controls {
+                right: 8px;
+                bottom: 8px;
+                gap: 5px;
+                padding: 5px 7px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .promo-gallery-slide { transition: none; }
+        }
+
         .main-stage {
             flex: 1;
             display: flex;
@@ -708,10 +820,18 @@
             background: rgba(0, 0, 0, 0.35);
             border-bottom: 1px solid rgba(245, 158, 11, 0.25);
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             gap: 16px;
             font-size: 14px;
+        }
+
+        .site-brand {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            line-height: 1.3;
         }
 
         .whatsapp-link {
@@ -884,9 +1004,11 @@
 
         @media (max-width: 560px) {
             .contact-row {
+                flex-direction: column;
                 justify-content: center;
                 padding: 8px 10px;
                 text-align: center;
+                gap: 8px;
             }
             .feedback-section { padding: 42px 16px; }
             .feedback-heading { display: block; text-align: center; }
@@ -901,6 +1023,7 @@
 </head>
 <body id="top">
     <div class="contact-row">
+        <h1 class="site-brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</h1>
         <a class="whatsapp-link" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 541 642 90 94 numarasına ulaşın">
             <i class="fab fa-whatsapp" aria-hidden="true"></i>
             <span>WhatsApp: +90&nbsp;541&nbsp;642&nbsp;90&nbsp;94</span>
@@ -1105,6 +1228,104 @@
 </script>
 <div class="ticker-domain">GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR </div>
     </div>
+    <section class="promo-gallery" id="promoGallery" aria-label="Vatandaş Portalı tanıtım görselleri">
+        <div class="promo-gallery-slide active" role="group" aria-label="1 / 6" aria-hidden="false">
+            <img src="./TANITIM%205.jpg" alt="Mustafa Kalaycı Vatandaş Portalı genel tanıtımı" fetchpriority="high">
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-label="2 / 6" aria-hidden="true">
+            <img src="./tan%C4%B1t%C4%B1m.jpg" alt="Vatandaş Portalı mobil uygulama tanıtımı" loading="lazy">
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-label="3 / 6" aria-hidden="true">
+            <img src="./tan%C4%B1t%C4%B1m%201.jpg" alt="Vatandaş Portalı kamu ve belediye hizmetleri" loading="lazy">
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-label="4 / 6" aria-hidden="true">
+            <img src="./tan%C4%B1t%C4%B1m%202.jpg" alt="Vatandaş Portalı hizmet modülleri tanıtımı" loading="lazy">
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-label="5 / 6" aria-hidden="true">
+            <img src="./tan%C4%B1t%C4%B1m%203.jpg" alt="Vatandaş Portalı günlük yaşam hizmetleri" loading="lazy">
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-label="6 / 6" aria-hidden="true">
+            <img src="./tan%C4%B1t%C4%B1m%204.jpg" alt="Vatandaş Portalı uygulama ekranı tanıtımı" loading="lazy">
+        </div>
+        <div class="promo-gallery-controls">
+            <button type="button" class="promo-gallery-control" data-gallery-prev aria-label="Önceki tanıtım görseli">
+                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <div class="promo-gallery-dots" role="group" aria-label="Görsel seçimi">
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="0" aria-label="1. görsel" aria-current="true"></button>
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="1" aria-label="2. görsel" aria-current="false"></button>
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="2" aria-label="3. görsel" aria-current="false"></button>
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="3" aria-label="4. görsel" aria-current="false"></button>
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="4" aria-label="5. görsel" aria-current="false"></button>
+                <button type="button" class="promo-gallery-dot" data-gallery-slide="5" aria-label="6. görsel" aria-current="false"></button>
+            </div>
+            <button type="button" class="promo-gallery-control" data-gallery-next aria-label="Sonraki tanıtım görseli">
+                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="promo-gallery-control" data-gallery-toggle aria-label="Slayt gösterisini duraklat">
+                <i class="fas fa-pause" aria-hidden="true"></i>
+            </button>
+        </div>
+    </section>
+    <script>
+        (function () {
+            const gallery = document.getElementById("promoGallery");
+            if (!gallery) return;
+            const slides = Array.from(gallery.querySelectorAll(".promo-gallery-slide"));
+            const dots = Array.from(gallery.querySelectorAll("[data-gallery-slide]"));
+            const toggle = gallery.querySelector("[data-gallery-toggle]");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            let current = 0;
+            let paused = reducedMotion;
+            let timer;
+
+            function showSlide(index) {
+                current = (index + slides.length) % slides.length;
+                slides.forEach((slide, i) => {
+                    const active = i === current;
+                    slide.classList.toggle("active", active);
+                    slide.setAttribute("aria-hidden", String(!active));
+                    dots[i].setAttribute("aria-current", String(active));
+                });
+            }
+
+            function updateToggle() {
+                if (!toggle) return;
+                const icon = toggle.querySelector("i");
+                toggle.setAttribute("aria-label", paused ? "Slayt gösterisini oynat" : "Slayt gösterisini duraklat");
+                if (icon) {
+                    icon.classList.toggle("fa-play", paused);
+                    icon.classList.toggle("fa-pause", !paused);
+                }
+            }
+
+            function startTimer() {
+                window.clearInterval(timer);
+                if (!paused) timer = window.setInterval(() => showSlide(current + 1), 5000);
+            }
+
+            gallery.addEventListener("click", (event) => {
+                const target = event.target.closest("button");
+                if (!target) return;
+                if (target.hasAttribute("data-gallery-prev")) showSlide(current - 1);
+                else if (target.hasAttribute("data-gallery-next")) showSlide(current + 1);
+                else if (target.hasAttribute("data-gallery-slide")) showSlide(Number(target.dataset.gallerySlide));
+                else if (target.hasAttribute("data-gallery-toggle")) paused = !paused;
+                updateToggle();
+                startTimer();
+            });
+
+            gallery.addEventListener("mouseenter", () => window.clearInterval(timer));
+            gallery.addEventListener("mouseleave", startTimer);
+            gallery.addEventListener("focusin", () => window.clearInterval(timer));
+            gallery.addEventListener("focusout", (event) => {
+                if (!gallery.contains(event.relatedTarget)) startTimer();
+            });
+
+            updateToggle();
+            startTimer();
+        })();
+    </script>
     <div class="main-stage">
         <div class="showcase-container">
             <div>
@@ -1112,7 +1333,6 @@
                     <i class="fas fa-mobile-alt"></i>
                     <span>TÜM MODÜLLER TEK PLATFORMDA</span>
                 </div>
-                <h1 class="promo-title">MUSTAFA KALAYCI<br>VATANDAŞ PORTALI</h1>
                 <p class="promo-desc">
                    Onlarca farklı kurumun uygulamasını ayrı ayrı yükleyip telefonunuzu kalabalıklaştırmak ve her biri için ayrı şifre/veri riski yönetmek yerine, www.mustafakalayci.xyz alt yapısına güvenli şekilde bağlanan MUSTAFA KALAYCI — VATANDAŞ PORTALI'nı yükleyin. Tüm kamu, belediye, eğitim ve sağlık hizmetlerine tek bir noktadan, kolaylıkla ve güvenle erişin
                 </p>
