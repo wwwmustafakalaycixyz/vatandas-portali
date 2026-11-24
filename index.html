@@ -11,6 +11,8 @@
     <meta property="og:title" content="Mustafa Kalaycı Vatandaş Portalı">
     <meta property="og:description" content="Resmi kurum bağlantıları ve ücretsiz hesaplama araçları sunan bağımsız vatandaş portalı.">
     <meta property="og:image" content="https://www.mustafakalayci.xyz/TANITIM%205.jpg">
+    <meta name="visitor-counter-endpoint" content="">
+    <link rel="stylesheet" href="./assets/visitor-counter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -88,16 +90,52 @@
         .ticker-domain a { color: #fbbf24; text-decoration: none; }
 
         .promo-gallery {
-            position: relative;
-            width: min(1120px, calc(100% - 32px));
-            height: clamp(220px, 31vw, 360px);
-            margin: 18px auto 0;
+            width: calc(100% - 32px);
+            max-width: 1240px;
+            margin: 24px auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: start;
+            gap: 16px;
+        }
+
+        .promo-gallery-slide {
+            min-width: 0;
             overflow: hidden;
             border: 1px solid rgba(245, 158, 11, 0.32);
-            border-radius: 20px;
+            border-radius: 16px;
             background: radial-gradient(circle at center, #1e293b, #090e1a 72%);
-            box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
-            isolation: isolate;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+        }
+
+        .promo-gallery-slide img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .promo-gallery {
+            position: relative;
+            min-height: clamp(280px, 56vw, 670px);
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.32);
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 18% 20%, rgba(234, 88, 12, 0.16), transparent 35%),
+                radial-gradient(circle at 82% 75%, rgba(245, 158, 11, 0.12), transparent 38%),
+                #090e1a;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+        }
+
+        .promo-gallery::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(90deg, rgba(9, 14, 26, 0.72) 0%, transparent 38%, transparent 72%, rgba(9, 14, 26, 0.18) 100%);
         }
 
         .promo-gallery-slide {
@@ -107,96 +145,198 @@
             place-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 700ms ease, visibility 700ms ease;
+            transform: scale(1.035);
+            transition: opacity 900ms ease, transform 7s cubic-bezier(.2,.7,.2,1), visibility 900ms;
         }
 
-        .promo-gallery-slide.active {
+        .promo-gallery-slide.is-active {
             opacity: 1;
             visibility: visible;
+            transform: scale(1);
+            z-index: 1;
+        }
+
+        .promo-gallery-slide.is-leaving {
+            opacity: 0;
+            transform: scale(1.035);
+            z-index: 1;
         }
 
         .promo-gallery-slide img {
-            display: block;
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
 
+        .promo-gallery-caption {
+            position: absolute;
+            z-index: 3;
+            left: clamp(18px, 4vw, 48px);
+            bottom: clamp(18px, 4vw, 44px);
+            max-width: 430px;
+            padding: clamp(12px, 2vw, 18px) clamp(14px, 2.5vw, 22px);
+            border: 1px solid rgba(251, 191, 36, 0.38);
+            border-radius: 16px;
+            background: rgba(9, 14, 26, 0.82);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        .promo-gallery-slide.is-active .promo-gallery-caption {
+            animation: promoCaptionIn 700ms 350ms ease forwards;
+        }
+
+        .promo-gallery-caption strong {
+            display: block;
+            color: #ffffff;
+            font-size: clamp(1.05rem, 2.2vw, 1.65rem);
+            line-height: 1.15;
+        }
+
+        .promo-gallery-caption span {
+            display: block;
+            margin-top: 7px;
+            color: #fde68a;
+            font-size: clamp(.78rem, 1.5vw, .98rem);
+            line-height: 1.45;
+        }
+
         .promo-gallery-controls {
             position: absolute;
-            right: 14px;
-            bottom: 14px;
-            z-index: 2;
+            z-index: 5;
+            right: clamp(12px, 2.5vw, 24px);
+            bottom: clamp(12px, 2.5vw, 24px);
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 9px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 999px;
             background: rgba(9, 14, 26, 0.78);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
         }
 
-        .promo-gallery-control,
-        .promo-gallery-dot {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
+        .promo-gallery-dot,
+        .promo-gallery-toggle,
+        .promo-gallery-arrow {
+            width: 38px;
+            height: 38px;
             border: 0;
             border-radius: 50%;
-            background: transparent;
-            color: #ffffff;
+            display: inline-grid;
+            place-items: center;
             cursor: pointer;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        .promo-gallery-control:hover,
-        .promo-gallery-control:focus-visible,
-        .promo-gallery-dot:hover,
-        .promo-gallery-dot:focus-visible {
-            background: rgba(245, 158, 11, 0.28);
-            outline: 2px solid #fbbf24;
-            outline-offset: 2px;
+        .promo-gallery-dot {
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.42);
+            box-shadow: 0 0 0 4px transparent;
+            transition: width 300ms ease, background 300ms ease;
+        }
+
+        .promo-gallery-dot.is-active {
+            width: 28px;
+            border-radius: 999px;
+            background: #f59e0b;
+            box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
         }
 
         .promo-gallery-dots {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 7px;
+            padding: 0 7px;
         }
 
-        .promo-gallery-dot {
-            width: 9px;
-            height: 9px;
-            padding: 0;
-            background: rgba(255, 255, 255, 0.55);
+        .promo-gallery-progress {
+            position: absolute;
+            z-index: 6;
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, #ea580c, #fbbf24);
         }
 
-        .promo-gallery-dot[aria-current="true"] {
-            width: 20px;
-            border-radius: 999px;
-            background: #fbbf24;
+        .promo-gallery-progress.is-running {
+            animation: promoProgress 5.8s linear forwards;
+        }
+
+        @keyframes promoCaptionIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes promoProgress {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @media (max-width: 900px) {
+            .promo-gallery {
+                width: calc(100% - 24px);
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 560px) {
             .promo-gallery {
                 width: calc(100% - 24px);
-                height: 230px;
-                margin-top: 12px;
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-top: 16px;
+                margin-bottom: 12px;
+                min-height: clamp(300px, 112vw, 520px);
+            }
+
+            .promo-gallery-slide {
                 border-radius: 14px;
             }
 
-            .promo-gallery-controls {
-                right: 8px;
-                bottom: 8px;
-                gap: 5px;
-                padding: 5px 7px;
+            .promo-gallery-caption {
+                left: 12px;
+                right: 12px;
+                bottom: 64px;
+                max-width: none;
             }
-        }
 
-        @media (prefers-reduced-motion: reduce) {
-            .promo-gallery-slide { transition: none; }
+            .promo-gallery-controls {
+                right: 50%;
+                transform: translateX(50%);
+            }
+
+            .showcase-container > div:first-child,
+            .visitor-stats {
+                display: none;
+            }
+
+            .main-stage {
+                padding: 10px 8px 16px;
+            }
+
+            .showcase-container {
+                gap: 0;
+            }
+
+            .phone-wrapper {
+                width: 100%;
+            }
+
+            .phone-frame {
+                width: min(390px, 100%);
+                height: min(740px, calc(100dvh - 20px));
+                min-height: 620px;
+            }
+
+            .phone-screen {
+                height: 100%;
+            }
         }
 
         .main-stage {
@@ -220,6 +360,23 @@
             .showcase-container { grid-template-columns: 1fr; text-align: center; }
             .phone-wrapper { margin: 0 auto; }
             .trust-item { text-align: left; }
+        }
+
+        @media (max-width: 992px) {
+            .showcase-container > .phone-wrapper {
+                order: 1;
+                width: 100%;
+            }
+
+            .showcase-container > div:first-child {
+                order: 2;
+                width: 100%;
+            }
+
+            .main-stage {
+                align-items: flex-start;
+                padding-top: 16px;
+            }
         }
 
         .promo-badge {
@@ -634,6 +791,24 @@
         }
 
         .sub-content { flex: 1; min-height: 0; padding: 12px; overflow-y: auto; }
+        .sub-web-view {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .sub-web-note {
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #fed7aa;
+            border-radius: 9px;
+            background: #fff7ed;
+            color: #9a3412;
+            font-size: 0.68rem;
+            line-height: 1.4;
+        }
 
         .official-card-box {
             background: #ffffff;
@@ -1192,102 +1367,161 @@
     <span>Döviz kaynağı: <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a> • Güncelleme: <time id="vp-rates-updated">yükleniyor</time></span>
 </div>
     </div>
-    <section class="promo-gallery" id="promoGallery" aria-label="Vatandaş Portalı tanıtım görselleri">
-        <div class="promo-gallery-slide active" role="group" aria-label="1 / 6" aria-hidden="false">
+    <section class="visitor-stats" aria-label="Ziyaretçi istatistikleri">
+        <span><i class="visitor-live-dot" aria-hidden="true"></i> Şu an aktif: <strong id="activeVisitorCount">--</strong></span>
+        <span><i class="fas fa-users" aria-hidden="true"></i> Toplam ziyaretçi: <strong id="totalVisitorCount">--</strong></span>
+        <span class="visitor-status" id="visitorCounterStatus" role="status">Canlı sayaç bağlantısı bekleniyor.</span>
+    </section>
+    <script src="./assets/visitor-counter.js" defer></script>
+    <section class="promo-gallery" id="promoGallery" aria-label="Vatandaş Portalı tanıtım animasyonu" aria-roledescription="carousel">
+        <div class="promo-gallery-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 6">
             <img src="./TANITIM%205.jpg" width="1376" height="768" alt="Mustafa Kalaycı Vatandaş Portalı genel tanıtımı" fetchpriority="high" decoding="async">
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-label="2 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m.jpg" width="912" height="1147" alt="Vatandaş Portalı mobil uygulama tanıtımı" loading="lazy" decoding="async">
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-label="3 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%201.jpg" width="928" height="1152" alt="Vatandaş Portalı kamu ve belediye hizmetleri" loading="lazy" decoding="async">
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-label="4 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%202.jpg" width="928" height="1152" alt="Vatandaş Portalı hizmet modülleri tanıtımı" loading="lazy" decoding="async">
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-label="5 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%203.jpg" width="928" height="1152" alt="Vatandaş Portalı günlük yaşam hizmetleri" loading="lazy" decoding="async">
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-label="6 / 6" aria-hidden="true">
-            <img src="./tan%C4%B1t%C4%B1m%204.jpg" width="928" height="1152" alt="Vatandaş Portalı uygulama ekranı tanıtımı" loading="lazy" decoding="async">
-        </div>
-        <div class="promo-gallery-controls">
-            <button type="button" class="promo-gallery-control" data-gallery-prev aria-label="Önceki tanıtım görseli">
-                <i class="fas fa-chevron-left" aria-hidden="true"></i>
-            </button>
-            <div class="promo-gallery-dots" role="group" aria-label="Görsel seçimi">
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="0" aria-label="1. görsel" aria-current="true"></button>
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="1" aria-label="2. görsel" aria-current="false"></button>
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="2" aria-label="3. görsel" aria-current="false"></button>
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="3" aria-label="4. görsel" aria-current="false"></button>
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="4" aria-label="5. görsel" aria-current="false"></button>
-                <button type="button" class="promo-gallery-dot" data-gallery-slide="5" aria-label="6. görsel" aria-current="false"></button>
+            <div class="promo-gallery-caption">
+                <strong>Vatandaş Portalı</strong>
+                <span>Kamu hizmetlerine tek ve kolay adres.</span>
             </div>
-            <button type="button" class="promo-gallery-control" data-gallery-next aria-label="Sonraki tanıtım görseli">
-                <i class="fas fa-chevron-right" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="promo-gallery-control" data-gallery-toggle aria-label="Slayt gösterisini duraklat">
-                <i class="fas fa-pause" aria-hidden="true"></i>
-            </button>
         </div>
+        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="2 / 6">
+            <img src="./tan%C4%B1t%C4%B1m.jpg" width="912" height="1147" alt="Vatandaş Portalı mobil uygulama tanıtımı" loading="lazy" decoding="async">
+            <div class="promo-gallery-caption">
+                <strong>Mobil uygulama deneyimi</strong>
+                <span>Telefonunuzda hızlı, ücretsiz ve kolay kullanım.</span>
+            </div>
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="3 / 6">
+            <img src="./tan%C4%B1t%C4%B1m%201.jpg" width="928" height="1152" alt="Vatandaş Portalı kamu ve belediye hizmetleri" loading="lazy" decoding="async">
+            <div class="promo-gallery-caption">
+                <strong>Kamu ve belediye hizmetleri</strong>
+                <span>Resmi kurumlara güvenle ulaşın.</span>
+            </div>
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="4 / 6">
+            <img src="./tan%C4%B1t%C4%B1m%202.jpg" width="928" height="1152" alt="Vatandaş Portalı hizmet modülleri tanıtımı" loading="lazy" decoding="async">
+            <div class="promo-gallery-caption">
+                <strong>Tüm ihtiyaçlar tek yerde</strong>
+                <span>Hesaplayıcılar, bilgi ve önemli bağlantılar.</span>
+            </div>
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="5 / 6">
+            <img src="./tan%C4%B1t%C4%B1m%203.jpg" width="928" height="1152" alt="Vatandaş Portalı günlük yaşam hizmetleri" loading="lazy" decoding="async">
+            <div class="promo-gallery-caption">
+                <strong>Günlük yaşam için pratik araçlar</strong>
+                <span>Kısacası, vatandaşlar için kullanılan tek bir merkez.</span>
+            </div>
+        </div>
+        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="6 / 6">
+            <img src="./tan%C4%B1t%C4%B1m%204.jpg" width="928" height="1152" alt="Vatandaş Portalı uygulama ekranı tanıtımı" loading="lazy" decoding="async">
+            <div class="promo-gallery-caption">
+                <strong>Uygulamayı anında kullanın</strong>
+                <span>Vatandaş Portalı herkes için açık ve ücretsiz.</span>
+            </div>
+        </div>
+        <div class="promo-gallery-controls" aria-label="Tanıtım kontrolleri">
+            <button class="promo-gallery-arrow" type="button" data-promo-prev aria-label="Önceki tanıtım"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+            <div class="promo-gallery-dots" role="tablist" aria-label="Tanıtım slaytları">
+                <button class="promo-gallery-dot is-active" type="button" role="tab" aria-selected="true" aria-label="1. tanıtım" data-promo-slide="0"></button>
+                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="2. tanıtım" data-promo-slide="1"></button>
+                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="3. tanıtım" data-promo-slide="2"></button>
+                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="4. tanıtım" data-promo-slide="3"></button>
+                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="5. tanıtım" data-promo-slide="4"></button>
+                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="6. tanıtım" data-promo-slide="5"></button>
+            </div>
+            <button class="promo-gallery-toggle" type="button" data-promo-toggle aria-label="Tanıtımı durdur" aria-pressed="false"><i class="fas fa-pause" aria-hidden="true"></i></button>
+            <button class="promo-gallery-arrow" type="button" data-promo-next aria-label="Sonraki tanıtım"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+        </div>
+        <div class="promo-gallery-progress" aria-hidden="true"></div>
     </section>
     <script>
         (function () {
             const gallery = document.getElementById("promoGallery");
             if (!gallery) return;
+
             const slides = Array.from(gallery.querySelectorAll(".promo-gallery-slide"));
-            const dots = Array.from(gallery.querySelectorAll("[data-gallery-slide]"));
-            const toggle = gallery.querySelector("[data-gallery-toggle]");
+            const dots = Array.from(gallery.querySelectorAll("[data-promo-slide]"));
+            const progress = gallery.querySelector(".promo-gallery-progress");
+            const toggle = gallery.querySelector("[data-promo-toggle]");
+            const intervalMs = 5800;
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            let current = 0;
-            let paused = reducedMotion;
-            let timer;
+            let activeIndex = 0;
+            let timer = null;
+            let isPaused = reducedMotion;
 
-            function showSlide(index) {
-                current = (index + slides.length) % slides.length;
-                slides.forEach((slide, i) => {
-                    const active = i === current;
-                    slide.classList.toggle("active", active);
-                    slide.setAttribute("aria-hidden", String(!active));
-                    dots[i].setAttribute("aria-current", String(active));
+            function restartProgress() {
+                if (!progress) return;
+                progress.classList.remove("is-running");
+                void progress.offsetWidth;
+                if (!isPaused) progress.classList.add("is-running");
+            }
+
+            function showSlide(nextIndex, userInitiated) {
+                const normalizedIndex = (nextIndex + slides.length) % slides.length;
+                if (normalizedIndex === activeIndex && !userInitiated) return;
+
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle("is-active", index === normalizedIndex);
+                    slide.setAttribute("aria-hidden", index === normalizedIndex ? "false" : "true");
                 });
+                dots.forEach((dot, index) => {
+                    const isActive = index === normalizedIndex;
+                    dot.classList.toggle("is-active", isActive);
+                    dot.setAttribute("aria-selected", isActive ? "true" : "false");
+                });
+                activeIndex = normalizedIndex;
+                restartProgress();
+                if (userInitiated) restartTimer();
             }
 
-            function updateToggle() {
-                if (!toggle) return;
-                const icon = toggle.querySelector("i");
-                toggle.setAttribute("aria-label", paused ? "Slayt gösterisini oynat" : "Slayt gösterisini duraklat");
-                if (icon) {
-                    icon.classList.toggle("fa-play", paused);
-                    icon.classList.toggle("fa-pause", !paused);
+            function restartTimer() {
+                if (timer) window.clearInterval(timer);
+                if (isPaused) return;
+                timer = window.setInterval(() => showSlide(activeIndex + 1, false), intervalMs);
+            }
+
+            function setPaused(paused) {
+                isPaused = paused;
+                if (toggle) {
+                    toggle.setAttribute("aria-pressed", paused ? "true" : "false");
+                    toggle.setAttribute("aria-label", paused ? "Tanıtımı oynat" : "Tanıtımı durdur");
+                    toggle.innerHTML = paused
+                        ? '<i class="fas fa-play" aria-hidden="true"></i>'
+                        : '<i class="fas fa-pause" aria-hidden="true"></i>';
                 }
+                restartProgress();
+                restartTimer();
             }
 
-            function startTimer() {
-                window.clearInterval(timer);
-                if (!paused) timer = window.setInterval(() => showSlide(current + 1), 5000);
-            }
-
-            gallery.addEventListener("click", (event) => {
-                const target = event.target.closest("button");
-                if (!target) return;
-                if (target.hasAttribute("data-gallery-prev")) showSlide(current - 1);
-                else if (target.hasAttribute("data-gallery-next")) showSlide(current + 1);
-                else if (target.hasAttribute("data-gallery-slide")) showSlide(Number(target.dataset.gallerySlide));
-                else if (target.hasAttribute("data-gallery-toggle")) paused = !paused;
-                updateToggle();
-                startTimer();
+            slides.forEach((slide) => slide.setAttribute("aria-hidden", slide.classList.contains("is-active") ? "false" : "true"));
+            dots.forEach((dot) => {
+                dot.addEventListener("click", () => showSlide(Number(dot.dataset.promoSlide), true));
             });
 
-            gallery.addEventListener("mouseenter", () => window.clearInterval(timer));
-            gallery.addEventListener("mouseleave", startTimer);
-            gallery.addEventListener("focusin", () => window.clearInterval(timer));
+            gallery.querySelector("[data-promo-prev]")?.addEventListener("click", () => showSlide(activeIndex - 1, true));
+            gallery.querySelector("[data-promo-next]")?.addEventListener("click", () => showSlide(activeIndex + 1, true));
+            toggle?.addEventListener("click", () => setPaused(!isPaused));
+
+            gallery.addEventListener("mouseenter", () => {
+                if (timer) window.clearInterval(timer);
+            });
+            gallery.addEventListener("mouseleave", () => {
+                if (!isPaused) restartTimer();
+            });
+            gallery.addEventListener("focusin", () => {
+                if (timer) window.clearInterval(timer);
+            });
             gallery.addEventListener("focusout", (event) => {
-                if (!gallery.contains(event.relatedTarget)) startTimer();
+                if (!gallery.contains(event.relatedTarget) && !isPaused) restartTimer();
+            });
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden) {
+                    if (timer) window.clearInterval(timer);
+                } else if (!isPaused) {
+                    restartTimer();
+                }
             });
 
-            updateToggle();
-            startTimer();
+            setPaused(isPaused);
+            restartProgress();
+            if (!isPaused) restartTimer();
         })();
     </script>
     <main class="main-stage" id="mainContent" tabindex="-1">
@@ -1870,11 +2104,27 @@
                 subTitle.textContent = title;
                 subContent.innerHTML = html;
                 subScreen.classList.add("open");
+                if (window.matchMedia("(max-width: 992px)").matches) {
+                    const phoneWrapper = document.querySelector(".phone-wrapper");
+                    if (phoneWrapper) phoneWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
             }
 
             function closeSub() {
                 const subScreen = document.getElementById("subScreen");
                 if (subScreen) subScreen.classList.remove("open");
+            }
+
+            function openInPhone(title, url) {
+                const safeUrl = String(url || "").trim();
+                if (!/^https?:\/\//i.test(safeUrl)) return;
+                openSub(title, `
+                    <div class="sub-web-note">
+                        Resmi hizmet bu telefon simülatörü içinde gösterilmeye çalışılıyor.
+                        Bazı kurumlar güvenlik nedeniyle gömülü açılışa izin vermeyebilir.
+                    </div>
+                    <iframe class="sub-web-view" src="${escapeHtml(safeUrl)}" title="${escapeHtml(title)}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                `);
             }
 
             function applySearchAndPriority() {
@@ -2165,23 +2415,10 @@
                     `);
                 }
                 if (action === "pharmacy") {
-                    return openSub("Nöbetçi Eczaneler", `
-                        <div class="official-card-box">
-                            <div class="verified-tag">Konum Tabanlı Eczane Bilgisi</div>
-                            <p style="font-size:0.74rem;color:#475569;margin-bottom:10px;">En yakın nöbetçi eczaneyi il/ilçe ve konumunuza göre görüntüleyin.</p>
-                            <a href="https://eczaneler.gen.tr/nobetci-eczaneler" target="_blank" rel="noopener noreferrer" class="primary-btn">Eczane Sorgula</a>
-                        </div>
-                    `);
+                    return openInPhone("Nöbetçi Eczaneler", "https://eczaneler.gen.tr/nobetci-eczaneler");
                 }
                 if (action === "official") {
-                    return openSub(el.dataset.name || "Resmi Bağlantı", `
-                        <div class="official-card-box">
-                            <div class="verified-tag">Resmi Kurum Bağlantısı</div>
-                            <h3 style="font-size:0.9rem;margin-bottom:6px;">${el.dataset.name || ""}</h3>
-                            <p style="font-size:0.74rem;color:#475569;margin-bottom:10px;">${el.dataset.desc || ""}</p>
-                            <a href="${el.dataset.url || "#"}" target="_blank" rel="noopener noreferrer" class="primary-btn">Resmi Siteye Git</a>
-                        </div>
-                    `);
+                    return openInPhone(el.dataset.name || "Resmi Bağlantı", el.dataset.url || "");
                 }
                 if (action === "metraj") return renderMetraj("roof");
                 if (action === "materials") return renderMaterials();
@@ -2314,6 +2551,15 @@
             }
 
             document.addEventListener("click", (e) => {
+                const subLink = e.target.closest("#subContent a[href]");
+                if (subLink) {
+                    const href = subLink.getAttribute("href") || "";
+                    if (/^https?:\/\//i.test(href) && subLink.getAttribute("href") !== "./privacy.html") {
+                        e.preventDefault();
+                        openInPhone(subLink.textContent.trim() || "Resmi Site", href);
+                        return;
+                    }
+                }
                 const actionEl = e.target.closest("[data-action]");
                 if (actionEl) {
                     handleAction(actionEl);
