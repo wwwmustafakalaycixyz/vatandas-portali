@@ -1696,7 +1696,7 @@
                                         <div class="card-sub">duzici.bel.tr</div>
                                     </button>
                                     <!-- HAVA DURUMU KARTI -->
-<button type="button" class="app-card vp-mod-card" data-vp-target="vp-panel-hava">
+<button type="button" class="app-card" data-action="weather">
   <div class="platform-logo-box" style="background:#0284c7;"><i class="fas fa-cloud-sun"></i></div>
   <div class="card-title">Hava Durumu</div>
   <div class="card-sub">canlı meteoroloji</div>
@@ -1708,7 +1708,7 @@
   <div class="card-sub">resmi ilan portalı</div>
 </button>
 <!-- TÜVTÜRK MUAYENE KARTI -->
-<button type="button" class="app-card vp-mod-card" data-vp-target="vp-panel-tuv">
+<button type="button" class="app-card" data-action="tuv">
   <div class="platform-logo-box" style="background:#d97706;"><i class="fas fa-car"></i></div>
   <div class="card-title">TÜVTÜRK</div>
   <div class="card-sub">muayene planlayıcı</div>
@@ -1725,119 +1725,6 @@
   <div class="card-sub">size en yakın eczane</div>
 </button>
                                 </div>
-                                <div id="vp-kamu-ek-paneller" style="grid-column: 1 / -1; margin-top: 8px;">
-  <div id="vp-panel-hava" class="vp-mod-panel">
-    <div class="vp-mod-satir">
-      <select id="vp-hava-sehir" class="vp-mod-giris">
-        <option value="39.9334,32.8597,Ankara" selected>Ankara</option>
-        <option value="41.0082,28.9784,İstanbul">İstanbul</option>
-        <option value="38.4237,27.1428,İzmir">İzmir</option>
-        <option value="40.1885,29.0610,Bursa">Bursa</option>
-        <option value="36.8969,30.7133,Antalya">Antalya</option>
-      </select>
-      <button type="button" id="vp-hava-yenile" class="vp-mod-buton">Yenile</button>
-    </div>
-    <div id="vp-hava-sonuc" role="status" aria-live="polite">Hava durumu yükleniyor...</div>
-    <small>Kaynak: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></small>
-  </div>
-
-  <div id="vp-panel-tuv" class="vp-mod-panel">
-    <div class="vp-mod-satir">
-      <input type="date" id="vp-tuv-tarih" class="vp-mod-giris">
-      <select id="vp-tuv-periyot" class="vp-mod-giris">
-        <option value="2" selected>2 Yılda Bir</option>
-        <option value="1">Her Yıl</option>
-      </select>
-      <button type="button" id="vp-tuv-hesapla" class="vp-mod-buton">Hesapla</button>
-    </div>
-    <div id="vp-tuv-sonuc"></div>
-    <div style="margin-top:6px;">
-      <a href="https://www.tuvturk.com.tr/" target="_blank" rel="noopener noreferrer" style="color:#f59e0b; font-weight:700; text-decoration:none;">
-        Resmi TÜVTÜRK Sayfası →
-      </a>
-    </div>
-  </main>
-
-  <script>
-    (function () {
-      const kartlar = document.querySelectorAll(".vp-mod-card");
-      const paneller = document.querySelectorAll(".vp-mod-panel");
-
-      kartlar.forEach((kart) => {
-        kart.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const hedef = document.getElementById(kart.getAttribute("data-vp-target"));
-          const acikMi = hedef && hedef.classList.contains("acik");
-          paneller.forEach((p) => p.classList.remove("acik"));
-          if (!acikMi && hedef) hedef.classList.add("acik");
-        });
-      });
-
-      const sehirSel = document.getElementById("vp-hava-sehir");
-      const yenileBtn = document.getElementById("vp-hava-yenile");
-      const havaSonuc = document.getElementById("vp-hava-sonuc");
-      const kodlar = {
-        0: "Açık", 1: "Az Bulutlu", 2: "Parçalı Bulutlu", 3: "Bulutlu",
-        45: "Sisli", 61: "Hafif Yağmurlu", 63: "Yağmurlu", 65: "Kuvvetli Yağmurlu",
-        71: "Kar Yağışlı", 80: "Sağanak Yağışlı", 95: "Gök Gürültülü Sağanak"
-      };
-
-      async function havaGetir() {
-        if (!sehirSel || !havaSonuc) return;
-        const [lat, lon, ad] = sehirSel.value.split(",");
-        havaSonuc.textContent = `${ad} için veri alınıyor...`;
-        try {
-          const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`);
-          if (!r.ok) throw new Error("Hava durumu servisine erişilemedi");
-          const d = await r.json();
-          const c = d.current;
-          if (!c) throw new Error("Güncel hava durumu bulunamadı");
-          const updated = c.time ? `${c.time.replace("T", " ")} (İstanbul)` : "zaman bilgisi yok";
-          havaSonuc.innerHTML = `<span class="vp-mod-vurgu">${ad}: ${Math.round(c.temperature_2m)}°C</span> • ${kodlar[c.weather_code] || "Güncel"} • Nem: %${c.relative_humidity_2m} • Rüzgar: ${Math.round(c.wind_speed_10m)} km/s<br><small>Ölçüm zamanı: ${updated}</small>`;
-        } catch (error) {
-          havaSonuc.textContent = "Hava durumu bilgisi alınamadı.";
-          console.error("Open-Meteo hava durumu alınamadı:", error);
-        }
-      }
-
-      const tarihInput = document.getElementById("vp-tuv-tarih");
-      const periyotSel = document.getElementById("vp-tuv-periyot");
-      const hesaplaBtn = document.getElementById("vp-tuv-hesapla");
-      const tuvSonuc = document.getElementById("vp-tuv-sonuc");
-
-      if (tarihInput && !tarihInput.value) {
-        const d = new Date();
-        d.setFullYear(d.getFullYear() - 1);
-        tarihInput.value = d.toISOString().split("T")[0];
-      }
-
-      function tuvHesapla() {
-        if (!tarihInput || !periyotSel || !tuvSonuc || !tarihInput.value) return;
-        const [y, m, g] = tarihInput.value.split("-").map(Number);
-        const yilEkle = Number(periyotSel.value) || 2;
-        const sonraki = new Date(y + yilEkle, m - 1, g);
-        const simdi = new Date();
-        const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
-        const gunFarki = Math.round((sonraki - bugun) / 86400000);
-        const tarihMetni = sonraki.toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" });
-        const durum = gunFarki > 0
-          ? `Tahmini <span class="vp-mod-vurgu">${gunFarki} gün</span> kaldı.`
-          : gunFarki === 0
-            ? `<span class="vp-mod-vurgu">Tahmini muayene tarihi bugün!</span>`
-            : `Tahmini tarih <span class="vp-mod-vurgu">${Math.abs(gunFarki)} gün</span> geçmiş.`;
-        tuvSonuc.innerHTML = `Sonraki Tahmini Tarih: <span class="vp-mod-vurgu">${tarihMetni}</span> — ${durum}`;
-      }
-
-      if (sehirSel) sehirSel.addEventListener("change", havaGetir);
-      if (yenileBtn) yenileBtn.addEventListener("click", havaGetir);
-      if (hesaplaBtn) hesaplaBtn.addEventListener("click", tuvHesapla);
-
-      havaGetir();
-      tuvHesapla();
-    })();
-  </script>
-</div>
                             </div>
 
                             <div class="group-block" id="group-p3" data-group="p3">
@@ -2419,6 +2306,100 @@
                 }
                 if (action === "official") {
                     return openInPhone(el.dataset.name || "Resmi Bağlantı", el.dataset.url || "");
+                }
+                if (action === "weather") {
+                    openSub("Canlı Hava Durumu", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box">
+                                <label>Şehir</label>
+                                <select id="mobileWeatherCity">
+                                    <option value="39.9334,32.8597,Ankara" selected>Ankara</option>
+                                    <option value="41.0082,28.9784,İstanbul">İstanbul</option>
+                                    <option value="38.4237,27.1428,İzmir">İzmir</option>
+                                    <option value="40.1885,29.0610,Bursa">Bursa</option>
+                                    <option value="36.8969,30.7133,Antalya">Antalya</option>
+                                    <option value="37.0662,37.3833,Osmaniye">Osmaniye</option>
+                                    <option value="37.1762,36.1641,Düziçi">Düziçi</option>
+                                </select>
+                            </div>
+                            <button type="button" class="primary-btn" id="mobileWeatherRefresh" style="margin:8px 0;">Yenile</button>
+                            <div id="mobileWeatherResult" class="output-panel" role="status" aria-live="polite">Hava durumu yükleniyor...</div>
+                            <small>Kaynak: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></small>
+                        </div>
+                    `);
+                    const citySelect = document.getElementById("mobileWeatherCity");
+                    const refreshButton = document.getElementById("mobileWeatherRefresh");
+                    const result = document.getElementById("mobileWeatherResult");
+                    const weatherNames = {
+                        0: "Açık", 1: "Az Bulutlu", 2: "Parçalı Bulutlu", 3: "Bulutlu",
+                        45: "Sisli", 61: "Hafif Yağmurlu", 63: "Yağmurlu", 65: "Kuvvetli Yağmurlu",
+                        71: "Kar Yağışlı", 80: "Sağanak Yağışlı", 95: "Gök Gürültülü Sağanak"
+                    };
+                    const fetchWeather = async () => {
+                        if (!citySelect || !result) return;
+                        const [lat, lon, cityName] = citySelect.value.split(",");
+                        result.textContent = `${cityName} için veri alınıyor...`;
+                        try {
+                            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`);
+                            if (!response.ok) throw new Error("Hava durumu servisine erişilemedi");
+                            const data = await response.json();
+                            const current = data.current;
+                            if (!current) throw new Error("Güncel hava durumu bulunamadı");
+                            result.innerHTML = `<strong style="color:#ea580c;">${cityName}: ${Math.round(current.temperature_2m)}°C</strong><br>${weatherNames[current.weather_code] || "Güncel"} • Nem: %${current.relative_humidity_2m} • Rüzgar: ${Math.round(current.wind_speed_10m)} km/s`;
+                        } catch (error) {
+                            result.textContent = "Hava durumu bilgisi alınamadı.";
+                            console.error("Open-Meteo hava durumu alınamadı:", error);
+                        }
+                    };
+                    citySelect?.addEventListener("change", fetchWeather);
+                    refreshButton?.addEventListener("click", fetchWeather);
+                    fetchWeather();
+                    return;
+                }
+                if (action === "tuv") {
+                    openSub("TÜVTÜRK Muayene Planlayıcı", `
+                        <div class="official-card-box" style="text-align:left;">
+                            <div class="input-box"><label>Son Muayene Tarihi</label><input type="date" id="mobileTuvDate"></div>
+                            <div class="input-box">
+                                <label>Muayene Periyodu</label>
+                                <select id="mobileTuvPeriod">
+                                    <option value="2" selected>2 Yılda Bir</option>
+                                    <option value="1">Her Yıl</option>
+                                </select>
+                            </div>
+                            <button type="button" class="primary-btn" id="mobileTuvCalculate" style="margin:8px 0;">Hesapla</button>
+                            <div id="mobileTuvResult" class="output-panel" role="status" aria-live="polite"></div>
+                            <a href="https://www.tuvturk.com.tr/" target="_blank" rel="noopener noreferrer" class="primary-btn secondary">Resmi TÜVTÜRK Sitesi</a>
+                        </div>
+                    `);
+                    const dateInput = document.getElementById("mobileTuvDate");
+                    const periodSelect = document.getElementById("mobileTuvPeriod");
+                    const calculateButton = document.getElementById("mobileTuvCalculate");
+                    const result = document.getElementById("mobileTuvResult");
+                    if (dateInput) {
+                        const defaultDate = new Date();
+                        defaultDate.setFullYear(defaultDate.getFullYear() - 1);
+                        dateInput.value = defaultDate.toISOString().split("T")[0];
+                    }
+                    const calculate = () => {
+                        if (!dateInput?.value || !periodSelect || !result) return;
+                        const [year, month, day] = dateInput.value.split("-").map(Number);
+                        const nextDate = new Date(year + (Number(periodSelect.value) || 2), month - 1, day);
+                        const today = new Date();
+                        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        const remainingDays = Math.round((nextDate - todayStart) / 86400000);
+                        const dateText = nextDate.toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" });
+                        const status = remainingDays > 0
+                            ? `Tahmini <strong>${remainingDays} gün</strong> kaldı.`
+                            : remainingDays === 0
+                                ? "<strong>Muayene tarihi bugün!</strong>"
+                                : `Tahmini tarih <strong>${Math.abs(remainingDays)} gün</strong> geçmiş.`;
+                        result.innerHTML = `Sonraki tahmini tarih: <strong style="color:#ea580c;">${dateText}</strong><br>${status}`;
+                    };
+                    calculateButton?.addEventListener("click", calculate);
+                    periodSelect?.addEventListener("change", calculate);
+                    calculate();
+                    return;
                 }
                 if (action === "metraj") return renderMetraj("roof");
                 if (action === "materials") return renderMaterials();
