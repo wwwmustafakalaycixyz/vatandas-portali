@@ -1,16 +1,18 @@
-const CACHE_NAME = "vatandas-portali-shell-v1";
+const CACHE_NAME = "vatandas-portali-shell-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./privacy.html",
   "./manifest.webmanifest",
   "./icon.svg",
-  "./TANITIM%205.jpg",
-  "./tan%C4%B1t%C4%B1m.jpg",
-  "./tan%C4%B1t%C4%B1m%201.jpg",
-  "./tan%C4%B1t%C4%B1m%202.jpg",
-  "./tan%C4%B1t%C4%B1m%203.jpg",
-  "./tan%C4%B1t%C4%B1m%204.jpg"
+  "./assets/visitor-counter.css",
+  "./assets/visitor-counter.js",
+  "./assets/promo/01-portal.svg",
+  "./assets/promo/02-resmi-kurumlar.svg",
+  "./assets/promo/03-hesaplayicilar.svg",
+  "./assets/promo/04-canli-bilgiler.svg",
+  "./assets/promo/05-mobil.svg",
+  "./assets/promo/06-kullanima-hazir.svg"
 ];
 
 self.addEventListener("install", (event) => {

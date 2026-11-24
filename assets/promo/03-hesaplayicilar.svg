@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1020"/><stop offset="1" stop-color="#2b1d10"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbbf24"/><stop offset="1" stop-color="#ea580c"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><circle cx="1260" cy="100" r="300" fill="#f59e0b" opacity=".11"/>
+  <text x="100" y="150" fill="#fbbf24" font-family="Arial,sans-serif" font-size="30" font-weight="800">PRATİK HESAPLAMA</text>
+  <text x="100" y="230" fill="#fff" font-family="Arial,sans-serif" font-size="62" font-weight="800">Günlük işlemlerinizi kolaylaştırın</text>
+  <g transform="translate(100 330)">
+    <rect width="440" height="420" rx="32" fill="#fffaf5"/><text x="220" y="58" text-anchor="middle" fill="#9a3412" font-family="Arial,sans-serif" font-size="26" font-weight="800">Maaş Hesaplama</text>
+    <rect x="48" y="94" width="344" height="62" rx="12" fill="#fff" stroke="#fed7aa" stroke-width="3"/><text x="70" y="132" fill="#64748b" font-family="Arial,sans-serif" font-size="20">Brüt maaş</text><text x="365" y="132" text-anchor="end" fill="#0f172a" font-family="Arial,sans-serif" font-size="24" font-weight="800">45.000 ₺</text>
+    <rect x="48" y="174" width="344" height="62" rx="12" fill="#fff" stroke="#fed7aa" stroke-width="3"/><text x="70" y="212" fill="#64748b" font-family="Arial,sans-serif" font-size="20">Net maaş</text><text x="365" y="212" text-anchor="end" fill="#ea580c" font-family="Arial,sans-serif" font-size="24" font-weight="800">34.250 ₺</text>
+    <rect x="48" y="270" width="344" height="74" rx="18" fill="url(#gold)"/><text x="220" y="316" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="24" font-weight="800">Hesapla</text>
+  </g>
+  <g transform="translate(580 330)">
+    <rect width="920" height="420" rx="32" fill="rgba(255,255,255,.96)" opacity=".96"/>
+    <text x="60" y="58" fill="#9a3412" font-family="Arial,sans-serif" font-size="26" font-weight="800">Bir bakışta araçlar</text>
+    <g transform="translate(60 98)"><rect width="240" height="118" rx="20" fill="#fff"/><circle cx="54" cy="59" r="28" fill="#fef3c7"/><text x="54" y="68" text-anchor="middle" fill="#d97706" font-family="Arial,sans-serif" font-size="24" font-weight="800">%</text><text x="100" y="66" fill="#0f172a" font-family="Arial,sans-serif" font-size="22" font-weight="800">Vergi</text></g>
+    <g transform="translate(340 98)"><rect width="240" height="118" rx="20" fill="#fff"/><circle cx="54" cy="59" r="28" fill="#dcfce7"/><text x="54" y="68" text-anchor="middle" fill="#16a34a" font-family="Arial,sans-serif" font-size="24" font-weight="800">m²</text><text x="100" y="66" fill="#0f172a" font-family="Arial,sans-serif" font-size="22" font-weight="800">Metraj</text></g>
+    <g transform="translate(620 98)"><rect width="240" height="118" rx="20" fill="#fff"/><circle cx="54" cy="59" r="28" fill="#dbeafe"/><text x="54" y="68" text-anchor="middle" fill="#2563eb" font-family="Arial,sans-serif" font-size="24" font-weight="800">KG</text><text x="100" y="66" fill="#0f172a" font-family="Arial,sans-serif" font-size="22" font-weight="800">Malzeme</text></g>
+  </g>
+</svg>

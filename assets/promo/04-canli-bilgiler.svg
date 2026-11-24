@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#11243b"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <text x="100" y="150" fill="#38bdf8" font-family="Arial,sans-serif" font-size="30" font-weight="800">CANLI BİLGİLER</text>
+  <text x="100" y="230" fill="#fff" font-family="Arial,sans-serif" font-size="62" font-weight="800">Anlık takip</text>
+  <text x="100" y="290" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="28">Kur, hava, deprem ve zaman bilgisi bir yerde.</text>
+  <g transform="translate(100 350)">
+    <rect width="680" height="390" rx="32" fill="#fff" opacity=".96"/>
+    <text x="40" y="62" fill="#0f172a" font-family="Arial,sans-serif" font-size="26" font-weight="800">Güncel Döviz</text>
+    <g transform="translate(40 100)"><rect width="600" height="68" rx="16" fill="#f8fafc"/><text x="24" y="44" fill="#334155" font-family="Arial,sans-serif" font-size="24" font-weight="800">USD / TRY</text><text x="576" y="44" text-anchor="end" fill="#ea580c" font-family="Arial,sans-serif" font-size="26" font-weight="800">34,24 ₺</text></g>
+    <g transform="translate(40 184)"><rect width="600" height="68" rx="16" fill="#f8fafc"/><text x="24" y="44" fill="#334155" font-family="Arial,sans-serif" font-size="24" font-weight="800">EUR / TRY</text><text x="576" y="44" text-anchor="end" fill="#ea580c" font-family="Arial,sans-serif" font-size="26" font-weight="800">37,12 ₺</text></g>
+  </g>
+  <g transform="translate(820 350)">
+    <rect width="680" height="390" rx="32" fill="#0f172a" stroke="#334155" stroke-width="3"/>
+    <text x="40" y="62" fill="#7dd3fc" font-family="Arial,sans-serif" font-size="26" font-weight="800">Son Depremler</text>
+    <g transform="translate(40 100)"><circle cx="42" cy="42" r="38" fill="#dc2626"/><text x="42" y="51" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">4.2</text><text x="110" y="34" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">Ege Denizi</text><text x="110" y="64" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">12 km • Yeni</text></g>
+    <g transform="translate(40 210)"><circle cx="42" cy="42" r="38" fill="#f97316"/><text x="42" y="51" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">3.8</text><text x="110" y="34" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">Akdeniz</text><text x="110" y="64" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">8 km • Son veri</text></g>
+  </g>
+</svg>
