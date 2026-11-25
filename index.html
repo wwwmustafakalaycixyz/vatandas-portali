@@ -34,6 +34,13 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
         :focus-visible {
             outline: 3px solid #fbbf24;
             outline-offset: 3px;
@@ -50,518 +57,298 @@
             background: #ffffff;
             color: #090e1a;
             font-weight: 800;
+            text-decoration: none;
         }
 
         .skip-link:focus { transform: translateY(0); }
-<!-- MUSTAFA KALAYCI ARAÇLAR SEKMESİ & PANELİ -->
-<style>
-  #mk-arac-bar {
-    width: 100%;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(15, 23, 42, 0.85);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-  #mk-arac-btn {
-    background: linear-gradient(90deg, #2563eb, #06b6d4);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.4px;
-  }
-  #mk-arac-btn:hover { filter: brightness(1.1); }
-  #mk-arac-panel {
-    display: none;
-    width: 100%;
-    background: #090d16;
-    color: #f1f5f9;
-    border-bottom: 2px solid #2563eb;
-    padding: 16px;
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-  #mk-arac-panel.open { display: block; }
-  .mk-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-  .mk-tab {
-    background: #1e293b;
-    color: #e2e8f0;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .mk-tab.active { background: #2563eb; border-color: #3b82f6; color: #fff; font-weight: 600; }
-  .mk-box {
-    background: #111827;
-    border: 1px solid #1f2937;
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .mk-input, .mk-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    background: #0f172a;
-    color: #f8fafc;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-  .mk-action {
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .mk-footer {
-    margin-top: 14px;
-    padding-top: 10px;
-    border-top: 1px solid #1e293b;
-    font-size: 12px;
-    font-weight: 700;
-    color: #94a3b8;
-    text-align: center;
-  }
-</style>
 
-<div id="mk-arac-bar">
-  <button type="button" id="mk-arac-btn" onclick="mkTogglePanel()">ARAÇLAR</button>
-  <span style="font-size:12px;color:#94a3b8;">18 Ücretsiz Tarayıcı Aracı • www.mustafakalayci.xyz</span>
-</div>
-
-<div id="mk-arac-panel">
-  <div class="mk-tabs" id="mk-tab-list"></div>
-  <div class="mk-box" id="mk-tool-stage"></div>
-  <div class="mk-footer">©2026 MUSTAFA KALAYCI TÜM HAKKI SAKLIDIR.</div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-<script>
-(function() {
-  const bar = document.getElementById('mk-arac-bar');
-  const panel = document.getElementById('mk-arac-panel');
-  const counterEl = [...document.querySelectorAll('div, p, span')].find(
-    el => el.children.length === 0 && el.textContent && el.textContent.includes('Şu an aktif:')
-  );
-  if (counterEl && counterEl.parentElement) {
-    counterEl.parentElement.insertAdjacentElement('afterend', bar);
-    bar.insertAdjacentElement('afterend', panel);
-  }
-
-  const toolNames = [
-    'QR Kod', 'Şifre Üretici', 'Kelime Sayacı', 'KDV Hesapla', 'PX-REM',
-    'Metin Şekillendir', 'UTM Link', 'YouTube Kapak', 'JSON Format', 'Renk Gradyan',
-    'Base64', 'URL Kodla', 'Yüzde Hesapla', 'Rastgele Seçici', 'İndirim Hesapla',
-    'Yazı Hızı', 'Kasa/Teklif', 'Not Defteri'
-  ];
-
-  window.mkTogglePanel = function() {
-    panel.classList.toggle('open');
-    if (panel.classList.contains('open') && !document.getElementById('mk-tab-list').innerHTML) {
-      renderMkTabs();
-      renderMkTool(0);
-    }
-  };
-
-  function renderMkTabs() {
-    const wrap = document.getElementById('mk-tab-list');
-    wrap.innerHTML = toolNames.map((n, i) =>
-      `<button type="button" class="mk-tab ${i===0?'active':''}" id="mk-t-${i}" onclick="renderMkTool(${i})">${n}</button>`
-    ).join('');
-  }
-
-  window.renderMkTool = function(idx) {
-    document.querySelectorAll('.mk-tab').forEach((b, i) => b.classList.toggle('active', i === idx));
-    const st = document.getElementById('mk-tool-stage');
-    if (idx === 0) {
-      st.innerHTML = `<input id="mk-qr-in" class="mk-input" value="https://www.mustafakalayci.xyz" oninput="mkMakeQR()"><canvas id="mk-qr-c"></canvas>`;
-      mkMakeQR();
-    } else if (idx === 1) {
-      st.innerHTML = `<input id="mk-pw-out" class="mk-input" readonly><button type="button" class="mk-action" onclick="mkMakePW()">Yeni Şifre</button>`;
-      mkMakePW();
-    } else if (idx === 2) {
-      st.innerHTML = `<textarea id="mk-wc-in" rows="3" class="mk-textarea" oninput="mkCalcWC()" placeholder="Metin yazın..."></textarea><div id="mk-wc-out">0 kelime | 0 karakter</div>`;
-    } else if (idx === 3) {
-      st.innerHTML = `<input id="mk-kdv-in" type="number" value="1000" class="mk-input" oninput="mkCalcKDV()"><div id="mk-kdv-out"></div>`;
-      mkCalcKDV();
-    } else {
-      st.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">${toolNames[idx]}</div><textarea id="mk-gen-in" rows="3" class="mk-textarea" placeholder="Değer veya metin girin..."></textarea><button type="button" class="mk-action" onclick="mkRunGen(${idx})">İşlemi Çalıştır</button><pre id="mk-gen-out" style="margin-top:10px;white-space:pre-wrap;color:#38bdf8;"></pre>`;
-    }
-  };
-
-  window.mkMakeQR = function() {
-    if (window.QRious) {
-      new QRious({ element: document.getElementById('mk-qr-c'), value: document.getElementById('mk-qr-in').value || 'mustafakalayci.xyz', size: 160 });
-    }
-  };
-  window.mkMakePW = function() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
-    const arr = new Uint32Array(16);
-    crypto.getRandomValues(arr);
-    document.getElementById('mk-pw-out').value = Array.from(arr, x => chars[x % chars.length]).join('');
-  };
-  window.mkCalcWC = function() {
-    const t = document.getElementById('mk-wc-in').value;
-    const w = t.trim() ? t.trim().split(/\s+/).length : 0;
-    document.getElementById('mk-wc-out').textContent = `${w} kelime | ${t.length} karakter`;
-  };
-  window.mkCalcKDV = function() {
-    const v = parseFloat(document.getElementById('mk-kdv-in').value) || 0;
-    document.getElementById('mk-kdv-out').textContent = `KDV (%20): ${(v*0.2).toFixed(2)} TL | Toplam: ${(v*1.2).toFixed(2)} TL`;
-  };
-  window.mkRunGen = function(idx) {
-    const v = document.getElementById('mk-gen-in').value;
-    const out = document.getElementById('mk-gen-out');
-    if (idx === 4) out.textContent = `${((parseFloat(v)||16)/16).toFixed(3)} rem`;
-    else if (idx === 8) { try { out.textContent = JSON.stringify(JSON.parse(v), null, 2); } catch(e) { out.textContent = 'Geçersiz JSON'; } }
-    else if (idx === 10) out.textContent = btoa(unescape(encodeURIComponent(v)));
-    else if (idx === 11) out.textContent = encodeURIComponent(v);
-    else if (idx === 13) { const list = v.split('\n').filter(Boolean); out.textContent = list.length ? 'Seçilen: ' + list[Math.floor(Math.random()*list.length)] : 'Satır girin'; }
-    else out.textContent = v;
-  };
-})();
-</script>
-        body {
-            background-color: var(--bg-dark);
-            background-image:
-                radial-gradient(circle at 12% 18%, rgba(234, 88, 12, 0.24) 0%, transparent 45%),
-                radial-gradient(circle at 88% 82%, rgba(245, 158, 11, 0.18) 0%, transparent 45%),
-                linear-gradient(180deg, #090e1a 0%, #141c2f 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ticker-bar {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.78rem;
-            z-index: 20;
-        }
-
-        .ticker-items {
+        .contact-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
+            justify-content: space-between;
             align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            background: #0d1424;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .ticker-item strong { color: #fbbf24; margin-right: 4px; }
-        .ticker-domain { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px 14px; color: #94a3b8; font-weight: 600; font-size: 0.68rem; }
-        .ticker-domain a { color: #fbbf24; text-decoration: none; }
-
-        .promo-gallery {
-            width: calc(100% - 32px);
-            max-width: 1240px;
-            margin: 24px auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            align-items: start;
-            gap: 16px;
+        .site-brand {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: #f8fafc;
         }
 
-        .promo-gallery-slide {
-            min-width: 0;
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4ade80;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        #vp-top-ticker {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 16px;
+            background: #111827;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+        }
+
+        .vp-datetime-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .vp-live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+        }
+
+        .vp-marquee-wrap {
             overflow: hidden;
-            border: 1px solid rgba(245, 158, 11, 0.32);
-            border-radius: 16px;
-            background: radial-gradient(circle at center, #1e293b, #090e1a 72%);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+            flex: 1;
+            min-width: 220px;
         }
 
-        .promo-gallery-slide img {
-            display: block;
+        .vp-marquee-track {
+            display: flex;
+            gap: 24px;
+            white-space: nowrap;
+        }
+
+        .vp-rate-item {
+            color: #cbd5e1;
+        }
+
+        .visitor-stats {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 18px;
+            background: #0b1120;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.86rem;
+            color: #cbd5e1;
+        }
+
+        .visitor-live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* KIRMIZI ALAN: ARAÇLAR SEKMESİ & PANELİ */
+        #mk-arac-bar {
             width: 100%;
-            height: auto;
-            max-width: 100%;
-            object-fit: contain;
+            padding: 10px 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            background: #111827;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        #mk-arac-btn {
+            background: linear-gradient(90deg, #ea580c, #f59e0b);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 16px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #mk-arac-btn:hover {
+            filter: brightness(1.08);
+        }
+
+        #mk-arac-panel {
+            display: none;
+            width: 100%;
+            background: #090d16;
+            color: #f8fafc;
+            border-bottom: 2px solid #f59e0b;
+            padding: 18px;
+        }
+
+        #mk-arac-panel.open {
+            display: block;
+        }
+
+        .mk-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .mk-tab {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 6px 11px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .mk-tab.active {
+            background: #ea580c;
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+
+        .mk-box {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .mk-input, .mk-textarea {
+            width: 100%;
+            background: #090e1a;
+            color: #f8fafc;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 0.88rem;
+            margin-bottom: 10px;
+        }
+
+        .mk-action {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mk-panel-copy {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #1e293b;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-align: right;
         }
 
         .promo-gallery {
             position: relative;
-            min-height: clamp(280px, 56vw, 670px);
-            overflow: hidden;
-            border: 1px solid rgba(245, 158, 11, 0.32);
-            border-radius: 16px;
-            background:
-                radial-gradient(circle at 18% 20%, rgba(234, 88, 12, 0.16), transparent 35%),
-                radial-gradient(circle at 82% 75%, rgba(245, 158, 11, 0.12), transparent 38%),
-                #090e1a;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
-        }
-
-        .promo-gallery::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            background: linear-gradient(90deg, rgba(9, 14, 26, 0.72) 0%, transparent 38%, transparent 72%, rgba(9, 14, 26, 0.18) 100%);
+            max-width: 1120px;
+            margin: 18px auto 0;
+            padding: 0 16px;
         }
 
         .promo-gallery-slide {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(1.035);
-            transition: opacity 900ms ease, transform 7s cubic-bezier(.2,.7,.2,1), visibility 900ms;
+            display: none;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #111827;
         }
 
         .promo-gallery-slide.is-active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-            z-index: 1;
-        }
-
-        .promo-gallery-slide.is-leaving {
-            opacity: 0;
-            transform: scale(1.035);
-            z-index: 1;
+            display: block;
         }
 
         .promo-gallery-slide img {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
+            max-height: 360px;
+            object-fit: cover;
+            display: block;
         }
 
         .promo-gallery-caption {
-            position: absolute;
-            z-index: 3;
-            left: clamp(18px, 4vw, 48px);
-            bottom: clamp(18px, 4vw, 44px);
-            max-width: 430px;
-            padding: clamp(12px, 2vw, 18px) clamp(14px, 2.5vw, 22px);
-            border: 1px solid rgba(251, 191, 36, 0.38);
-            border-radius: 16px;
-            background: rgba(9, 14, 26, 0.82);
-            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(12px);
-            opacity: 0;
-            transform: translateY(18px);
-        }
-
-        .promo-gallery-slide.is-active .promo-gallery-caption {
-            animation: promoCaptionIn 700ms 350ms ease forwards;
-        }
-
-        .promo-gallery-caption strong {
-            display: block;
-            color: #ffffff;
-            font-size: clamp(1.05rem, 2.2vw, 1.65rem);
-            line-height: 1.15;
-        }
-
-        .promo-gallery-caption span {
-            display: block;
-            margin-top: 7px;
-            color: #fde68a;
-            font-size: clamp(.78rem, 1.5vw, .98rem);
-            line-height: 1.45;
+            padding: 12px 16px;
+            background: rgba(9, 14, 26, 0.9);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
         }
 
         .promo-gallery-controls {
-            position: absolute;
-            z-index: 5;
-            right: clamp(12px, 2.5vw, 24px);
-            bottom: clamp(12px, 2.5vw, 24px);
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 7px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 999px;
-            background: rgba(9, 14, 26, 0.78);
-            backdrop-filter: blur(10px);
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .promo-gallery-dot,
-        .promo-gallery-toggle,
-        .promo-gallery-arrow {
-            width: 38px;
-            height: 38px;
-            border: 0;
-            border-radius: 50%;
-            display: inline-grid;
-            place-items: center;
+        .promo-gallery-arrow, .promo-gallery-toggle {
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 6px 10px;
             cursor: pointer;
-            color: #fff;
-            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .promo-gallery-dots {
+            display: flex;
+            gap: 6px;
         }
 
         .promo-gallery-dot {
             width: 10px;
             height: 10px;
-            padding: 0;
-            background: rgba(255, 255, 255, 0.42);
-            box-shadow: 0 0 0 4px transparent;
-            transition: width 300ms ease, background 300ms ease;
+            border-radius: 50%;
+            border: none;
+            background: #475569;
+            cursor: pointer;
         }
 
         .promo-gallery-dot.is-active {
-            width: 28px;
-            border-radius: 999px;
             background: #f59e0b;
-            box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
-        }
-
-        .promo-gallery-dots {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 0 7px;
-        }
-
-        .promo-gallery-progress {
-            position: absolute;
-            z-index: 6;
-            left: 0;
-            bottom: 0;
-            height: 4px;
-            width: 0;
-            background: linear-gradient(90deg, #ea580c, #fbbf24);
-        }
-
-        .promo-gallery-progress.is-running {
-            animation: promoProgress 5.8s linear forwards;
-        }
-
-        @keyframes promoCaptionIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes promoProgress {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @media (max-width: 900px) {
-            .promo-gallery {
-                width: calc(100% - 24px);
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 560px) {
-            .promo-gallery {
-                width: calc(100% - 24px);
-                grid-template-columns: 1fr;
-                gap: 12px;
-                margin-top: 16px;
-                margin-bottom: 12px;
-                min-height: clamp(300px, 112vw, 520px);
-            }
-
-            .promo-gallery-slide {
-                border-radius: 14px;
-            }
-
-            .promo-gallery-caption {
-                left: 12px;
-                right: 12px;
-                bottom: 64px;
-                max-width: none;
-            }
-
-            .promo-gallery-controls {
-                right: 50%;
-                transform: translateX(50%);
-            }
-
-            .showcase-container > div:first-child,
-            .visitor-stats {
-                display: none;
-            }
-
-            .main-stage {
-                padding: 10px 8px 16px;
-            }
-
-            .showcase-container {
-                gap: 0;
-            }
-
-            .phone-wrapper {
-                width: 100%;
-            }
-
-            .phone-frame {
-                width: min(390px, 100%);
-                height: min(740px, calc(100dvh - 20px));
-                min-height: 620px;
-            }
-
-            .phone-screen {
-                height: 100%;
-            }
         }
 
         .main-stage {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 52px 24px 64px;
+            max-width: 1180px;
+            margin: 24px auto;
+            padding: 0 16px;
         }
 
         .showcase-container {
-            max-width: 1240px;
-            width: 100%;
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
-            gap: 48px;
-            align-items: center;
+            gap: 28px;
+            align-items: start;
         }
 
         @media (max-width: 992px) {
-            .showcase-container { grid-template-columns: 1fr; text-align: center; }
-            .phone-wrapper { margin: 0 auto; }
-            .trust-item { text-align: left; }
-        }
-
-        @media (max-width: 992px) {
-            .showcase-container > .phone-wrapper {
-                order: 1;
-                width: 100%;
-            }
-
-            .showcase-container > div:first-child {
-                order: 2;
-                width: 100%;
-            }
-
-            .main-stage {
-                align-items: flex-start;
-                padding-top: 16px;
+            .showcase-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -569,2415 +356,637 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-glass);
-            padding: 7px 14px;
-            border-radius: 16px;
-            margin-bottom: 14px;
-            font-size: 0.74rem;
-            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(245, 158, 11, 0.14);
             color: #fbbf24;
-            letter-spacing: 0.5px;
-        }
-
-        .trust-strip {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-            margin: 18px 0 0;
-        }
-
-        .trust-item {
-            min-height: 68px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.035);
-        }
-
-        .trust-item i {
-            width: 32px;
-            height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border-radius: 9px;
-            background: rgba(245, 158, 11, 0.12);
-            color: #fbbf24;
-        }
-
-        .trust-item strong {
-            display: block;
-            color: #fff;
             font-size: 0.78rem;
-        }
-
-        .trust-item span {
-            display: block;
-            margin-top: 2px;
-            color: var(--text-muted);
-            font-size: 0.64rem;
-        }
-
-        .promo-title {
-            font-size: 2.35rem;
-            font-weight: 800;
-            line-height: 1.15;
+            font-weight: 700;
             margin-bottom: 12px;
-            color: #ffffff;
         }
 
         .promo-desc {
+            color: #cbd5e1;
             font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.6;
             margin-bottom: 18px;
         }
 
         .tour-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            font-size: 0.82rem;
+            font-weight: 800;
             color: #fbbf24;
-            font-weight: 700;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .tour-cards {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
             gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 560px) {
-            .tour-cards { grid-template-columns: 1fr; }
-            .trust-strip { grid-template-columns: 1fr; }
-            .main-stage { padding: 36px 16px 48px; }
+            margin-bottom: 18px;
         }
 
         .tour-btn {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            padding: 10px 12px;
-            border-radius: 14px;
-            color: #ffffff;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #111827;
+            color: #f8fafc;
+            text-align: left;
+            cursor: pointer;
         }
 
-        .tour-btn:hover, .tour-btn.active {
-            background: linear-gradient(135deg, rgba(234, 88, 12, 0.28), rgba(245, 158, 11, 0.16));
-            border-color: var(--warm-gold);
-            transform: translateY(-2px);
+        .tour-btn.active {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.14);
         }
 
-        .tour-btn i {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ea580c, #f59e0b);
+        .tour-btn-text strong {
+            display: block;
+            font-size: 0.84rem;
+        }
+
+        .tour-btn-text span {
+            font-size: 0.74rem;
+            color: #94a3b8;
+        }
+
+        .cta-row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.88rem;
-            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
         }
-
-        .tour-btn-text strong { display: block; font-size: 0.8rem; }
-        .tour-btn-text span { font-size: 0.68rem; color: var(--text-muted); }
-
-        .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
-        .simulation-notice {
-            margin-top: 9px;
-            color: #cbd5e1;
-            font-size: 0.75rem;
-        }
-        .simulation-note {
-            margin-top: 10px;
-            color: #475569;
-            font-size: 0.72rem;
-            line-height: 1.5;
-        }
-
-        .cta-row .store-btn[hidden] { display: none; }
 
         .store-btn {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            background: #ea580c;
             color: #ffffff;
-            padding: 11px 20px;
-            border-radius: 14px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-decoration: none;
         }
 
         .store-btn.secondary {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: #1e293b;
+            border: 1px solid #334155;
         }
 
-        .phone-wrapper { position: relative; display: flex; justify-content: center; }
+        .simulation-notice {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .trust-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+        }
+
+        .trust-item strong {
+            display: block;
+        }
+
+        .trust-item span {
+            color: #94a3b8;
+            font-size: 0.72rem;
+        }
+
+        .phone-wrapper {
+            display: flex;
+            justify-content: center;
+        }
 
         .phone-frame {
-            width: 390px;
-            max-width: 100%;
-            height: 740px;
-            background: #1e293b;
-            border-radius: 46px;
+            width: 100%;
+            max-width: 390px;
+            border-radius: 36px;
             padding: 12px;
-            box-shadow: 0 0 0 2px #475569, 0 0 0 5px #0f172a, 0 25px 55px rgba(0, 0, 0, 0.75);
-            position: relative;
+            background: #1e293b;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
         }
 
         .phone-screen {
-            width: 100%;
-            height: 716px;
+            position: relative;
             background: var(--app-bg);
-            border-radius: 35px;
+            color: #0f172a;
+            border-radius: 26px;
             overflow: hidden;
+            min-height: 620px;
             display: flex;
             flex-direction: column;
-            position: relative;
-            color: #1e293b;
         }
 
         .dynamic-island {
-            width: 112px;
-            height: 24px;
-            background: #090d16;
-            border-radius: 18px;
-            position: absolute;
-            top: 9px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            pointer-events: none;
+            width: 96px;
+            height: 20px;
+            background: #0f172a;
+            border-radius: 999px;
+            margin: 8px auto 4px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 9px;
+            padding-right: 7px;
         }
 
-        .camera-dot { width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; }
+        .camera-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #334155;
+        }
 
         .app-top-bar {
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #7c2d12 0%, #c2410c 48%, #d97706 100%);
-            color: #ffffff;
-            padding: 40px 14px 12px 14px;
-            border-bottom-left-radius: 22px;
-            border-bottom-right-radius: 22px;
+            padding: 8px 14px 10px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .official-seal-row {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
         }
 
-        .brand-text h2 { font-size: 0.84rem; font-weight: 800; }
-        .brand-text span { font-size: 0.6rem; font-weight: 600; color: #ffedd5; display: block; }
+        .brand-text h2 {
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .brand-text span {
+            font-size: 0.68rem;
+            color: #64748b;
+            font-weight: 700;
+        }
 
         .live-pill {
-            background: rgba(0, 0, 0, 0.28);
-            padding: 4px 9px;
-            border-radius: 20px;
-            font-size: 0.63rem;
-            font-weight: 700;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 5px;
-            cursor: pointer;
-            border: none;
-            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 0.7rem;
+            font-weight: 700;
         }
 
-        .live-dot { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; }
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+        }
 
-        .app-search { position: relative; display: flex; align-items: center; }
+        .app-search {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 6px 10px;
+        }
 
         .app-search input {
-            width: 100%;
-            padding: 7px 52px 7px 32px;
-            border-radius: 11px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            background: #ffffff;
-            font-size: 0.74rem;
-            color: #1e293b;
-            outline: none;
-        }
-
-        .app-search i.fa-search {
-            position: absolute;
-            left: 10px;
-            color: #c2410c;
-            font-size: 0.78rem;
-            pointer-events: none;
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.8rem;
+            color: #0f172a;
         }
 
         .clear-search-btn {
-            position: absolute;
-            right: 6px;
-            background: #ffedd5;
-            color: #9a3412;
             border: none;
-            border-radius: 7px;
+            background: #e2e8f0;
+            color: #334155;
+            border-radius: 6px;
             padding: 3px 7px;
-            font-size: 0.6rem;
+            font-size: 0.68rem;
             font-weight: 700;
             cursor: pointer;
         }
 
         .priority-strip {
-            flex-shrink: 0;
-            background: #fff3e6;
-            border-bottom: 1px solid #fed7aa;
-            padding: 6px 10px;
             display: flex;
-            gap: 4px;
+            gap: 6px;
             overflow-x: auto;
+            padding: 8px 12px;
+            background: #fff7ed;
+            border-bottom: 1px solid #fed7aa;
         }
 
         .p-chip {
             border: 1px solid #fdba74;
             background: #ffffff;
-            color: #7c2d12;
-            font-size: 0.6rem;
+            color: #9a3412;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
             font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 12px;
-            cursor: pointer;
             white-space: nowrap;
+            cursor: pointer;
         }
 
-        .p-chip.active { background: #c2410c; color: #ffffff; border-color: transparent; }
+        .p-chip.active {
+            background: #ea580c;
+            color: #ffffff;
+            border-color: #ea580c;
+        }
 
         .app-body {
-            flex: 1 1 auto;
-            min-height: 0;
+            flex: 1;
+            max-height: 430px;
             overflow-y: auto;
-            padding: 10px 12px 14px 12px;
-            scroll-behavior: smooth;
+            padding: 10px 12px 18px;
         }
 
-        .group-block { margin-bottom: 12px; }
+        .group-block {
+            margin-bottom: 14px;
+        }
 
         .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 4px 0 8px 0;
-            padding: 5px 8px;
-            border-radius: 10px;
-            background: #fff2e5;
-            border-left: 3.5px solid #ea580c;
-        }
-
-        .group-header.urg-1 { border-left-color: #dc2626; background: #fef2f2; }
-        .group-header.urg-2 { border-left-color: #1d4ed8; background: #eff6ff; }
-        .group-header.urg-3 { border-left-color: #0f766e; background: #f0fdfa; }
-        .group-header.urg-4 { border-left-color: #ea580c; background: #fff7ed; }
-        .group-header.urg-5 { border-left-color: #d97706; background: #fffbeb; }
-
-        .group-title { font-size: 0.67rem; font-weight: 800; color: #1e293b; }
-
-        .group-tag {
-            font-size: 0.56rem;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
             font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #7c2d12;
-            border: 1px solid rgba(251, 146, 60, 0.35);
+            margin-bottom: 8px;
+            background: #e2e8f0;
+            color: #1e293b;
         }
 
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
 
         .app-card {
-            background: #ffffff;
-            border-radius: 13px;
-            padding: 8px 5px;
-            text-align: center;
-            border: 1px solid #ffedd5;
-            cursor: pointer;
-            transition: transform 0.15s ease, border-color 0.15s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            text-align: center;
+            padding: 10px 6px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            cursor: pointer;
         }
 
-        .app-card:hover { transform: translateY(-2px); border-color: #f97316; }
-
         .platform-logo-box {
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
-            margin-bottom: 5px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
-            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
         }
 
-        .card-title { font-size: 0.65rem; font-weight: 800; color: #1e293b; line-height: 1.15; }
-        .card-sub { font-size: 0.54rem; color: #64748b; margin-top: 2px; font-weight: 600; }
+        .card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .card-sub {
+            font-size: 0.62rem;
+            color: #64748b;
+        }
+
+        .app-tabbar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 4px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            color: #ea580c;
+        }
 
         .sub-screen {
+            display: none;
             position: absolute;
             inset: 0;
             background: var(--app-bg);
-            z-index: 90;
-            display: none;
+            z-index: 20;
             flex-direction: column;
         }
 
-        .sub-screen.open { display: flex; }
+        .sub-screen.open {
+            display: flex;
+        }
 
         .sub-header {
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #7c2d12, #c2410c);
-            color: #ffffff;
-            padding: 40px 14px 12px 14px;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px 14px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .back-circle {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.22);
-            border: none;
-            color: #ffffff;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0f172a;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .sub-content { flex: 1; min-height: 0; padding: 12px; overflow-y: auto; }
-        .sub-web-view {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            border-radius: 12px;
-            background: #ffffff;
-        }
-
-        .sub-web-note {
-            margin-bottom: 8px;
-            padding: 8px;
-            border: 1px solid #fed7aa;
-            border-radius: 9px;
-            background: #fff7ed;
-            color: #9a3412;
-            font-size: 0.68rem;
-            line-height: 1.4;
+        .sub-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
         }
 
         .official-card-box {
             background: #ffffff;
-            border-radius: 15px;
-            padding: 13px;
-            border: 1px solid #fed7aa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            width: 100%;
             text-align: center;
-        }
-
-        .verified-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #ecfdf5;
-            color: #047857;
-            border: 1px solid #a7f3d0;
-            padding: 3px 9px;
-            border-radius: 20px;
-            font-size: 0.63rem;
-            font-weight: 700;
-            margin-bottom: 9px;
-        }
-
-        .sub-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; }
-
-        .sub-tab-btn {
-            padding: 6px 5px;
-            font-size: 0.65rem;
-            font-weight: 700;
+            text-decoration: none;
+            background: #ea580c;
+            color: #ffffff;
+            border: none;
             border-radius: 8px;
-            border: 1px solid #fed7aa;
-            background: #fffaf5;
-            color: #7c2d12;
+            padding: 9px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
             cursor: pointer;
         }
 
-        .sub-tab-btn.active { background: #c2410c; color: #ffffff; }
-        .filter-row { display: flex; gap: 5px; margin-bottom: 8px; }
-
-        .filter-chip {
-            flex: 1;
-            padding: 5px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            border-radius: 8px;
-            border: 1px solid #fed7aa;
-            background: #fffaf5;
-            color: #9a3412;
-            cursor: pointer;
+        .primary-btn.secondary {
+            background: #1e293b;
+            margin-top: 8px;
         }
 
-        .filter-chip.active { background: #c2410c; color: #ffffff; }
-        .input-box { margin-bottom: 8px; text-align: left; }
-        .input-box label { display: block; font-size: 0.68rem; font-weight: 700; color: #7c2d12; margin-bottom: 3px; }
+        .input-box {
+            margin-bottom: 10px;
+        }
+
+        .input-box label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 4px;
+        }
 
         .input-box input, .input-box select {
             width: 100%;
             padding: 7px 9px;
-            border-radius: 9px;
-            border: 1px solid #fdba74;
-            background: #fffaf5;
-            font-size: 0.75rem;
-            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            background: #ffffff;
+            color: #0f172a;
         }
 
-        .grid-2-inp { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-        .primary-btn {
-            width: 100%;
-            padding: 8px;
-            background: linear-gradient(135deg, #c2410c, #d97706);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.76rem;
-            cursor: pointer;
-            margin-top: 4px;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+        .grid-2-inp {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
-
-        .secondary-action-btn {
-            width: 100%;
-            padding: 7px;
-            background: #fff7ed;
-            color: #9a3412;
-            border: 1px solid #fdba74;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.72rem;
-            cursor: pointer;
-            margin-top: 6px;
-        }
-
-        .copy-summary-area {
-            width: 100%;
-            min-height: 82px;
-            margin-top: 6px;
-            padding: 7px;
-            border-radius: 9px;
-            border: 1px solid #fdba74;
-            background: #fffaf5;
-            font-size: 0.68rem;
-            color: #1e293b;
-        }
-
-        .copy-status { font-size: 0.66rem; font-weight: 700; color: #047857; margin-top: 4px; }
 
         .output-panel {
-            margin-top: 9px;
-            background: #fff7ed;
-            border: 1px solid #fdba74;
-            border-left: 4px solid #c2410c;
-            padding: 8px 10px;
-            border-radius: 9px;
-            font-size: 0.72rem;
-            text-align: left;
-            line-height: 1.45;
-        }
-
-        .quake-item {
-            background: #fffaf5;
-            border: 1px solid #fed7aa;
-            border-radius: 10px;
-            padding: 7px 9px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: left;
-        }
-
-        .mag-badge {
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 0.78rem;
-            padding: 4px 7px;
+            margin-top: 10px;
+            padding: 10px;
             border-radius: 8px;
-            min-width: 42px;
-            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-size: 0.78rem;
         }
-
-        .mag-mid { background: #ea580c; }
-        .mag-high { background: #dc2626; }
 
         .mat-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fffaf5;
-            border: 1px solid #ffedd5;
-            padding: 7px 9px;
-            border-radius: 9px;
-            margin-bottom: 6px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.76rem;
+        }
+
+        .copy-summary-area {
+            width: 100%;
+            height: 90px;
+            margin-top: 10px;
+            padding: 8px;
             font-size: 0.72rem;
-            text-align: left;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
         }
 
-        .app-tabbar {
-            flex-shrink: 0;
-            background: #ffffff;
-            border-top: 1px solid #ffedd5;
-            display: flex;
-            justify-content: space-around;
-            padding: 7px 0 11px 0;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            text-align: center;
-            font-size: 0.63rem;
-            color: #94a3b8;
-            font-weight: 600;
+        .secondary-action-btn {
+            margin-top: 6px;
+            width: 100%;
+            padding: 7px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 0.76rem;
             cursor: pointer;
         }
 
-        .tab-btn.active { color: #c2410c; font-weight: 800; }
-        .tab-btn i { display: block; font-size: 0.95rem; margin-bottom: 2px; }
-
-        #vp-top-ticker {
-            position: sticky;
-            top: 0;
-            z-index: 9999;
+        .sub-tabs {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            height: 36px;
-            padding: 0 14px;
-            background: rgba(9, 14, 26, 0.92);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-            color: #f8fafc;
-            font-size: 12px;
-            overflow: hidden;
-        }
-        .vp-datetime-box { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0; color: #fde68a; font-weight: 600; animation: vpFadePulse 3s ease-in-out infinite; }
-        .vp-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 8px #f59e0b; flex-shrink: 0; }
-        .vp-marquee-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
-        .vp-marquee-track { display: inline-flex; align-items: center; gap: 28px; white-space: nowrap; will-change: transform; animation: vpMarqueeScroll 26s linear infinite; }
-        .vp-marquee-wrap:hover .vp-marquee-track { animation-play-state: paused; }
-        .vp-rate-item { display: inline-flex; align-items: center; gap: 6px; color: #cbd5e1; }
-        .vp-rate-item strong { color: #f59e0b; font-weight: 700; }
-        @keyframes vpMarqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes vpFadePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.78; } }
-        @media (max-width: 640px) {
-            #vp-top-ticker { height: auto; min-height: 34px; padding: 4px 10px; gap: 8px; font-size: 11px; }
-            .vp-datetime-box { max-width: 52%; overflow: hidden; text-overflow: ellipsis; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .vp-marquee-track,
-            .vp-datetime-box { animation: none; }
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
-        .vp-mod-panel { display: none; padding: 10px 12px; border-radius: 12px; background: rgba(9, 14, 26, 0.92); border: 1px solid rgba(245, 158, 11, 0.28); color: #f8fafc; font-size: 11px; margin-bottom: 8px; }
-        .vp-mod-panel.acik { display: block; }
-        .vp-mod-satir { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
-        .vp-mod-giris { background: #0f172a; color: #f8fafc; border: 1px solid rgba(245, 158, 11, 0.28); border-radius: 8px; padding: 5px 8px; font-size: 11px; }
-        .vp-mod-buton { background: linear-gradient(135deg, #f59e0b, #ea580c); color: #090e1a; border: none; border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
-        .vp-mod-vurgu { color: #f59e0b; font-weight: 700; }
-
-        .contact-row {
-            width: 100%;
-            padding: 8px 16px;
-            background: rgba(0, 0, 0, 0.35);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            font-size: 14px;
-        }
-
-        .site-brand {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            line-height: 1.3;
-        }
-
-        .whatsapp-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #f8fafc;
-            text-decoration: none;
+        .sub-tab-btn {
+            flex: 1;
+            padding: 7px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            font-size: 0.76rem;
             font-weight: 700;
+            cursor: pointer;
         }
 
-        .whatsapp-link i {
-            color: #25d366;
-            font-size: 1.35rem;
+        .sub-tab-btn.active {
+            background: #ea580c;
+            color: #ffffff;
+            border-color: #ea580c;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .filter-chip {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-chip.active {
+            background: #dc2626;
+            color: #ffffff;
+            border-color: #dc2626;
+        }
+
+        .quake-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.74rem;
+        }
+
+        .mag-badge {
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .mag-high { background: #dc2626; }
+        .mag-mid { background: #d97706; }
+
+        .sub-web-note {
+            font-size: 0.72rem;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .sub-web-view {
+            width: 100%;
+            height: 420px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .verified-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
         .feedback-section {
-            width: 100%;
-            background: #f8fafc;
-            color: #0f172a;
-            border-top: 1px solid rgba(245, 158, 11, 0.35);
-            padding: 58px 24px;
+            max-width: 1180px;
+            margin: 36px auto 24px;
+            padding: 0 16px;
         }
 
         .feedback-container {
-            max-width: 1240px;
-            margin: 0 auto;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 24px;
         }
 
         .feedback-heading {
             display: flex;
-            align-items: end;
+            flex-wrap: wrap;
             justify-content: space-between;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .feedback-heading span {
-            color: #c2410c;
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 800;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-        }
-
-        .feedback-heading h2 {
-            margin-top: 6px;
-            font-size: 1.8rem;
-            line-height: 1.2;
-        }
-
-        .feedback-heading p {
-            max-width: 420px;
-            color: #64748b;
-            line-height: 1.6;
-            font-size: 0.86rem;
+            color: #fbbf24;
         }
 
         .feedback-grid {
             display: grid;
-            grid-template-columns: 0.75fr 1.25fr;
-            gap: 18px;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 820px) {
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .contact-cards {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-        }
-
-        .contact-card,
-        .feedback-form {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
         }
 
         .contact-card {
             display: flex;
             align-items: center;
             gap: 12px;
-            min-height: 82px;
-            padding: 14px;
-            color: #0f172a;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: #090e1a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
             text-decoration: none;
         }
 
-        .contact-card i {
-            width: 42px;
-            height: 42px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border-radius: 12px;
-            background: #fff7ed;
-            color: #ea580c;
-            font-size: 1rem;
-        }
-
-        .contact-card strong,
-        .contact-card span {
+        .contact-card strong {
             display: block;
-        }
-
-        .contact-card strong { font-size: 0.82rem; }
-        .contact-card span { margin-top: 3px; color: #64748b; font-size: 0.72rem; }
-
-        .feedback-form {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            padding: 18px;
-        }
-
-        .feedback-form label {
-            display: grid;
-            gap: 6px;
-            color: #334155;
-            font-size: 0.72rem;
-            font-weight: 800;
-        }
-
-        .feedback-form label.full-width { grid-column: 1 / -1; }
-        .feedback-form .feedback-consent {
-            display: flex;
-            align-items: flex-start;
-            gap: 9px;
-            color: #475569;
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        .feedback-form .feedback-consent input {
-            width: auto;
-            margin-top: 3px;
-            flex-shrink: 0;
-        }
-
-        .feedback-form input,
-        .feedback-form select,
-        .feedback-form textarea {
-            width: 100%;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #0f172a;
-            padding: 10px 12px;
-            font: inherit;
-            font-size: 0.78rem;
-            outline: none;
-        }
-
-        .feedback-form input:focus,
-        .feedback-form select:focus,
-        .feedback-form textarea:focus {
-            border-color: #ea580c;
-            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
-        }
-
-        .feedback-form textarea {
-            min-height: 118px;
-            resize: vertical;
-        }
-
-        .feedback-submit {
-            grid-column: 1 / -1;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ea580c, #d97706);
-            color: #ffffff;
-            padding: 12px 16px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .feedback-status {
-            grid-column: 1 / -1;
-            min-height: 18px;
-            color: #15803d;
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
-
-        @media (max-width: 560px) {
-            .contact-row {
-                flex-direction: column;
-                justify-content: center;
-                padding: 8px 10px;
-                text-align: center;
-                gap: 8px;
-            }
-            .feedback-section { padding: 42px 16px; }
-            .feedback-heading { display: block; text-align: center; }
-            .feedback-heading p { margin: 10px auto 0; }
-            .feedback-grid { grid-template-columns: 1fr; }
-            .feedback-form { grid-template-columns: 1fr; }
-            .feedback-form label.full-width,
-            .feedback-submit,
-            .feedback-status { grid-column: 1; }
-        }
-
-        /* Mobil ve dar ekranlarda yan yana kırılan tüm ana bloklar dikey akışta kalır. */
-        .showcase-container {
-            max-width: 760px;
-            grid-template-columns: 1fr;
-            gap: 28px;
-        }
-
-        .showcase-container > div:first-child,
-        .showcase-container > .phone-wrapper {
-            order: initial;
-            width: 100%;
-        }
-
-        .showcase-container > div:first-child {
-            text-align: center;
-        }
-
-        .tour-cards {
-            grid-template-columns: 1fr;
-        }
-
-        .tour-btn {
-            width: 100%;
-        }
-
-        .trust-strip {
-            grid-template-columns: 1fr;
-        }
-
-        .phone-wrapper {
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .feedback-heading {
-            display: block;
-            text-align: center;
-        }
-
-        .feedback-heading p {
-            margin: 10px auto 0;
-        }
-
-        .feedback-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .feedback-form {
-            grid-template-columns: 1fr;
-        }
-
-        .feedback-form label.full-width,
-        .feedback-submit,
-        .feedback-status {
-            grid-column: 1;
-        }
-
-        .feedback-section {
-            max-width: 760px;
-            margin: 0 auto 24px;
-            border-radius: 16px;
-            border: 1px solid rgba(245, 158, 11, 0.35);
-        }
-    </style>
-</head>
-<body id="top">
-    <a class="skip-link" href="#mainContent">Ana içeriğe geç</a>
-    <div class="contact-row">
-        <h1 class="site-brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</h1>
-        <a class="whatsapp-link" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile +90 541 642 90 94 numarasına ulaşın">
-            <i class="fab fa-whatsapp" aria-hidden="true"></i>
-            <span>WhatsApp: +90&nbsp;541&nbsp;642&nbsp;90&nbsp;94</span>
-        </a>
-    </div>
-    <div class="ticker-bar">
-        <div class="ticker-items">
-        </div>
-        <!-- ÜST CANLI TARIH/SAAT VE KAYAN DÖVIZ SERIDI -->
-<div id="vp-top-ticker" role="region" aria-label="Güncel Tarih, Saat ve Döviz Kurları">
-  <div class="vp-datetime-box">
-    <span class="vp-live-dot"></span>
-    <span id="vp-live-datetime" class="vp-datetime-text">Yükleniyor...</span>
-  </div>
-
-  <div class="vp-marquee-wrap" title="Duraklatmak için üzerine gelin">
-    <div id="vp-marquee-track" class="vp-marquee-track">
-      <span class="vp-rate-item">USD/TRY: <strong>--,-- ₺</strong></span>
-      <span class="vp-rate-item">EUR/TRY: <strong>--,-- ₺</strong></span>
-      <span class="vp-rate-item">GBP/TRY: <strong>--,-- ₺</strong></span>
-      <span class="vp-rate-item">CHF/TRY: <strong>--,-- ₺</strong></span>
-    </div>
-  </div>
-</div>
-
-<script>
-  (function () {
-    const dtEl = document.getElementById("vp-live-datetime");
-    const trackEl = document.getElementById("vp-marquee-track");
-
-    function updateDateTime() {
-      if (!dtEl) return;
-      const now = new Date();
-      const gunAdi = now.toLocaleDateString("tr-TR", { weekday: "long" });
-      const tarih = now.toLocaleDateString("tr-TR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      });
-      const saat = now.toLocaleTimeString("tr-TR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      });
-      dtEl.textContent = `${tarih} ${gunAdi} • ${saat}`;
-    }
-
-    function renderRates(rates) {
-      if (!trackEl) return;
-      const items = [
-        { code: "USD/TRY", val: rates.TRY },
-        { code: "EUR/TRY", val: rates.TRY && rates.EUR ? rates.TRY / rates.EUR : null },
-        { code: "GBP/TRY", val: rates.TRY && rates.GBP ? rates.TRY / rates.GBP : null },
-        { code: "CHF/TRY", val: rates.TRY && rates.CHF ? rates.TRY / rates.CHF : null }
-      ];
-
-      const htmlChunk = items
-        .map((item) => {
-          const formatted =
-            typeof item.val === "number" && !Number.isNaN(item.val)
-              ? item.val.toLocaleString("tr-TR", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                }) + " ₺"
-              : "--,-- ₺";
-          return `<span class="vp-rate-item">${item.code}: <strong>${formatted}</strong></span>`;
-        })
-        .join("");
-
-      // Kesintisiz kayma için listeyi iki kez tekrarlıyoruz
-      trackEl.innerHTML = htmlChunk + htmlChunk;
-    }
-
-    async function fetchRates() {
-      try {
-        const res = await fetch("https://open.er-api.com/v6/latest/USD", { cache: "no-store" });
-        if (!res.ok) throw new Error("Kur servisine erişilemedi");
-        const data = await res.json();
-        if (data && data.rates && data.rates.TRY) {
-          renderRates(data.rates);
-        } else {
-          throw new Error("Kur verisi bulunamadı");
-        }
-      } catch (error) {
-        console.error("ExchangeRate-API kurları alınamadı:", error);
-      }
-    }
-
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    fetchRates();
-    setInterval(fetchRates, 15 * 60 * 1000);
-  })();
-</script>
-    </div>
-    <section class="visitor-stats" aria-label="Ziyaretçi istatistikleri">
-        <span><i class="visitor-live-dot" aria-hidden="true"></i> Şu an aktif: <strong id="activeVisitorCount">--</strong></span>
-        <span><i class="fas fa-users" aria-hidden="true"></i> Toplam ziyaretçi: <strong id="totalVisitorCount">--</strong></span>
-        <span class="visitor-status" id="visitorCounterStatus" role="status">Canlı sayaç bağlantısı bekleniyor.</span>
-    </section>
-    <script src="./assets/visitor-counter.js" defer></script>
-    <section class="promo-gallery" id="promoGallery" aria-label="Vatandaş Portalı tanıtım animasyonu" aria-roledescription="carousel">
-        <div class="promo-gallery-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 6">
-            <img src="./assets/promo/01-portal.svg" width="1600" height="900" alt="Vatandaş Portalı ana tanıtım görseli" fetchpriority="high" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Vatandaş Portalı</strong>
-                <span>Kamu hizmetlerine tek ve kolay adres.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="2 / 6">
-            <img src="./assets/promo/02-resmi-kurumlar.svg" width="1600" height="900" alt="Vatandaş Portalı resmi kurum bağlantıları görseli" loading="lazy" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Mobil uygulama deneyimi</strong>
-                <span>Telefonunuzda hızlı, ücretsiz ve kolay kullanım.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="3 / 6">
-            <img src="./assets/promo/03-hesaplayicilar.svg" width="1600" height="900" alt="Vatandaş Portalı pratik hesaplayıcılar görseli" loading="lazy" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Kamu ve belediye hizmetleri</strong>
-                <span>Resmi kurumlara güvenle ulaşın.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="4 / 6">
-            <img src="./assets/promo/04-canli-bilgiler.svg" width="1600" height="900" alt="Vatandaş Portalı canlı bilgi araçları görseli" loading="lazy" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Tüm ihtiyaçlar tek yerde</strong>
-                <span>Hesaplayıcılar, bilgi ve önemli bağlantılar.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="5 / 6">
-            <img src="./assets/promo/05-mobil.svg" width="1600" height="900" alt="Vatandaş Portalı mobil uygulama görseli" loading="lazy" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Günlük yaşam için pratik araçlar</strong>
-                <span>Kısacası, vatandaşlar için kullanılan tek bir merkez.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-slide" role="group" aria-roledescription="slide" aria-label="6 / 6">
-            <img src="./assets/promo/06-kullanima-hazir.svg" width="1600" height="900" alt="Vatandaş Portalı kullanım başlangıç görseli" loading="lazy" decoding="async">
-            <div class="promo-gallery-caption">
-                <strong>Uygulamayı anında kullanın</strong>
-                <span>Vatandaş Portalı herkes için açık ve ücretsiz.</span>
-            </div>
-        </div>
-        <div class="promo-gallery-controls" aria-label="Tanıtım kontrolleri">
-            <button class="promo-gallery-arrow" type="button" data-promo-prev aria-label="Önceki tanıtım"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
-            <div class="promo-gallery-dots" role="tablist" aria-label="Tanıtım slaytları">
-                <button class="promo-gallery-dot is-active" type="button" role="tab" aria-selected="true" aria-label="1. tanıtım" data-promo-slide="0"></button>
-                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="2. tanıtım" data-promo-slide="1"></button>
-                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="3. tanıtım" data-promo-slide="2"></button>
-                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="4. tanıtım" data-promo-slide="3"></button>
-                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="5. tanıtım" data-promo-slide="4"></button>
-                <button class="promo-gallery-dot" type="button" role="tab" aria-selected="false" aria-label="6. tanıtım" data-promo-slide="5"></button>
-            </div>
-            <button class="promo-gallery-toggle" type="button" data-promo-toggle aria-label="Tanıtımı durdur" aria-pressed="false"><i class="fas fa-pause" aria-hidden="true"></i></button>
-            <button class="promo-gallery-arrow" type="button" data-promo-next aria-label="Sonraki tanıtım"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
-        </div>
-        <div class="promo-gallery-progress" aria-hidden="true"></div>
-    </section>
-    <script>
-        (function () {
-            const gallery = document.getElementById("promoGallery");
-            if (!gallery) return;
-
-            const slides = Array.from(gallery.querySelectorAll(".promo-gallery-slide"));
-            const dots = Array.from(gallery.querySelectorAll("[data-promo-slide]"));
-            const progress = gallery.querySelector(".promo-gallery-progress");
-            const toggle = gallery.querySelector("[data-promo-toggle]");
-            const intervalMs = 5800;
-            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            let activeIndex = 0;
-            let timer = null;
-            let isPaused = reducedMotion;
-
-            function restartProgress() {
-                if (!progress) return;
-                progress.classList.remove("is-running");
-                void progress.offsetWidth;
-                if (!isPaused) progress.classList.add("is-running");
-            }
-
-            function showSlide(nextIndex, userInitiated) {
-                const normalizedIndex = (nextIndex + slides.length) % slides.length;
-                if (normalizedIndex === activeIndex && !userInitiated) return;
-
-                slides.forEach((slide, index) => {
-                    slide.classList.toggle("is-active", index === normalizedIndex);
-                    slide.setAttribute("aria-hidden", index === normalizedIndex ? "false" : "true");
-                });
-                dots.forEach((dot, index) => {
-                    const isActive = index === normalizedIndex;
-                    dot.classList.toggle("is-active", isActive);
-                    dot.setAttribute("aria-selected", isActive ? "true" : "false");
-                });
-                activeIndex = normalizedIndex;
-                restartProgress();
-                if (userInitiated) restartTimer();
-            }
-
-            function restartTimer() {
-                if (timer) window.clearInterval(timer);
-                if (isPaused) return;
-                timer = window.setInterval(() => showSlide(activeIndex + 1, false), intervalMs);
-            }
-
-            function setPaused(paused) {
-                isPaused = paused;
-                if (toggle) {
-                    toggle.setAttribute("aria-pressed", paused ? "true" : "false");
-                    toggle.setAttribute("aria-label", paused ? "Tanıtımı oynat" : "Tanıtımı durdur");
-                    toggle.innerHTML = paused
-                        ? '<i class="fas fa-play" aria-hidden="true"></i>'
-                        : '<i class="fas fa-pause" aria-hidden="true"></i>';
-                }
-                restartProgress();
-                restartTimer();
-            }
-
-            slides.forEach((slide) => slide.setAttribute("aria-hidden", slide.classList.contains("is-active") ? "false" : "true"));
-            dots.forEach((dot) => {
-                dot.addEventListener("click", () => showSlide(Number(dot.dataset.promoSlide), true));
-            });
-
-            gallery.querySelector("[data-promo-prev]")?.addEventListener("click", () => showSlide(activeIndex - 1, true));
-            gallery.querySelector("[data-promo-next]")?.addEventListener("click", () => showSlide(activeIndex + 1, true));
-            toggle?.addEventListener("click", () => setPaused(!isPaused));
-
-            gallery.addEventListener("mouseenter", () => {
-                if (timer) window.clearInterval(timer);
-            });
-            gallery.addEventListener("mouseleave", () => {
-                if (!isPaused) restartTimer();
-            });
-            gallery.addEventListener("focusin", () => {
-                if (timer) window.clearInterval(timer);
-            });
-            gallery.addEventListener("focusout", (event) => {
-                if (!gallery.contains(event.relatedTarget) && !isPaused) restartTimer();
-            });
-            document.addEventListener("visibilitychange", () => {
-                if (document.hidden) {
-                    if (timer) window.clearInterval(timer);
-                } else if (!isPaused) {
-                    restartTimer();
-                }
-            });
-
-            setPaused(isPaused);
-            restartProgress();
-            if (!isPaused) restartTimer();
-        })();
-    </script>
-    <main class="main-stage" id="mainContent" tabindex="-1">
-        <div class="showcase-container">
-            <div>
-                <div class="promo-badge">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>TÜM MODÜLLER TEK PLATFORMDA</span>
-                </div>
-                <p class="promo-desc">
-                    Kamu, belediye, eğitim ve sağlık hizmetlerinin resmi bağlantılarını tek bir ekranda bulun. Kurum işlemleri ilgili kurumun kendi sitesinde gerçekleştirilir; portal sizden parola veya işlem bilgisi istemez.
-                </p>
-
-                <div class="tour-label">
-                    <i class="fas fa-bolt"></i> ÖNCELİK GRUPLARINI SEÇİN:
-                </div>
-
-                <div class="tour-cards">
-                    <button type="button" class="tour-btn" data-tour="p1">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <div class="tour-btn-text">
-                            <strong>1. Öncelik • Acil &amp; Deprem</strong>
-                            <span>112 Acil, Son Depremler, Gizlilik</span>
-                        </div>
-                    </button>
-                    <button type="button" class="tour-btn" data-tour="p2">
-                        <i class="fas fa-landmark"></i>
-                        <div class="tour-btn-text">
-                            <strong>2. Öncelik • Kamu &amp; Belediye</strong>
-                            <span>e-Devlet, e-Nabız, UYAP, Düziçi</span>
-                        </div>
-                    </button>
-                    <button type="button" class="tour-btn" data-tour="p3">
-                        <i class="fas fa-graduation-cap"></i>
-                        <div class="tour-btn-text">
-                            <strong>3. Öncelik • Eğitim, İş &amp; İhale</strong>
-                            <span>e-Okul, MEBBİS, MEB, İŞKUR, EKAP</span>
-                        </div>
-                    </button>
-                    <button type="button" class="tour-btn" data-tour="p4">
-                        <i class="fas fa-drafting-compass"></i>
-                        <div class="tour-btn-text">
-                            <strong>4. Öncelik • İnşaat &amp; Metraj</strong>
-                            <span>Çatı/Beton, Liste, Toplam &amp; Kopya</span>
-                        </div>
-                    </button>
-                    <button type="button" class="tour-btn" data-tour="p5">
-                        <i class="fas fa-calculator"></i>
-                        <div class="tour-btn-text">
-                            <strong>5. Öncelik • Finans &amp; Yaşam</strong>
-                            <span>Döviz, 81 İl, Mesafe, Mesai, Alan</span>
-                        </div>
-                    </button>
-                    <button type="button" class="tour-btn active" data-tour="all">
-                        <i class="fas fa-th-large"></i>
-                        <div class="tour-btn-text">
-                            <strong>Tüm Gruplar (1 – 5)</strong>
-                            <span>Filtreyi sıfırla ve en üste kaydır</span>
-                        </div>
-                    </button>
-                </div>
-
-                <div class="cta-row" id="simulasyon">
-                    <button type="button" class="store-btn" data-action="metraj" aria-describedby="simulationNotice">
-                        <i class="fas fa-play" aria-hidden="true"></i> Ücretsiz Simülasyonu Başlat
-                    </button>
-                    <button type="button" class="store-btn secondary" data-action="privacy">
-                        <i class="fas fa-shield-halved" aria-hidden="true"></i> Gizlilik Bilgisi
-                    </button>
-                    <button type="button" class="store-btn secondary" id="installAppBtn" hidden>
-                        <i class="fas fa-download" aria-hidden="true"></i> Uygulamayı Yükle
-                    </button>
-                </div>
-                <p class="simulation-notice" id="simulationNotice" role="note">Ücretsizdir, hesap açmadan kullanılır. Hesaplamalar tarayıcınızda yapılır.</p>
-                <p class="simulation-notice" id="pwaStatus">Desteklenen tarayıcılarda yükleme düğmesi görünür. iPhone/iPad'de Paylaş menüsünden Ana Ekrana Ekle'yi seçebilirsiniz.</p>
-                <div class="trust-strip" role="list" aria-label="Portal özellikleri">
-                    <div class="trust-item">
-                        <i class="fas fa-shield-halved"></i>
-                        <div><strong>Resmi Bağlantılar</strong><span>Kurumların kendi siteleri</span></div>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-layer-group"></i>
-                        <div><strong>Tek Platform</strong><span>Birden fazla hizmet</span></div>
-                    </div>
-                    <div class="trust-item">
-                        <i class="fas fa-headset"></i>
-                        <div><strong>İletişim</strong><span>WhatsApp desteği</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="phone-wrapper">
-                <div class="phone-frame">
-                    <div class="phone-screen">
-                        <div class="dynamic-island"><div class="camera-dot"></div></div>
-
-                        <div class="app-top-bar">
-                            <div class="official-seal-row">
-                                <div class="brand-text">
-                                    <h2>MUSTAFA KALAYCI</h2>
-                                    <span>VATANDAŞ PORTALI</span>
-                                </div>
-                                <span class="live-pill" aria-label="Hesap açmadan ücretsiz kullanım">
-                                    <span class="live-dot"></span> <span>Ücretsiz</span>
-                                </span>
-                            </div>
-                            <div class="app-search">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="searchInput" placeholder="Modül veya kurum ara...">
-                                <button type="button" class="clear-search-btn" id="clearSearchBtn">Temizle</button>
-                            </div>
-                        </div>
-
-                        <div class="priority-strip">
-                            <button type="button" class="p-chip active" data-p="all">Tümü</button>
-                            <button type="button" class="p-chip" data-p="p1">1. Acil</button>
-                            <button type="button" class="p-chip" data-p="p2">2. Kamu</button>
-                            <button type="button" class="p-chip" data-p="p3">3. Eğitim/İhale</button>
-                            <button type="button" class="p-chip" data-p="p4">4. İnşaat</button>
-                            <button type="button" class="p-chip" data-p="p5">5. Yaşam</button>
-                        </div>
-
-                        <div class="app-body" id="modulesBody">
-                            <div class="group-block" id="group-p1" data-group="p1">
-                                <div class="group-header urg-1">
-                                    <span class="group-title">• ACİL &amp; ANLIK DURUM</span>
-                                    <span class="group-tag">ACİL</span>
-                                </div>
-                                <div class="grid-3">
-                                    <button type="button" class="app-card" data-action="emergency">
-                                        <div class="platform-logo-box" style="background:#dc2626;"><i class="fas fa-phone-alt"></i></div>
-                                        <div class="card-title">112 Acil</div>
-                                        <div class="card-sub">Acil Çağrı</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="quakes">
-                                        <div class="platform-logo-box" style="background:#991b1b;"><i class="fas fa-wave-square"></i></div>
-                                        <div class="card-title">Son Depremler</div>
-                                        <div class="card-sub">Sismik Kayıt</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="privacy">
-                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-shield-halved"></i></div>
-                                        <div class="card-title">Gizlilik</div>
-                                        <div class="card-sub">Veri Kullanımı</div>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="group-block" id="group-p2" data-group="p2">
-                                <div class="group-header urg-2">
-                                    <span class="group-title">• KAMU &amp; BELEDİYE</span>
-                                    <span class="group-tag">RESMİ</span>
-                                </div>
-                                <div class="grid-3">
-                                    <button type="button" class="app-card" data-action="official" data-name="e-Devlet Kapısı" data-url="https://www.turkiye.gov.tr" data-desc="T.C. Cumhurbaşkanlığı resmi dijital kamu hizmetleri portalı.">
-                                        <div class="platform-logo-box" style="background:#e11d48; font-weight:900; font-size:0.74rem;">e-TR</div>
-                                        <div class="card-title">e-Devlet</div>
-                                        <div class="card-sub">turkiye.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="e-Nabız" data-url="https://enabiz.gov.tr" data-desc="Kişisel sağlık kayıtları, tahliller ve randevu sistemi.">
-                                        <div class="platform-logo-box" style="background:#be123c;"><i class="fas fa-heartbeat"></i></div>
-                                        <div class="card-title">e-Nabız</div>
-                                        <div class="card-sub">enabiz.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="UYAP Vatandaş" data-url="https://vatandas.uyap.gov.tr" data-desc="Adli ve idari dosya sorgulama ve e-Tebligat ekranı.">
-                                        <div class="platform-logo-box" style="background:#1e3a8a;"><i class="fas fa-balance-scale"></i></div>
-                                        <div class="card-title">UYAP</div>
-                                        <div class="card-sub">uyap.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="Düziçi Belediyesi" data-url="https://www.duzici.bel.tr" data-desc="Osmaniye Düziçi Belediyesi resmi web portalı ve e-Belediye.">
-                                        <div class="platform-logo-box" style="background:#c2410c;"><i class="fas fa-city"></i></div>
-                                        <div class="card-title">Düziçi Bld.</div>
-                                        <div class="card-sub">duzici.bel.tr</div>
-                                    </button>
-                                    <!-- HAVA DURUMU KARTI -->
-<button type="button" class="app-card" data-action="weather">
-  <div class="platform-logo-box" style="background:#0284c7;"><i class="fas fa-cloud-sun"></i></div>
-  <div class="card-title">Hava Durumu</div>
-  <div class="card-sub">canlı meteoroloji</div>
-</button>
-<!-- İLAN.GOV.TR KARTI -->
-<button type="button" class="app-card" data-action="official" data-name="Resmi İlanlar" data-url="https://www.ilan.gov.tr/" target="_blank">
-  <div class="platform-logo-box" style="background:#10b981;"><i class="fas fa-bullhorn"></i></div>
-  <div class="card-title">ilan.gov.tr</div>
-  <div class="card-sub">resmi ilan portalı</div>
-</button>
-<!-- TÜVTÜRK MUAYENE KARTI -->
-<button type="button" class="app-card" data-action="tuv">
-  <div class="platform-logo-box" style="background:#d97706;"><i class="fas fa-car"></i></div>
-  <div class="card-title">TÜVTÜRK</div>
-  <div class="card-sub">muayene planlayıcı</div>
-</button>
-                                    <button type="button" class="app-card" data-action="official" data-name="Sanayi Bakanlığı" data-url="https://www.sanayi.gov.tr" data-desc="T.C. Sanayi ve Teknoloji Bakanlığı resmi portalı.">
-                                        <div class="platform-logo-box" style="background:#1d4ed8;"><i class="fas fa-industry"></i></div>
-                                        <div class="card-title">Sanayi.gov.tr</div>
-                                        <div class="card-sub">Bakanlık</div>
-                                    </button>
-                                    <!-- NÖBETÇİ ECZANE KARTI -->
-<button type="button" class="app-card" data-action="pharmacy" data-name="Nöbetçi Eczaneler">
-  <div class="platform-logo-box" style="background:#ef4444;"><i class="fas fa-prescription-bottle-alt"></i></div>
-  <div class="card-title">Nöbetçi Eczane</div>
-  <div class="card-sub">size en yakın eczane</div>
-</button>
-                                </div>
-                            </div>
-
-                            <div class="group-block" id="group-p3" data-group="p3">
-                                <div class="group-header urg-3">
-                                    <span class="group-title">• EĞİTİM, İŞ &amp; İHALE</span>
-                                    <span class="group-tag">KURUMSAL</span>
-                                </div>
-                                <div class="grid-3">
-                                    <button type="button" class="app-card" data-action="official" data-name="e-Okul" data-url="https://eokul.meb.gov.tr" data-desc="MEB e-Okul veli bilgilendirme sistemi.">
-                                        <div class="platform-logo-box" style="background:#1e40af; font-weight:900; font-size:0.65rem;">e-OKUL</div>
-                                        <div class="card-title">e-Okul</div>
-                                        <div class="card-sub">meb.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="MEB" data-url="https://www.meb.gov.tr" data-desc="T.C. Milli Eğitim Bakanlığı resmi duyuru portalı.">
-                                        <div class="platform-logo-box" style="background:#991b1b; font-weight:900; font-size:0.74rem;">MEB</div>
-                                        <div class="card-title">MEB</div>
-                                        <div class="card-sub">meb.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="İŞKUR" data-url="https://www.iskur.gov.tr" data-desc="Türkiye İş Kurumu açık iş ilanları ve hizmetleri.">
-                                        <div class="platform-logo-box" style="background:#1e3a8a; font-weight:900; font-size:0.65rem;">İŞKUR</div>
-                                        <div class="card-title">İŞKUR</div>
-                                        <div class="card-sub">iskur.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="KOSGEB" data-url="https://www.kosgeb.gov.tr" data-desc="KOBİ ve girişimci destek programları.">
-                                        <div class="platform-logo-box" style="background:#0f766e; font-weight:900; font-size:0.58rem;">KOSGEB</div>
-                                        <div class="card-title">KOSGEB</div>
-                                        <div class="card-sub">kosgeb.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="EKAP" data-url="https://ekap.kik.gov.tr" data-desc="Elektronik Kamu Alımları Platformu.">
-                                        <div class="platform-logo-box" style="background:#c2410c; font-weight:900; font-size:0.68rem;">EKAP</div>
-                                        <div class="card-title">EKAP</div>
-                                        <div class="card-sub">kik.gov.tr</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="official" data-name="TÜBİTAK" data-url="https://www.tubitak.gov.tr" data-desc="Bilim ve teknoloji proje/burs destekleri.">
-                                        <div class="platform-logo-box" style="background:#0e7490;"><i class="fas fa-atom"></i></div>
-                                        <div class="card-title">TÜBİTAK</div>
-                                        <div class="card-sub">tubitak.gov.tr</div>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="group-block" id="group-p4" data-group="p4">
-                                <div class="group-header urg-4">
-                                    <span class="group-title">• İNŞAAT METRAJ &amp; MALZEME</span>
-                                    <span class="group-tag">HESAP</span>
-                                </div>
-                                <div class="grid-3">
-                                    <button type="button" class="app-card" data-action="metraj">
-                                        <div class="platform-logo-box" style="background:#ea580c;"><i class="fas fa-home"></i></div>
-                                        <div class="card-title">Metraj</div>
-                                        <div class="card-sub">Çatı &amp; Beton</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="materials">
-                                        <div class="platform-logo-box" style="background:#d97706;"><i class="fas fa-list"></i></div>
-                                        <div class="card-title">Malzeme</div>
-                                        <div class="card-sub">Liste &amp; Kopya</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="total">
-                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-calculator"></i></div>
-                                        <div class="card-title">Toplam</div>
-                                        <div class="card-sub">KDV &amp; Özet</div>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="group-block" id="group-p5" data-group="p5">
-                                <div class="group-header urg-5">
-                                    <span class="group-title">• FİNANS, REHBER &amp; YAŞAM</span>
-                                    <span class="group-tag">ARAÇ</span>
-                                </div>
-                                <div class="grid-3">
-                                    <button type="button" class="app-card" data-action="currency">
-                                        <div class="platform-logo-box" style="background:#f59e0b; font-weight:900;">₺/$</div>
-                                        <div class="card-title">Döviz</div>
-                                        <div class="card-sub">Kur Çevirici</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="cities">
-                                        <div class="platform-logo-box" style="background:#dc2626; font-weight:900; font-size:0.78rem;">81 İL</div>
-                                        <div class="card-title">81 İl</div>
-                                        <div class="card-sub">Plaka &amp; Kod</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="distance">
-                                        <div class="platform-logo-box" style="background:#0284c7;"><i class="fas fa-route"></i></div>
-                                        <div class="card-title">Mesafe</div>
-                                        <div class="card-sub">Km Hesap</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="overtime">
-                                        <div class="platform-logo-box" style="background:#ea580c;"><i class="fas fa-clock"></i></div>
-                                        <div class="card-title">Mesai</div>
-                                        <div class="card-sub">Fazla Mesai</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="area">
-                                        <div class="platform-logo-box" style="background:#0f766e;"><i class="fas fa-vector-square"></i></div>
-                                        <div class="card-title">Alan</div>
-                                        <div class="card-sub">m² &amp; Dönüm</div>
-                                    </button>
-                                    <button type="button" class="app-card" data-action="recipes">
-                                        <div class="platform-logo-box" style="background:#e11d48;"><i class="fas fa-utensils"></i></div>
-                                        <div class="card-title">Tarifler</div>
-                                        <div class="card-sub">Yöresel</div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="app-tabbar">
-                            <button type="button" class="tab-btn active" data-action="reset"><i class="fas fa-th-large"></i>Portal</button>
-                            <button type="button" class="tab-btn" data-action="emergency"><i class="fas fa-plus-circle"></i>112 Acil</button>
-                            <button type="button" class="tab-btn" data-action="metraj"><i class="fas fa-home"></i>Metraj</button>
-                            <button type="button" class="tab-btn" data-action="total"><i class="fas fa-calculator"></i>Toplam</button>
-                        </div>
-
-                        <div class="sub-screen" id="subScreen">
-                            <div class="sub-header">
-                                <button type="button" class="back-circle" id="backSubBtn" aria-label="Önceki ekrana dön"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
-                                <div id="subTitle" style="font-weight:800; font-size:0.86rem;">Modül</div>
-                            </div>
-                            <div class="sub-content" id="subContent"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </main>
-
-    <script>
-        (function () {
-            let currentPriorityFilter = "all";
-            let quakeMinMag = 0;
-            let latestQuakes = null;
-            let quakeRequest = null;
-            let exchangeRates = null;
-            let exchangeRatesLoadedAt = 0;
-            let exchangeRequest = null;
-
-            async function getExchangeRates() {
-                if (exchangeRates && Date.now() - exchangeRatesLoadedAt < 15 * 60 * 1000) {
-                    return exchangeRates;
-                }
-                if (!exchangeRequest) {
-                    exchangeRequest = fetch("https://open.er-api.com/v6/latest/USD")
-                        .then((response) => {
-                            if (!response.ok) throw new Error("Kur servisine erişilemedi");
-                            return response.json();
-                        })
-                        .then((data) => {
-                            if (!data.rates || !Number.isFinite(data.rates.TRY) || !Number.isFinite(data.rates.EUR)) {
-                                throw new Error("Geçerli kur verisi bulunamadı");
-                            }
-                            exchangeRates = data.rates;
-                            exchangeRatesLoadedAt = Date.now();
-                            return exchangeRates;
-                        })
-                        .finally(() => {
-                            exchangeRequest = null;
-                        });
-                }
-                return exchangeRequest;
-            }
-
-            const all81Cities = [
-                { p: "01", n: "Adana", t: "0322", z: "01000" },
-                { p: "02", n: "Adıyaman", t: "0416", z: "02000" },
-                { p: "03", n: "Afyonkarahisar", t: "0272", z: "03000" },
-                { p: "04", n: "Ağrı", t: "0472", z: "04000" },
-                { p: "05", n: "Amasya", t: "0358", z: "05000" },
-                { p: "06", n: "Ankara", t: "0312", z: "06000" },
-                { p: "07", n: "Antalya", t: "0242", z: "07000" },
-                { p: "08", n: "Artvin", t: "0466", z: "08000" },
-                { p: "09", n: "Aydın", t: "0256", z: "09000" },
-                { p: "10", n: "Balıkesir", t: "0266", z: "10000" },
-                { p: "11", n: "Bilecik", t: "0228", z: "11000" },
-                { p: "12", n: "Bingöl", t: "0426", z: "12000" },
-                { p: "13", n: "Bitlis", t: "0434", z: "13000" },
-                { p: "14", n: "Bolu", t: "0374", z: "14000" },
-                { p: "15", n: "Burdur", t: "0248", z: "15000" },
-                { p: "16", n: "Bursa", t: "0224", z: "16000" },
-                { p: "17", n: "Çanakkale", t: "0286", z: "17000" },
-                { p: "18", n: "Çankırı", t: "0376", z: "18000" },
-                { p: "19", n: "Çorum", t: "0364", z: "19000" },
-                { p: "20", n: "Denizli", t: "0258", z: "20000" },
-                { p: "21", n: "Diyarbakır", t: "0412", z: "21000" },
-                { p: "22", n: "Edirne", t: "0284", z: "22000" },
-                { p: "23", n: "Elazığ", t: "0424", z: "23000" },
-                { p: "24", n: "Erzincan", t: "0446", z: "24000" },
-                { p: "25", n: "Erzurum", t: "0442", z: "25000" },
-                { p: "26", n: "Eskişehir", t: "0222", z: "26000" },
-                { p: "27", n: "Gaziantep", t: "0342", z: "27000" },
-                { p: "28", n: "Giresun", t: "0454", z: "28000" },
-                { p: "29", n: "Gümüşhane", t: "0456", z: "29000" },
-                { p: "30", n: "Hakkari", t: "0438", z: "30000" },
-                { p: "31", n: "Hatay", t: "0326", z: "31000" },
-                { p: "32", n: "Isparta", t: "0246", z: "32000" },
-                { p: "33", n: "Mersin", t: "0324", z: "33000" },
-                { p: "34", n: "İstanbul", t: "0212 / 0216", z: "34000" },
-                { p: "35", n: "İzmir", t: "0232", z: "35000" },
-                { p: "36", n: "Kars", t: "0474", z: "36000" },
-                { p: "37", n: "Kastamonu", t: "0366", z: "37000" },
-                { p: "38", n: "Kayseri", t: "0352", z: "38000" },
-                { p: "39", n: "Kırklareli", t: "0288", z: "39000" },
-                { p: "40", n: "Kırşehir", t: "0386", z: "40000" },
-                { p: "41", n: "Kocaeli", t: "0262", z: "41000" },
-                { p: "42", n: "Konya", t: "0332", z: "42000" },
-                { p: "43", n: "Kütahya", t: "0274", z: "43000" },
-                { p: "44", n: "Malatya", t: "0422", z: "44000" },
-                { p: "45", n: "Manisa", t: "0236", z: "45000" },
-                { p: "46", n: "Kahramanmaraş", t: "0344", z: "46000" },
-                { p: "47", n: "Mardin", t: "0482", z: "47000" },
-                { p: "48", n: "Muğla", t: "0252", z: "48000" },
-                { p: "49", n: "Muş", t: "0436", z: "49000" },
-                { p: "50", n: "Nevşehir", t: "0384", z: "50000" },
-                { p: "51", n: "Niğde", t: "0388", z: "51000" },
-                { p: "52", n: "Ordu", t: "0452", z: "52000" },
-                { p: "53", n: "Rize", t: "0464", z: "53000" },
-                { p: "54", n: "Sakarya", t: "0264", z: "54000" },
-                { p: "55", n: "Samsun", t: "0362", z: "55000" },
-                { p: "56", n: "Siirt", t: "0484", z: "56000" },
-                { p: "57", n: "Sinop", t: "0368", z: "57000" },
-                { p: "58", n: "Sivas", t: "0346", z: "58000" },
-                { p: "59", n: "Tekirdağ", t: "0282", z: "59000" },
-                { p: "60", n: "Tokat", t: "0356", z: "60000" },
-                { p: "61", n: "Trabzon", t: "0462", z: "61000" },
-                { p: "62", n: "Tunceli", t: "0428", z: "62000" },
-                { p: "63", n: "Şanlıurfa", t: "0414", z: "63000" },
-                { p: "64", n: "Uşak", t: "0276", z: "64000" },
-                { p: "65", n: "Van", t: "0432", z: "65000" },
-                { p: "66", n: "Yozgat", t: "0354", z: "66000" },
-                { p: "67", n: "Zonguldak", t: "0372", z: "67000" },
-                { p: "68", n: "Aksaray", t: "0382", z: "68000" },
-                { p: "69", n: "Bayburt", t: "0458", z: "69000" },
-                { p: "70", n: "Karaman", t: "0338", z: "70000" },
-                { p: "71", n: "Kırıkkale", t: "0318", z: "71000" },
-                { p: "72", n: "Batman", t: "0488", z: "72000" },
-                { p: "73", n: "Şırnak", t: "0486", z: "73000" },
-                { p: "74", n: "Bartın", t: "0378", z: "74000" },
-                { p: "75", n: "Ardahan", t: "0478", z: "75000" },
-                { p: "76", n: "Iğdır", t: "0476", z: "76000" },
-                { p: "77", n: "Yalova", t: "0226", z: "77000" },
-                { p: "78", n: "Karabük", t: "0370", z: "78000" },
-                { p: "79", n: "Kilis", t: "0348", z: "79000" },
-                { p: "80", n: "Osmaniye", t: "0328", z: "80000" },
-                { p: "81", n: "Düzce", t: "0380", z: "81000" }
-            ];
-
-            let materials = [
-                { name: "Çimento (Torba)", qty: 25, price: 210 },
-                { name: "İnşaat Demiri (Ton)", qty: 2, price: 26500 },
-                { name: "Bims / Tuğla (Adet)", qty: 1000, price: 14 }
-            ];
-
-            const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                "\"": "&quot;",
-                "'": "&#39;"
-            })[character]);
-
-            function openSub(title, html) {
-                const subScreen = document.getElementById("subScreen");
-                const subTitle = document.getElementById("subTitle");
-                const subContent = document.getElementById("subContent");
-                if (!subScreen || !subTitle || !subContent) return;
-                subTitle.textContent = title;
-                subContent.innerHTML = html;
-                subScreen.classList.add("open");
-                if (window.matchMedia("(max-width: 992px)").matches) {
-                    const phoneWrapper = document.querySelector(".phone-wrapper");
-                    if (phoneWrapper) phoneWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            }
-
-            function closeSub() {
-                const subScreen = document.getElementById("subScreen");
-                if (subScreen) subScreen.classList.remove("open");
-            }
-
-            function openInPhone(title, url) {
-                const safeUrl = String(url || "").trim();
-                if (!/^https?:\/\//i.test(safeUrl)) return;
-                openSub(title, `
-                    <div class="sub-web-note">
-                        Resmi hizmet bu telefon simülatörü içinde gösterilmeye çalışılıyor.
-                        Bazı kurumlar güvenlik nedeniyle gömülü açılışa izin vermeyebilir.
-                    </div>
-                    <iframe class="sub-web-view" src="${escapeHtml(safeUrl)}" title="${escapeHtml(title)}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-                `);
-            }
-
-            function applySearchAndPriority() {
-                const input = document.getElementById("searchInput");
-                const q = (input ? input.value : "").toLowerCase().trim();
-                document.querySelectorAll(".group-block").forEach((block) => {
-                    const grp = block.dataset.group;
-                    const groupMatches = currentPriorityFilter === "all" || currentPriorityFilter === grp;
-                    if (!groupMatches) {
-                        block.style.display = "none";
-                        return;
-                    }
-                    let anyVisible = false;
-                    block.querySelectorAll(".app-card").forEach((card) => {
-                        const match = !q || card.innerText.toLowerCase().includes(q);
-                        card.style.display = match ? "flex" : "none";
-                        if (match) anyVisible = true;
-                    });
-                    block.style.display = anyVisible ? "block" : "none";
-                });
-            }
-
-            function filterPriorityGroup(groupKey, shouldScroll) {
-                currentPriorityFilter = groupKey;
-                document.querySelectorAll(".p-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.p === groupKey));
-                document.querySelectorAll(".tour-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.tour === groupKey));
-                applySearchAndPriority();
-                if (shouldScroll) {
-                    closeSub();
-                    const bodyEl = document.getElementById("modulesBody");
-                    if (!bodyEl) return;
-                    if (groupKey === "all") {
-                        bodyEl.scrollTo({ top: 0, behavior: "smooth" });
-                    } else {
-                        const target = document.getElementById("group-" + groupKey);
-                        if (target && target.style.display !== "none") {
-                            bodyEl.scrollTo({ top: Math.max(0, target.offsetTop - bodyEl.offsetTop - 4), behavior: "smooth" });
-                        }
-                    }
-                }
-            }
-
-            function resetAllFiltersAndScroll() {
-                const input = document.getElementById("searchInput");
-                if (input) input.value = "";
-                filterPriorityGroup("all", true);
-            }
-
-            function renderQuakes() {
-                openSub("Son Depremler", `
-                    <div class="official-card-box" style="text-align:left;">
-                        <div class="filter-row">
-                                                <button type="button" class="filter-chip ${quakeMinMag === 0 ? "active" : ""}" data-qmag="0">Tümü</button>
-                                                <button type="button" class="filter-chip ${quakeMinMag === 3 ? "active" : ""}" data-qmag="3">3.0+ M</button>
-                                                <button type="button" class="filter-chip ${quakeMinMag === 4 ? "active" : ""}" data-qmag="4">4.0+ M</button>
-                        </div>
-                                            <p id="quakeFeedUpdated" style="font-size:0.64rem;color:#64748b;" role="status" aria-live="polite"></p>
-                                            <small>Kaynak: <a href="https://earthquake.usgs.gov/" target="_blank" rel="noopener noreferrer">USGS • Son 24 saat</a></small>
-                                            <div id="quakeLiveList" role="status" aria-live="polite">Deprem verileri yükleniyor...</div>
-                    </div>
-                `);
-                const renderItems = () => {
-                    const list = document.getElementById("quakeLiveList");
-                    if (!list || !latestQuakes) return;
-                    const filtered = latestQuakes.filter((item) => item.mag >= quakeMinMag).slice(0, 20);
-                    list.replaceChildren();
-                    if (!filtered.length) {
-                                            list.textContent = "Bu ölçekte deprem kaydı bulunamadı.";
-                                            return;
-                    }
-                    filtered.forEach((item) => {
-                                            const row = document.createElement("div");
-                                            row.className = "quake-item";
-                                            const details = document.createElement("div");
-                                            const location = document.createElement("strong");
-                                            location.textContent = item.location;
-                                            const metadata = document.createElement("span");
-                                            metadata.style.cssText = "font-size:0.64rem;color:#64748b;";
-                                            metadata.textContent = `Saat: ${item.time} • Derinlik: ${item.depth} km`;
-                                            details.append(location, document.createElement("br"), metadata);
-                                            const magnitude = document.createElement("div");
-                                            magnitude.className = `mag-badge ${item.mag >= 4 ? "mag-high" : "mag-mid"}`;
-                                            magnitude.textContent = item.mag.toFixed(1);
-                                            row.append(details, magnitude);
-                                            list.append(row);
-                    });
-                };
-
-                if (latestQuakes) {
-                    const updated = document.getElementById("quakeFeedUpdated");
-                    if (updated && latestQuakes.generatedAt) {
-                                            updated.textContent = `Akış oluşturulma: ${latestQuakes.generatedAt.toLocaleString("tr-TR")}`;
-                    }
-                    renderItems();
-                    return;
-                }
-                if (quakeRequest) return;
-                quakeRequest = fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
-                    .then((response) => {
-                                            if (!response.ok) throw new Error("Deprem verisine erişilemedi");
-                                            return response.json();
-                    })
-                    .then((data) => {
-                                            latestQuakes = (Array.isArray(data.features) ? data.features : [])
-                                                .map((feature) => {
-                                                    const properties = feature.properties || {};
-                                                    const coordinates = feature.geometry && feature.geometry.coordinates;
-                                                    return {
-                                                        mag: Number(properties.mag),
-                                                        location: properties.place || "Konum bilgisi yok",
-                                                        depth: Number(coordinates && coordinates[2]),
-                                                        time: properties.time ? new Date(properties.time).toLocaleString("tr-TR") : "Saat bilgisi yok"
-                                                    };
-                                                })
-                                                .filter((item) => Number.isFinite(item.mag) && Number.isFinite(item.depth));
-                                            latestQuakes.generatedAt = data.metadata && data.metadata.generated
-                                                ? new Date(data.metadata.generated)
-                                                : null;
-                                            const updated = document.getElementById("quakeFeedUpdated");
-                                            if (updated && latestQuakes.generatedAt) {
-                                                updated.textContent = `Akış oluşturulma: ${latestQuakes.generatedAt.toLocaleString("tr-TR")}`;
-                                            }
-                                            renderItems();
-                    })
-                    .catch((error) => {
-                                            const list = document.getElementById("quakeLiveList");
-                                            if (list) list.textContent = "Deprem verisi şu anda alınamıyor. İnternet bağlantınızı kontrol edip yeniden deneyin.";
-                                            console.error("USGS deprem akışı yüklenemedi:", error);
-                    })
-                    .finally(() => {
-                                            quakeRequest = null;
-                    });
-            }
-
-            function buildMaterialsSummary() {
-                const lines = ["MALZEME LİSTESİ ÖZETİ", "---------------------"];
-                let sum = 0;
-                materials.forEach((m, i) => {
-                    const t = m.qty * m.price;
-                    sum += t;
-                    lines.push(`${i + 1}. ${m.name}: ${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${t.toLocaleString("tr-TR")} ₺`);
-                });
-                lines.push(`TOPLAM: ${sum.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺`);
-                return lines.join("\n");
-            }
-
-            function renderMaterials() {
-                const rows = materials.map((m, i) => `
-                    <div class="mat-row">
-                        <div><strong>${escapeHtml(m.name)}</strong><br><span style="color:#64748b;">${m.qty} x ${m.price.toLocaleString("tr-TR")} ₺ = ${(m.qty * m.price).toLocaleString("tr-TR")} ₺</span></div>
-                        <button type="button" data-del-mat="${i}" style="background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:4px 8px;cursor:pointer;">Sil</button>
-                    </div>
-                `).join("");
-
-                openSub("Malzeme Listesi", `
-                    <div class="official-card-box" style="text-align:left;">
-                        <div class="input-box"><label for="matName">Malzeme Adı</label><input type="text" id="matName" placeholder="Örn: Kum, Çivi, Boya"></div>
-                        <div class="grid-2-inp">
-                            <div class="input-box"><label for="matQty">Miktar</label><input type="number" id="matQty" value="10" min="0" step="any"></div>
-                            <div class="input-box"><label for="matPrice">Birim Fiyat (₺)</label><input type="number" id="matPrice" value="150" min="0" step="any"></div>
-                        </div>
-                        <button type="button" class="primary-btn" id="addMatBtn">Listeye Ekle</button>
-                        <div id="matInputStatus" class="copy-status" role="status" aria-live="polite"></div>
-                        <div style="margin-top:8px;">${rows}</div>
-                        <textarea id="matSummaryArea" class="copy-summary-area" readonly>${escapeHtml(buildMaterialsSummary())}</textarea>
-                        <button type="button" class="secondary-action-btn" id="copyMatBtn">Özeti Kopyala</button>
-                        <div id="matCopyStatus" class="copy-status"></div>
-                    </div>
-                `);
-            }
-
-            function renderTotalCalc() {
-                const listSum = materials.reduce((acc, item) => acc + item.qty * item.price, 0);
-                openSub("Toplam Hesaplama", `
-                    <div class="official-card-box" style="text-align:left;">
-                        <div class="input-box"><label for="calcSub">Malzeme Toplamı (₺)</label><input type="number" id="calcSub" value="${listSum.toFixed(2)}" min="0" step="any"></div>
-                        <div class="input-box"><label for="calcExtra">Ek İşçilik (₺)</label><input type="number" id="calcExtra" value="0" min="0" step="any"></div>
-                        <div class="input-box"><label for="calcVat">KDV Oranı</label>
-                            <select id="calcVat">
-                                <option value="0">%0</option>
-                                <option value="0.10">%10</option>
-                                <option value="0.20" selected>%20</option>
-                            </select>
-                        </div>
-                        <div id="grandTotalBox" class="output-panel"></div>
-                    </div>
-                `);
-                const updateTotal = () => {
-                    const sub = document.getElementById("calcSub").valueAsNumber;
-                    const extra = document.getElementById("calcExtra").valueAsNumber;
-                    const output = document.getElementById("grandTotalBox");
-                    if (![sub, extra].every((value) => Number.isFinite(value) && value >= 0)) {
-                        output.textContent = "Lütfen sıfır veya pozitif tutarlar girin.";
-                        return;
-                    }
-                    const vat = parseFloat(document.getElementById("calcVat").value) || 0;
-                    const total = (sub + extra) * (1 + vat);
-                    if (!Number.isFinite(total)) {
-                        output.textContent = "Tutar hesaplanamayacak kadar büyük. Daha küçük değerler girin.";
-                        return;
-                    }
-                    output.innerHTML = `GENEL TOPLAM: <strong style="color:#ea580c;">${total.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
-                };
-                updateTotal();
-                ["calcSub", "calcExtra", "calcVat"].forEach((id) => document.getElementById(id).addEventListener("input", updateTotal));
-                document.getElementById("calcVat").addEventListener("change", updateTotal);
-            }
-
-            function renderMetraj(tab) {
-                openSub("İnşaat Metraj Hesap", `
-                    <div class="official-card-box" style="text-align:left;">
-                        <div class="sub-tabs">
-                            <button type="button" class="sub-tab-btn ${tab === "roof" ? "active" : ""}" data-mtab="roof">Çatı Alanı</button>
-                            <button type="button" class="sub-tab-btn ${tab === "concrete" ? "active" : ""}" data-mtab="concrete">Beton Hacmi</button>
-                        </div>
-                        <div id="metrajBody"></div>
-                        <p class="simulation-note">Sonuç yaklaşık bilgilendirme amaçlıdır. Çatı alanı hesabında gerçek eğim ve geometri yerine varsayılan 1,15 katsayısı kullanılır; fire ve yapısal gereklilikler hesaba katılmaz.</p>
-                    </div>
-                `);
-                const body = document.getElementById("metrajBody");
-                if (tab === "roof") {
-                    body.innerHTML = `
-                        <div class="grid-2-inp">
-                            <div class="input-box"><label for="rW">Genişlik (m)</label><input type="number" id="rW" value="10" min="0" max="1000000" step="any"></div>
-                            <div class="input-box"><label for="rL">Uzunluk (m)</label><input type="number" id="rL" value="14" min="0" max="1000000" step="any"></div>
-                        </div>
-                        <div id="roofOut" class="output-panel"></div>
-                    `;
-                    const calcRoof = () => {
-                        const w = document.getElementById("rW").valueAsNumber;
-                        const l = document.getElementById("rL").valueAsNumber;
-                        const output = document.getElementById("roofOut");
-                        if (![w, l].every((value) => Number.isFinite(value) && value >= 0)) {
-                            output.textContent = "Geçerli, sıfır veya pozitif ölçüler girin.";
-                            return;
-                        }
-                        output.innerHTML = `Eğimli Çatı Alanı: <strong style="color:#ea580c;">${(w * l * 1.15).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m²</strong>`;
-                    };
-                    calcRoof();
-                    document.getElementById("rW").addEventListener("input", calcRoof);
-                    document.getElementById("rL").addEventListener("input", calcRoof);
-                } else {
-                    body.innerHTML = `
-                        <div class="grid-2-inp">
-                            <div class="input-box"><label for="cW">En (m)</label><input type="number" id="cW" value="10" min="0" max="1000000" step="any"></div>
-                            <div class="input-box"><label for="cL">Boy (m)</label><input type="number" id="cL" value="12" min="0" max="1000000" step="any"></div>
-                        </div>
-                        <div class="input-box"><label for="cT">Kalınlık (cm)</label><input type="number" id="cT" value="12" min="0" max="1000000" step="any"></div>
-                        <div id="concOut" class="output-panel"></div>
-                    `;
-                    const calcConc = () => {
-                        const w = document.getElementById("cW").valueAsNumber;
-                        const l = document.getElementById("cL").valueAsNumber;
-                        const t = document.getElementById("cT").valueAsNumber;
-                        const output = document.getElementById("concOut");
-                        if (![w, l, t].every((value) => Number.isFinite(value) && value >= 0)) {
-                            output.textContent = "Geçerli, sıfır veya pozitif ölçüler girin.";
-                            return;
-                        }
-                        output.innerHTML = `Hazır Beton Hacmi: <strong style="color:#ea580c;">${(w * l * (t / 100)).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m³</strong>`;
-                    };
-                    calcConc();
-                    ["cW", "cL", "cT"].forEach((id) => document.getElementById(id).addEventListener("input", calcConc));
-                }
-            }
-
-            function handleAction(el) {
-                const action = el.dataset.action;
-                if (!action) return;
-                if (action === "reset") return resetAllFiltersAndScroll();
-                if (action === "emergency") {
-                    return openSub("112 Acil Çağrı Merkezi", `
-                        <div class="official-card-box">
-                            <div class="verified-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca;">7/24 Tek Numara Acil Yardım</div>
-                            <p style="font-size:0.76rem;color:#475569;margin-bottom:10px;">Ambulans, İtfaiye, Polis, Jandarma ve AFAD çağrı hattı.</p>
-                            <a href="tel:112" class="primary-btn" style="background:#dc2626;">112 ACİL ÇAĞRI ARA</a>
-                        </div>
-                    `);
-                }
-                if (action === "quakes") return renderQuakes();
-                if (action === "privacy") {
-                    return openSub("Gizlilik ve Veri Kullanımı", `
-                        <div class="official-card-box">
-                            <div class="verified-tag">Ücretsiz • Hesap açmadan kullanım</div>
-                            <p style="font-size:0.74rem;color:#475569;margin:8px 0;">Hesaplama araçları tarayıcınızda çalışır. Portal ziyaretçi sayımı veya analiz çerezi kullanmaz. Geri bildirim formu WhatsApp'ı açar; bu site mesajı kaydetmez.</p>
-                            <a href="./privacy.html" class="primary-btn">Gizlilik ve Kullanım Bilgilendirmesi</a>
-                        </div>
-                    `);
-                }
-                if (action === "pharmacy") {
-                    return openInPhone("Nöbetçi Eczaneler", "https://eczaneler.gen.tr/nobetci-eczaneler");
-                }
-                if (action === "official") {
-                    return openInPhone(el.dataset.name || "Resmi Bağlantı", el.dataset.url || "");
-                }
-                if (action === "weather") {
-                    openSub("Canlı Hava Durumu", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box">
-                                <label>Şehir</label>
-                                <select id="mobileWeatherCity">
-                                    <option value="39.9334,32.8597,Ankara" selected>Ankara</option>
-                                    <option value="41.0082,28.9784,İstanbul">İstanbul</option>
-                                    <option value="38.4237,27.1428,İzmir">İzmir</option>
-                                    <option value="40.1885,29.0610,Bursa">Bursa</option>
-                                    <option value="36.8969,30.7133,Antalya">Antalya</option>
-                                    <option value="37.0662,37.3833,Osmaniye">Osmaniye</option>
-                                    <option value="37.1762,36.1641,Düziçi">Düziçi</option>
-                                </select>
-                            </div>
-                            <button type="button" class="primary-btn" id="mobileWeatherRefresh" style="margin:8px 0;">Yenile</button>
-                            <div id="mobileWeatherResult" class="output-panel" role="status" aria-live="polite">Hava durumu yükleniyor...</div>
-                            <small>Kaynak: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></small>
-                        </div>
-                    `);
-                    const citySelect = document.getElementById("mobileWeatherCity");
-                    const refreshButton = document.getElementById("mobileWeatherRefresh");
-                    const result = document.getElementById("mobileWeatherResult");
-                    const weatherNames = {
-                        0: "Açık", 1: "Az Bulutlu", 2: "Parçalı Bulutlu", 3: "Bulutlu",
-                        45: "Sisli", 61: "Hafif Yağmurlu", 63: "Yağmurlu", 65: "Kuvvetli Yağmurlu",
-                        71: "Kar Yağışlı", 80: "Sağanak Yağışlı", 95: "Gök Gürültülü Sağanak"
-                    };
-                    const fetchWeather = async () => {
-                        if (!citySelect || !result) return;
-                        const [lat, lon, cityName] = citySelect.value.split(",");
-                        result.textContent = `${cityName} için veri alınıyor...`;
-                        try {
-                            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FIstanbul`);
-                            if (!response.ok) throw new Error("Hava durumu servisine erişilemedi");
-                            const data = await response.json();
-                            const current = data.current;
-                            if (!current) throw new Error("Güncel hava durumu bulunamadı");
-                            result.innerHTML = `<strong style="color:#ea580c;">${cityName}: ${Math.round(current.temperature_2m)}°C</strong><br>${weatherNames[current.weather_code] || "Güncel"} • Nem: %${current.relative_humidity_2m} • Rüzgar: ${Math.round(current.wind_speed_10m)} km/s`;
-                        } catch (error) {
-                            result.textContent = "Hava durumu bilgisi alınamadı.";
-                            console.error("Open-Meteo hava durumu alınamadı:", error);
-                        }
-                    };
-                    citySelect?.addEventListener("change", fetchWeather);
-                    refreshButton?.addEventListener("click", fetchWeather);
-                    fetchWeather();
-                    return;
-                }
-                if (action === "tuv") {
-                    openSub("TÜVTÜRK Muayene Planlayıcı", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Son Muayene Tarihi</label><input type="date" id="mobileTuvDate"></div>
-                            <div class="input-box">
-                                <label>Muayene Periyodu</label>
-                                <select id="mobileTuvPeriod">
-                                    <option value="2" selected>2 Yılda Bir</option>
-                                    <option value="1">Her Yıl</option>
-                                </select>
-                            </div>
-                            <button type="button" class="primary-btn" id="mobileTuvCalculate" style="margin:8px 0;">Hesapla</button>
-                            <div id="mobileTuvResult" class="output-panel" role="status" aria-live="polite"></div>
-                            <a href="https://www.tuvturk.com.tr/" target="_blank" rel="noopener noreferrer" class="primary-btn secondary">Resmi TÜVTÜRK Sitesi</a>
-                        </div>
-                    `);
-                    const dateInput = document.getElementById("mobileTuvDate");
-                    const periodSelect = document.getElementById("mobileTuvPeriod");
-                    const calculateButton = document.getElementById("mobileTuvCalculate");
-                    const result = document.getElementById("mobileTuvResult");
-                    if (dateInput) {
-                        const defaultDate = new Date();
-                        defaultDate.setFullYear(defaultDate.getFullYear() - 1);
-                        dateInput.value = defaultDate.toISOString().split("T")[0];
-                    }
-                    const calculate = () => {
-                        if (!dateInput?.value || !periodSelect || !result) return;
-                        const [year, month, day] = dateInput.value.split("-").map(Number);
-                        const nextDate = new Date(year + (Number(periodSelect.value) || 2), month - 1, day);
-                        const today = new Date();
-                        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                        const remainingDays = Math.round((nextDate - todayStart) / 86400000);
-                        const dateText = nextDate.toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" });
-                        const status = remainingDays > 0
-                            ? `Tahmini <strong>${remainingDays} gün</strong> kaldı.`
-                            : remainingDays === 0
-                                ? "<strong>Muayene tarihi bugün!</strong>"
-                                : `Tahmini tarih <strong>${Math.abs(remainingDays)} gün</strong> geçmiş.`;
-                        result.innerHTML = `Sonraki tahmini tarih: <strong style="color:#ea580c;">${dateText}</strong><br>${status}`;
-                    };
-                    calculateButton?.addEventListener("click", calculate);
-                    periodSelect?.addEventListener("change", calculate);
-                    calculate();
-                    return;
-                }
-                if (action === "metraj") return renderMetraj("roof");
-                if (action === "materials") return renderMaterials();
-                if (action === "total") return renderTotalCalc();
-                if (action === "currency") {
-                    openSub("Canlı Döviz", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Tutar</label><input type="number" id="fxAmount" value="1000" min="0" step="any"></div>
-                            <div class="input-box"><label>Birim</label>
-                                <select id="fxPair">
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                </select>
-                            </div>
-                            <div id="fxOut" class="output-panel">Kur bilgisi yükleniyor...</div>
-                        </div>
-                    `);
-                    const calcFx = async () => {
-                        const output = document.getElementById("fxOut");
-                        output.textContent = "Kur bilgisi yükleniyor...";
-                        try {
-                            const rates = await getExchangeRates();
-                            const amt = document.getElementById("fxAmount").valueAsNumber;
-                            const pair = document.getElementById("fxPair").value;
-                            if (!Number.isFinite(amt) || amt < 0) {
-                                output.textContent = "Sıfır veya pozitif bir tutar girin.";
-                                return;
-                            }
-                            const rate = pair === "USD" ? rates.TRY : pair === "EUR" ? rates.TRY / rates.EUR : null;
-                            if (!rate) throw new Error("Kur bulunamadı");
-                            const val = amt * rate;
-                            output.innerHTML = `TL Karşılığı: <strong style="color:#ea580c;">${val.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
-                        } catch (error) {
-                            output.textContent = "Kur bilgisi alınamadı.";
-                            console.error("Döviz dönüştürücü kuru alınamadı:", error);
-                        }
-                    };
-                    calcFx();
-                    document.getElementById("fxAmount").addEventListener("input", calcFx);
-                    document.getElementById("fxPair").addEventListener("change", calcFx);
-                    return;
-                }
-                if (action === "cities") {
-                    const opts = all81Cities.map((c, i) => `<option value="${i}">${c.p} - ${c.n}</option>`).join("");
-                    openSub("81 İl Rehberi", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>İl Seçiniz</label><select id="selCity">${opts}</select></div>
-                            <div id="cityOut" class="output-panel"></div>
-                        </div>
-                    `);
-                    const sel = document.getElementById("selCity");
-                    sel.value = "4";
-                    const renderCity = () => {
-                        const c = all81Cities[sel.value];
-                        document.getElementById("cityOut").innerHTML = `<strong>İl:</strong> ${c.n}<br><strong>Plaka:</strong> ${c.p}<br><strong>Alan Kodu:</strong> ${c.t}<br><strong>Posta Kodu:</strong> ${c.z}`;
-                    };
-                    renderCity();
-                    sel.addEventListener("change", renderCity);
-                    return;
-                }
-                if (action === "distance") {
-                    openSub("Şehir Mesafe", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Güzergah</label>
-                                <select id="distSel">
-                                    <option value="Düziçi → Adana: 95 km">Düziçi → Adana (95 km)</option>
-                                    <option value="Düziçi → Gaziantep: 115 km">Düziçi → Gaziantep (115 km)</option>
-                                    <option value="Düziçi → Ankara: 575 km">Düziçi → Ankara (575 km)</option>
-                                </select>
-                            </div>
-                            <div id="distOut" class="output-panel">Mesafe: <strong>Düziçi → Adana: 95 km</strong></div>
-                        </div>
-                    `);
-                    document.getElementById("distSel").addEventListener("change", (e) => {
-                        document.getElementById("distOut").innerHTML = `Mesafe: <strong>${e.target.value}</strong>`;
-                    });
-                    return;
-                }
-                if (action === "overtime") {
-                    openSub("Mesai Hesaplama", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Aylık Maaş (₺)</label><input type="number" id="otSal" value="28000" min="0" step="any"></div>
-                            <div class="input-box"><label>Fazla Mesai (Saat)</label><input type="number" id="otHr" value="10" min="0" step="any"></div>
-                            <div id="otOut" class="output-panel"></div>
-                        </div>
-                    `);
-                    const calcOt = () => {
-                        const sal = document.getElementById("otSal").valueAsNumber;
-                        const hr = document.getElementById("otHr").valueAsNumber;
-                        const output = document.getElementById("otOut");
-                        if (![sal, hr].every((value) => Number.isFinite(value) && value >= 0)) {
-                            output.textContent = "Geçerli, sıfır veya pozitif değerler girin.";
-                            return;
-                        }
-                        output.innerHTML = `Mesai Tutarı: <strong style="color:#ea580c;">${((sal / 225) * 1.5 * hr).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₺</strong>`;
-                    };
-                    calcOt();
-                    document.getElementById("otSal").addEventListener("input", calcOt);
-                    document.getElementById("otHr").addEventListener("input", calcOt);
-                    return;
-                }
-                if (action === "area") {
-                    openSub("Alan Hesaplama", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="input-box"><label>Metrekare (m²)</label><input type="number" id="aSqm" value="2500" min="0" step="any"></div>
-                            <div id="aOut" class="output-panel"></div>
-                        </div>
-                    `);
-                    const calcArea = () => {
-                        const sqm = document.getElementById("aSqm").valueAsNumber;
-                        const output = document.getElementById("aOut");
-                        if (!Number.isFinite(sqm) || sqm < 0) {
-                            output.textContent = "Sıfır veya pozitif bir alan girin.";
-                            return;
-                        }
-                        output.innerHTML = `Dönüm: <strong>${(sqm / 1000).toLocaleString("tr-TR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Dönüm</strong>`;
-                    };
-                    calcArea();
-                    document.getElementById("aSqm").addEventListener("input", calcArea);
-                    return;
-                }
-                if (action === "recipes") {
-                    openSub("Yemek Tarifleri", `
-                        <div class="official-card-box" style="text-align:left;">
-                            <div class="mat-row"><div><strong>Düziçi Usulü Etli Kömbe</strong><br><span style="color:#64748b;">İnce hamur, kavrulmuş kıyma ve baharat.</span></div></div>
-                            <div class="mat-row"><div><strong>Osmaniye Yer Fıstıklı Köme</strong><br><span style="color:#64748b;">Pekmez, nişasta ve yer fıstığı.</span></div></div>
-                        </div>
-                    `);
-                }
-            }
-
-            document.addEventListener("click", (e) => {
-                const subLink = e.target.closest("#subContent a[href]");
-                if (subLink) {
-                    const href = subLink.getAttribute("href") || "";
-                    if (/^https?:\/\//i.test(href) && subLink.getAttribute("href") !== "./privacy.html") {
-                        e.preventDefault();
-                        openInPhone(subLink.textContent.trim() || "Resmi Site", href);
-                        return;
-                    }
-                }
-                const actionEl = e.target.closest("[data-action]");
-                if (actionEl) {
-                    handleAction(actionEl);
-                    return;
-                }
-                const tourBtn = e.target.closest(".tour-btn");
-                if (tourBtn) {
-                    filterPriorityGroup(tourBtn.dataset.tour, true);
-                    return;
-                }
-                const chipBtn = e.target.closest(".p-chip");
-                if (chipBtn) {
-                    filterPriorityGroup(chipBtn.dataset.p, true);
-                    return;
-                }
-                const qmagBtn = e.target.closest("[data-qmag]");
-                if (qmagBtn) {
-                    quakeMinMag = parseFloat(qmagBtn.dataset.qmag) || 0;
-                    renderQuakes();
-                    return;
-                }
-                const mtabBtn = e.target.closest("[data-mtab]");
-                if (mtabBtn) {
-                    renderMetraj(mtabBtn.dataset.mtab);
-                    return;
-                }
-                if (e.target.closest("#backSubBtn")) {
-                    closeSub();
-                    return;
-                }
-                if (e.target.closest("#clearSearchBtn")) {
-                    resetAllFiltersAndScroll();
-                    return;
-                }
-                if (e.target.closest("#addMatBtn")) {
-                    const n = document.getElementById("matName").value.trim();
-                    const q = document.getElementById("matQty").valueAsNumber;
-                    const p = document.getElementById("matPrice").valueAsNumber;
-                    const status = document.getElementById("matInputStatus");
-                    const itemTotal = q * p;
-                    const currentTotal = materials.reduce((sum, item) => sum + item.qty * item.price, 0);
-                    if (n && Number.isFinite(q) && q > 0 && Number.isFinite(p) && p >= 0 && Number.isFinite(itemTotal) && Number.isFinite(currentTotal + itemTotal)) {
-                        materials.push({ name: n, qty: q, price: p });
-                        renderMaterials();
-                    } else if (status) {
-                        status.textContent = "Geçerli bir ad, pozitif miktar ve sıfır veya pozitif birim fiyat girin; toplam tutar sonlu olmalıdır.";
-                    }
-                    return;
-                }
-                const delMat = e.target.closest("[data-del-mat]");
-                if (delMat) {
-                    materials.splice(parseInt(delMat.dataset.delMat, 10), 1);
-                    renderMaterials();
-                    return;
-                }
-                if (e.target.closest("#copyMatBtn")) {
-                    const ta = document.getElementById("matSummaryArea");
-                    const st = document.getElementById("matCopyStatus");
-                    if (ta) {
-                        ta.focus();
-                        ta.select();
-                        try { document.execCommand("copy"); } catch (_) {}
-                        if (st) st.textContent = "Özet kopyalandı.";
-                    }
-                }
-            });
-
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.addEventListener("input", applySearchAndPriority);
-        })();
-    </script>
-    <section class="feedback-section" id="iletisim">
-        <div class="feedback-container">
-            <div class="feedback-heading">
-                <div>
-                    <span>İLETİŞİM MERKEZİ</span>
-                    <h2>Yorum, Dilek ve Önerileriniz</h2>
-                </div>
-                <p>Görüşlerinizi paylaşarak Vatandaş Portalı'nın geliştirilmesine katkıda bulunabilirsiniz.</p>
-            </div>
-            <div class="feedback-grid">
-                <div class="contact-cards">
-                    <a class="contact-card" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-whatsapp"></i>
-                        <div><strong>WhatsApp İletişim</strong><span>+90 541 642 90 94</span></div>
-                    </a>
-                    <a class="contact-card" href="tel:+905416429094">
-                        <i class="fas fa-phone-alt"></i>
-                        <div><strong>Telefon</strong><span>+90 541 642 90 94</span></div>
-                    </a>
-                    <a class="contact-card" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-                        <i class="fas fa-house"></i>
-                        <div><strong>Portal</strong><span>www.mustafakalayci.xyz</span></div>
-                    </a>
-                </div>
-                <form class="feedback-form" id="feedbackForm">
-                    <label>
-                        Ad Soyad
-                        <input type="text" id="feedbackName" name="name" autocomplete="name" maxlength="100" required placeholder="Adınız ve soyadınız">
-                    </label>
-                    <label>
-                        İletişim
-                        <input type="text" id="feedbackContact" name="contact" autocomplete="tel" maxlength="120" placeholder="Telefon veya e-posta">
-                    </label>
-                    <label class="full-width">
-                        Bildirim Türü
-                        <select id="feedbackType" name="type">
-                            <option value="Yorum">Yorum</option>
-                            <option value="Dilek">Dilek</option>
-                            <option value="Öneri">Öneri</option>
-                            <option value="İletişim">İletişim Talebi</option>
-                        </select>
-                    </label>
-                    <label class="full-width">
-                        Mesajınız
-                        <textarea id="feedbackMessage" name="message" maxlength="2000" required placeholder="Mesajınızı buraya yazın"></textarea>
-                    </label>
-                    <label class="feedback-consent">
-                        <input type="checkbox" id="feedbackConsent" required>
-                        <span>Bu mesajın WhatsApp'a aktarılmasını onaylıyorum. Portal mesajı kaydetmez; <a href="./privacy.html">gizlilik bilgilendirmesini</a> okudum.</span>
-                    </label>
-                    <button class="feedback-submit" type="submit">
-                        <i class="fab fa-whatsapp"></i> WhatsApp ile Gönder
-                    </button>
-                    <div class="feedback-status" id="feedbackStatus" role="status" aria-live="polite"></div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <script>
-        (function () {
-            const form = document.getElementById("feedbackForm");
-            if (!form) return;
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-                const name = document.getElementById("feedbackName").value.trim();
-                const contact = document.getElementById("feedbackContact").value.trim();
-                const type = document.getElementById("feedbackType").value;
-                const message = document.getElementById("feedbackMessage").value.trim();
-                const status = document.getElementById("feedbackStatus");
-                const consent = document.getElementById("feedbackConsent").checked;
-                if (!name || !message || !consent) {
-                    if (status) status.textContent = "Lütfen adınızı ve mesajınızı girin, WhatsApp aktarımına onay verin.";
-                    return;
-                }
-                const text = [
-                    "VATANDAŞ PORTALI İLETİŞİM",
-                    "",
-                    `Tür: ${type}`,
-                    `Ad Soyad: ${name}`,
-                    `İletişim: ${contact || "Belirtilmedi"}`,
-                    "",
-                    message
-                ].join("\n");
-                const whatsappWindow = window.open(`https://wa.me/905416429094?text=${encodeURIComponent(text)}`, "_blank");
-                if (whatsappWindow) {
-                    whatsappWindow.opener = null;
-                    if (status) status.textContent = "WhatsApp açıldı. Mesajı kontrol edip uygulamadan göndermeniz gerekir.";
-                } else if (status) {
-                    status.textContent = "Açılır pencere engellendi. WhatsApp iletişim bağlantısını kullanarak mesajı gönderin.";
-                }
-            });
-        })();
-    </script>
-    <script>
-        (function () {
-            const installButton = document.getElementById("installAppBtn");
-            let installPrompt = null;
-            if (installButton) {
-                window.addEventListener("beforeinstallprompt", (event) => {
-                    event.preventDefault();
-                    installPrompt = event;
-                    installButton.hidden = false;
-                });
-                installButton.addEventListener("click", async () => {
-                    if (!installPrompt) return;
-                    const prompt = installPrompt;
-                    installPrompt = null;
-                    try {
-                        await prompt.prompt();
-                        await prompt.userChoice;
-                        installButton.hidden = true;
-                    } catch (error) {
-                        console.error("Uygulama yükleme penceresi açılamadı:", error);
-                    }
-                });
-                window.addEventListener("appinstalled", () => {
-                    installButton.hidden = true;
-                });
-            }
-
-            if ("serviceWorker" in navigator && window.isSecureContext) {
-                navigator.serviceWorker.register("./service-worker.js")
-                    .catch((error) => console.error("Service Worker kaydedilemedi:", error));
-            }
-        })();
-    </script>
-  <footer style="width:100%;text-align:center;padding:18px 12px;background:#090e1a;color:#94a3b8;font-size:12px;border-top:1px solid rgba(245,158,11,0.18);">
-    Copyright © 2026 www.mustafakalayci.xyz Tüm hakları saklıdır.
-    <a href="./privacy.html" style="color:#fbbf24;margin-left:12px;">Gizlilik ve Kullanım</a>
-  </footer>
-</body>
-</html>
+            font-size: 0.8
