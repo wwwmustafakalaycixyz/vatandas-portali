@@ -1,992 +1,143 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#090e1a">
-    <meta name="description" content="Kamu kurumlarının resmi bağlantıları ve ücretsiz vatandaş hesaplama araçları. Bağımsız Mustafa Kalaycı Vatandaş Portalı.">
-    <title>MUSTAFA KALAYCI - VATANDAŞ PORTALI</title>
-    <link rel="manifest" href="./manifest.webmanifest">
-    <link rel="icon" href="./icon.svg" type="image/svg+xml">
-    <meta property="og:title" content="Mustafa Kalaycı Vatandaş Portalı">
-    <meta property="og:description" content="Resmi kurum bağlantıları ve ücretsiz hesaplama araçları sunan bağımsız vatandaş portalı.">
-    <meta property="og:image" content="https://www.mustafakalayci.xyz/assets/promo/01-portal.svg">
-    <meta name="visitor-counter-endpoint" content="">
-    <link rel="stylesheet" href="./assets/visitor-counter.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #090e1a;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --warm-gold: #f59e0b;
-            --warm-orange: #ea580c;
-            --app-bg: #fffaf5;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-glass: rgba(245, 158, 11, 0.28);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
-            background: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-
-        :focus-visible {
-            outline: 3px solid #fbbf24;
-            outline-offset: 3px;
-        }
-
-        .skip-link {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            z-index: 100000;
-            transform: translateY(-160%);
-            padding: 10px 14px;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #090e1a;
-            font-weight: 800;
-            text-decoration: none;
-        }
-
-        .skip-link:focus { transform: translateY(0); }
-
-        .contact-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            background: #0d1424;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .site-brand {
-            font-size: 1rem;
-            font-weight: 800;
-            letter-spacing: 0.4px;
-            color: #f8fafc;
-        }
-
-        .whatsapp-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #4ade80;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        #vp-top-ticker {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 8px 16px;
-            background: #111827;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.85rem;
-        }
-
-        .vp-datetime-box {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #e2e8f0;
-            font-weight: 600;
-        }
-
-        .vp-live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-        }
-
-        .vp-marquee-wrap {
-            overflow: hidden;
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .vp-marquee-track {
-            display: flex;
-            gap: 24px;
-            white-space: nowrap;
-        }
-
-        .vp-rate-item {
-            color: #cbd5e1;
-        }
-
-        .visitor-stats {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 14px;
-            padding: 10px 18px;
-            background: #0b1120;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.86rem;
-            color: #cbd5e1;
-        }
-
-        .visitor-live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            margin-right: 4px;
-        }
-
-        /* KIRMIZI ALAN: ARAÇLAR SEKMESİ & PANELİ */
-        #mk-arac-bar {
-            width: 100%;
-            padding: 10px 18px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-            background: #111827;
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-        }
-
-        #mk-arac-btn {
-            background: linear-gradient(90deg, #ea580c, #f59e0b);
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 7px 16px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
-            letter-spacing: 0.4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #mk-arac-btn:hover {
-            filter: brightness(1.08);
-        }
-
-        #mk-arac-panel {
-            display: none;
-            width: 100%;
-            background: #090d16;
-            color: #f8fafc;
-            border-bottom: 2px solid #f59e0b;
-            padding: 18px;
-        }
-
-        #mk-arac-panel.open {
-            display: block;
-        }
-
-        .mk-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-
-        .mk-tab {
-            background: #1e293b;
-            color: #e2e8f0;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 6px 11px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .mk-tab.active {
-            background: #ea580c;
-            border-color: #f59e0b;
-            color: #ffffff;
-        }
-
-        .mk-box {
-            background: #111827;
-            border: 1px solid #1f2937;
-            border-radius: 12px;
-            padding: 16px;
-        }
-
-        .mk-input, .mk-textarea {
-            width: 100%;
-            background: #090e1a;
-            color: #f8fafc;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 9px 12px;
-            font-size: 0.88rem;
-            margin-bottom: 10px;
-        }
-
-        .mk-action {
-            background: #2563eb;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-size: 0.84rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .mk-panel-copy {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #1e293b;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #94a3b8;
-            text-align: right;
-        }
-
-        .promo-gallery {
-            position: relative;
-            max-width: 1120px;
-            margin: 18px auto 0;
-            padding: 0 16px;
-        }
-
-        .promo-gallery-slide {
-            display: none;
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: #111827;
-        }
-
-        .promo-gallery-slide.is-active {
-            display: block;
-        }
-
-        .promo-gallery-slide img {
-            width: 100%;
-            max-height: 360px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .promo-gallery-caption {
-            padding: 12px 16px;
-            background: rgba(9, 14, 26, 0.9);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .promo-gallery-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .promo-gallery-arrow, .promo-gallery-toggle {
-            background: #1e293b;
-            color: #f8fafc;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 6px 10px;
-            cursor: pointer;
-        }
-
-        .promo-gallery-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .promo-gallery-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: none;
-            background: #475569;
-            cursor: pointer;
-        }
-
-        .promo-gallery-dot.is-active {
-            background: #f59e0b;
-        }
-
-        .main-stage {
-            max-width: 1180px;
-            margin: 24px auto;
-            padding: 0 16px;
-        }
-
-        .showcase-container {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 28px;
-            align-items: start;
-        }
-
-        @media (max-width: 992px) {
-            .showcase-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .promo-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(245, 158, 11, 0.14);
-            color: #fbbf24;
-            font-size: 0.78rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .promo-desc {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            margin-bottom: 18px;
-        }
-
-        .tour-label {
-            font-size: 0.82rem;
-            font-weight: 800;
-            color: #fbbf24;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .tour-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .tour-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: #111827;
-            color: #f8fafc;
-            text-align: left;
-            cursor: pointer;
-        }
-
-        .tour-btn.active {
-            border-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.14);
-        }
-
-        .tour-btn-text strong {
-            display: block;
-            font-size: 0.84rem;
-        }
-
-        .tour-btn-text span {
-            font-size: 0.74rem;
-            color: #94a3b8;
-        }
-
-        .cta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .store-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border-radius: 10px;
-            border: none;
-            background: #ea580c;
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.86rem;
-            cursor: pointer;
-        }
-
-        .store-btn.secondary {
-            background: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        .simulation-notice {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-
-        .trust-strip {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.8rem;
-        }
-
-        .trust-item strong {
-            display: block;
-        }
-
-        .trust-item span {
-            color: #94a3b8;
-            font-size: 0.72rem;
-        }
-
-        .phone-wrapper {
-            display: flex;
-            justify-content: center;
-        }
-
-        .phone-frame {
-            width: 100%;
-            max-width: 390px;
-            border-radius: 36px;
-            padding: 12px;
-            background: #1e293b;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-        }
-
-        .phone-screen {
-            position: relative;
-            background: var(--app-bg);
-            color: #0f172a;
-            border-radius: 26px;
-            overflow: hidden;
-            min-height: 620px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dynamic-island {
-            width: 96px;
-            height: 20px;
-            background: #0f172a;
-            border-radius: 999px;
-            margin: 8px auto 4px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 7px;
-        }
-
-        .camera-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #334155;
-        }
-
-        .app-top-bar {
-            padding: 8px 14px 10px;
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .official-seal-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .brand-text h2 {
-            font-size: 0.9rem;
-            font-weight: 800;
-        }
-
-        .brand-text span {
-            font-size: 0.68rem;
-            color: #64748b;
-            font-weight: 700;
-        }
-
-        .live-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #ecfdf5;
-            color: #047857;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        .live-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #10b981;
-        }
-
-        .app-search {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            padding: 6px 10px;
-        }
-
-        .app-search input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            font-size: 0.8rem;
-            color: #0f172a;
-        }
-
-        .clear-search-btn {
-            border: none;
-            background: #e2e8f0;
-            color: #334155;
-            border-radius: 6px;
-            padding: 3px 7px;
-            font-size: 0.68rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .priority-strip {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding: 8px 12px;
-            background: #fff7ed;
-            border-bottom: 1px solid #fed7aa;
-        }
-
-        .p-chip {
-            border: 1px solid #fdba74;
-            background: #ffffff;
-            color: #9a3412;
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-
-        .p-chip.active {
-            background: #ea580c;
-            color: #ffffff;
-            border-color: #ea580c;
-        }
-
-        .app-body {
-            flex: 1;
-            max-height: 430px;
-            overflow-y: auto;
-            padding: 10px 12px 18px;
-        }
-
-        .group-block {
-            margin-bottom: 14px;
-        }
-
-        .group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 0.72rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
-        .app-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 10px 6px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: #ffffff;
-            cursor: pointer;
-        }
-
-        .platform-logo-box {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        .card-title {
-            font-size: 0.72rem;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .card-sub {
-            font-size: 0.62rem;
-            color: #64748b;
-        }
-
-        .app-tabbar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            background: #ffffff;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .tab-btn {
-            border: none;
-            background: transparent;
-            padding: 8px 4px;
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: #475569;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            cursor: pointer;
-        }
-
-        .tab-btn.active {
-            color: #ea580c;
-        }
-
-        .sub-screen {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: var(--app-bg);
-            z-index: 20;
-            flex-direction: column;
-        }
-
-        .sub-screen.open {
-            display: flex;
-        }
-
-        .sub-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 14px;
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .back-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid #cbd5e1;
-            background: #f8fafc;
-            color: #0f172a;
-            cursor: pointer;
-        }
-
-        .sub-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-        }
-
-        .official-card-box {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
-        }
-
-        .primary-btn {
-            display: inline-block;
-            width: 100%;
-            text-align: center;
-            text-decoration: none;
-            background: #ea580c;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 9px 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .primary-btn.secondary {
-            background: #1e293b;
-            margin-top: 8px;
-        }
-
-        .input-box {
-            margin-bottom: 10px;
-        }
-
-        .input-box label {
-            display: block;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 4px;
-        }
-
-        .input-box input, .input-box select {
-            width: 100%;
-            padding: 7px 9px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            background: #ffffff;
-            color: #0f172a;
-        }
-
-        .grid-2-inp {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .output-panel {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            font-size: 0.78rem;
-        }
-
-        .mat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.76rem;
-        }
-
-        .copy-summary-area {
-            width: 100%;
-            height: 90px;
-            margin-top: 10px;
-            padding: 8px;
-            font-size: 0.72rem;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-        }
-
-        .secondary-action-btn {
-            margin-top: 6px;
-            width: 100%;
-            padding: 7px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            background: #f1f5f9;
-            font-weight: 700;
-            font-size: 0.76rem;
-            cursor: pointer;
-        }
-
-        .sub-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-
-        .sub-tab-btn {
-            flex: 1;
-            padding: 7px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            background: #f8fafc;
-            font-size: 0.76rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .sub-tab-btn.active {
-            background: #ea580c;
-            color: #ffffff;
-            border-color: #ea580c;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .filter-chip {
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .filter-chip.active {
-            background: #dc2626;
-            color: #ffffff;
-            border-color: #dc2626;
-        }
-
-        .quake-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.74rem;
-        }
-
-        .mag-badge {
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-weight: 800;
-            color: #ffffff;
-        }
-
-        .mag-high { background: #dc2626; }
-        .mag-mid { background: #d97706; }
-
-        .sub-web-note {
-            font-size: 0.72rem;
-            color: #475569;
-            margin-bottom: 8px;
-        }
-
-        .sub-web-view {
-            width: 100%;
-            height: 420px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            background: #ffffff;
-        }
-
-        .verified-tag {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: #ecfdf5;
-            color: #047857;
-            border: 1px solid #a7f3d0;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .feedback-section {
-            max-width: 1180px;
-            margin: 36px auto 24px;
-            padding: 0 16px;
-        }
-
-        .feedback-container {
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 24px;
-        }
-
-        .feedback-heading {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .feedback-heading span {
-            font-size: 0.76rem;
-            font-weight: 800;
-            color: #fbbf24;
-        }
-
-        .feedback-grid {
-            display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 820px) {
-            .feedback-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .contact-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .contact-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border-radius: 12px;
-            background: #090e1a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #f8fafc;
-            text-decoration: none;
-        }
-
-        .contact-card strong {
-            display: block;
-            font-size: 0.8
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mustafa Kalaycı | Vatandaş Portalı ve 18 Araç</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #090e1a; color: #f8fafc; line-height: 1.5; }
+    header { background: #111827; border-bottom: 1px solid #1f2937; padding: 14px 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .brand { font-size: 1.05rem; font-weight: 800; color: #f59e0b; }
+    .wa { color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+    .arac-bar { background: #0f172a; border-bottom: 2px solid #ea580c; padding: 10px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    #aracBtn { background: linear-gradient(90deg, #ea580c, #f59e0b); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
+    #aracPanel { display: none; background: #0b1120; padding: 20px; border-bottom: 2px solid #f59e0b; }
+    #aracPanel.open { display: block; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .tab { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .tab.active { background: #ea580c; border-color: #f59e0b; color: #fff; }
+    .box { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px; max-width: 900px; }
+    input, textarea { width: 100%; background: #090e1a; color: #fff; border: 1px solid #334155; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 0.9rem; }
+    .btn { background: #2563eb; color: #fff; border: none; border-radius: 8px; padding: 9px 14px; font-weight: 700; cursor: pointer; }
+    main { max-width: 1100px; margin: 24px auto; padding: 0 20px; }
+    .hero { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 1.35rem; margin-bottom: 8px; }
+    .hero p { color: #cbd5e1; font-size: 0.95rem; }
+    footer { text-align: center; padding: 18px; background: #060911; color: #94a3b8; font-size: 0.8rem; border-top: 1px solid #1e293b; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</div>
+    <a class="wa" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-whatsapp"></i> WhatsApp: +90 541 642 90 94
+    </a>
+  </header>
+
+  <div class="arac-bar">
+    <button type="button" id="aracBtn" onclick="togglePanel()">ARAÇLAR</button>
+    <span style="font-size:0.85rem;color:#cbd5e1;">18 Ücretsiz Tarayıcı Aracı • www.mustafakalayci.xyz</span>
+  </div>
+
+  <div id="aracPanel">
+    <div class="tabs" id="tabList"></div>
+    <div class="box" id="toolStage"></div>
+  </div>
+
+  <main>
+    <section class="hero">
+      <h1>Ücretsiz Vatandaş Portalı ve 18 Pratik Araç</h1>
+      <p>Yukarıdaki <strong>ARAÇLAR</strong> butonuna tıklayarak QR kod, şifre üretici, kelime sayacı, KDV hesaplama ve diğer 18 aracı doğrudan tarayıcınızda kullanabilirsiniz.</p>
+    </section>
+  </main>
+
+  <footer>
+    ©2026 MUSTAFA KALAYCI TÜM HAKKI SAKLIDIR.
+  </footer>
+
+  <script>
+    const tools = [
+      "QR Kod", "Şifre Üretici", "Kelime Sayacı", "KDV Hesapla", "PX → REM",
+      "Büyük Harf", "UTM Link", "YouTube Kapak", "JSON Formatla", "CSS Gradyan",
+      "Base64 Kodla", "URL Kodla", "Yüzde Hesapla", "Rastgele Seçici", "İndirim Hesapla",
+      "Kelime Adedi", "Sayı Toplama", "Not Alanı"
+    ];
+
+    function togglePanel() {
+      const panel = document.getElementById("aracPanel");
+      panel.classList.toggle("open");
+      const list = document.getElementById("tabList");
+      if (panel.classList.contains("open") && !list.innerHTML) {
+        list.innerHTML = tools.map((t, i) =>
+          `<button type="button" class="tab ${i === 0 ? "active" : ""}" onclick="selectTool(${i}, this)">${t}</button>`
+        ).join("");
+        selectTool(0);
+      }
+    }
+
+    function selectTool(idx, el) {
+      if (el) {
+        document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+        el.classList.add("active");
+      }
+      const stage = document.getElementById("toolStage");
+      if (idx === 0) {
+        stage.innerHTML = `<input id="qrVal" value="https://www.mustafakalayci.xyz" oninput="drawQR()"><canvas id="qrC" style="background:#fff;padding:6px;border-radius:8px;"></canvas>`;
+        drawQR();
+      } else if (idx === 1) {
+        stage.innerHTML = `<input id="pwVal" readonly><button type="button" class="btn" onclick="genPW()">Yeni Şifre</button>`;
+        genPW();
+      } else if (idx === 2) {
+        stage.innerHTML = `<textarea id="wcVal" rows="3" oninput="calcWC()" placeholder="Metin yazın..."></textarea><div id="wcOut">0 kelime | 0 karakter</div>`;
+      } else if (idx === 3) {
+        stage.innerHTML = `<input id="kdvVal" type="number" value="1000" oninput="calcKDV()"><div id="kdvOut"></div>`;
+        calcKDV();
+      } else {
+        stage.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">${tools[idx]}</div><textarea id="genVal" rows="3" placeholder="Değer girin..."></textarea><button type="button" class="btn" onclick="runTool(${idx})">Çalıştır</button><pre id="genOut" style="margin-top:10px;color:#38bdf8;white-space:pre-wrap;"></pre>`;
+      }
+    }
+
+    function drawQR() {
+      if (window.QRious) {
+        new QRious({ element: document.getElementById("qrC"), value: document.getElementById("qrVal").value || "mustafakalayci.xyz", size: 150 });
+      }
+    }
+    function genPW() {
+      const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%";
+      const a = new Uint32Array(16);
+      crypto.getRandomValues(a);
+      document.getElementById("pwVal").value = Array.from(a, x => c[x % c.length]).join("");
+    }
+    function calcWC() {
+      const t = document.getElementById("wcVal").value;
+      const w = t.trim() ? t.trim().split(/\s+/).length : 0;
+      document.getElementById("wcOut").textContent = `${w} kelime | ${t.length} karakter`;
+    }
+    function calcKDV() {
+      const v = parseFloat(document.getElementById("kdvVal").value) || 0;
+      document.getElementById("kdvOut").textContent = `KDV (%20): ${(v * 0.2).toFixed(2)} ₺ | Toplam: ${(v * 1.2).toFixed(2)} ₺`;
+    }
+    function runTool(idx) {
+      const v = document.getElementById("genVal").value;
+      const out = document.getElementById("genOut");
+      if (idx === 4) out.textContent = `${((parseFloat(v) || 16) / 16).toFixed(3)} rem`;
+      else if (idx === 5) out.textContent = v.toUpperCase();
+      else if (idx === 6) out.textContent = `${v || "https://www.mustafakalayci.xyz"}?utm_source=portal`;
+      else if (idx === 7) { const m = v.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/); out.textContent = m ? `https://img.youtube.com/vi/${m[1]}/maxresdefault.jpg` : "Geçerli YouTube linki girin."; }
+      else if (idx === 8) { try { out.textContent = JSON.stringify(JSON.parse(v), null, 2); } catch { out.textContent = "Geçersiz JSON"; } }
+      else if (idx === 9) out.textContent = "background: linear-gradient(135deg, #2563eb, #06b6d4);";
+      else if (idx === 10) out.textContent = btoa(unescape(encodeURIComponent(v)));
+      else if (idx === 11) out.textContent = encodeURIComponent(v);
+      else if (idx === 12) out.textContent = `%20: ${((parseFloat(v) || 0) * 0.2).toFixed(2)}`;
+      else if (idx === 13) { const arr = v.split("\n").map(s => s.trim()).filter(Boolean); out.textContent = arr.length ? "Seçilen: " + arr[Math.floor(Math.random() * arr.length)] : "Satır girin"; }
+      else if (idx === 14) out.textContent = `%15 İndirimli: ${((parseFloat(v) || 0) * 0.85).toFixed(2)} ₺`;
+      else if (idx === 15) out.textContent = `Kelime: ${v.trim() ? v.trim().split(/\s+/).length : 0}`;
+      else if (idx === 16) { const nums = v.split(/[\s,;]+/).map(Number).filter(Number.isFinite); out.textContent = `Toplam: ${nums.reduce((a, b) => a + b, 0).toFixed(2)} ₺`; }
+      else out.textContent = v;
+    }
+  </script>
+</body>
+</html>
