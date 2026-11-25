@@ -53,7 +53,193 @@
         }
 
         .skip-link:focus { transform: translateY(0); }
+<!-- MUSTAFA KALAYCI ARAÇLAR SEKMESİ & PANELİ -->
+<style>
+  #mk-arac-bar {
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  #mk-arac-btn {
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.4px;
+  }
+  #mk-arac-btn:hover { filter: brightness(1.1); }
+  #mk-arac-panel {
+    display: none;
+    width: 100%;
+    background: #090d16;
+    color: #f1f5f9;
+    border-bottom: 2px solid #2563eb;
+    padding: 16px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  #mk-arac-panel.open { display: block; }
+  .mk-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .mk-tab {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .mk-tab.active { background: #2563eb; border-color: #3b82f6; color: #fff; font-weight: 600; }
+  .mk-box {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .mk-input, .mk-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .mk-action {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .mk-footer {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #1e293b;
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-align: center;
+  }
+</style>
 
+<div id="mk-arac-bar">
+  <button type="button" id="mk-arac-btn" onclick="mkTogglePanel()">ARAÇLAR</button>
+  <span style="font-size:12px;color:#94a3b8;">18 Ücretsiz Tarayıcı Aracı • www.mustafakalayci.xyz</span>
+</div>
+
+<div id="mk-arac-panel">
+  <div class="mk-tabs" id="mk-tab-list"></div>
+  <div class="mk-box" id="mk-tool-stage"></div>
+  <div class="mk-footer">©2026 MUSTAFA KALAYCI TÜM HAKKI SAKLIDIR.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+(function() {
+  const bar = document.getElementById('mk-arac-bar');
+  const panel = document.getElementById('mk-arac-panel');
+  const counterEl = [...document.querySelectorAll('div, p, span')].find(
+    el => el.children.length === 0 && el.textContent && el.textContent.includes('Şu an aktif:')
+  );
+  if (counterEl && counterEl.parentElement) {
+    counterEl.parentElement.insertAdjacentElement('afterend', bar);
+    bar.insertAdjacentElement('afterend', panel);
+  }
+
+  const toolNames = [
+    'QR Kod', 'Şifre Üretici', 'Kelime Sayacı', 'KDV Hesapla', 'PX-REM',
+    'Metin Şekillendir', 'UTM Link', 'YouTube Kapak', 'JSON Format', 'Renk Gradyan',
+    'Base64', 'URL Kodla', 'Yüzde Hesapla', 'Rastgele Seçici', 'İndirim Hesapla',
+    'Yazı Hızı', 'Kasa/Teklif', 'Not Defteri'
+  ];
+
+  window.mkTogglePanel = function() {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open') && !document.getElementById('mk-tab-list').innerHTML) {
+      renderMkTabs();
+      renderMkTool(0);
+    }
+  };
+
+  function renderMkTabs() {
+    const wrap = document.getElementById('mk-tab-list');
+    wrap.innerHTML = toolNames.map((n, i) =>
+      `<button type="button" class="mk-tab ${i===0?'active':''}" id="mk-t-${i}" onclick="renderMkTool(${i})">${n}</button>`
+    ).join('');
+  }
+
+  window.renderMkTool = function(idx) {
+    document.querySelectorAll('.mk-tab').forEach((b, i) => b.classList.toggle('active', i === idx));
+    const st = document.getElementById('mk-tool-stage');
+    if (idx === 0) {
+      st.innerHTML = `<input id="mk-qr-in" class="mk-input" value="https://www.mustafakalayci.xyz" oninput="mkMakeQR()"><canvas id="mk-qr-c"></canvas>`;
+      mkMakeQR();
+    } else if (idx === 1) {
+      st.innerHTML = `<input id="mk-pw-out" class="mk-input" readonly><button type="button" class="mk-action" onclick="mkMakePW()">Yeni Şifre</button>`;
+      mkMakePW();
+    } else if (idx === 2) {
+      st.innerHTML = `<textarea id="mk-wc-in" rows="3" class="mk-textarea" oninput="mkCalcWC()" placeholder="Metin yazın..."></textarea><div id="mk-wc-out">0 kelime | 0 karakter</div>`;
+    } else if (idx === 3) {
+      st.innerHTML = `<input id="mk-kdv-in" type="number" value="1000" class="mk-input" oninput="mkCalcKDV()"><div id="mk-kdv-out"></div>`;
+      mkCalcKDV();
+    } else {
+      st.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">${toolNames[idx]}</div><textarea id="mk-gen-in" rows="3" class="mk-textarea" placeholder="Değer veya metin girin..."></textarea><button type="button" class="mk-action" onclick="mkRunGen(${idx})">İşlemi Çalıştır</button><pre id="mk-gen-out" style="margin-top:10px;white-space:pre-wrap;color:#38bdf8;"></pre>`;
+    }
+  };
+
+  window.mkMakeQR = function() {
+    if (window.QRious) {
+      new QRious({ element: document.getElementById('mk-qr-c'), value: document.getElementById('mk-qr-in').value || 'mustafakalayci.xyz', size: 160 });
+    }
+  };
+  window.mkMakePW = function() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
+    const arr = new Uint32Array(16);
+    crypto.getRandomValues(arr);
+    document.getElementById('mk-pw-out').value = Array.from(arr, x => chars[x % chars.length]).join('');
+  };
+  window.mkCalcWC = function() {
+    const t = document.getElementById('mk-wc-in').value;
+    const w = t.trim() ? t.trim().split(/\s+/).length : 0;
+    document.getElementById('mk-wc-out').textContent = `${w} kelime | ${t.length} karakter`;
+  };
+  window.mkCalcKDV = function() {
+    const v = parseFloat(document.getElementById('mk-kdv-in').value) || 0;
+    document.getElementById('mk-kdv-out').textContent = `KDV (%20): ${(v*0.2).toFixed(2)} TL | Toplam: ${(v*1.2).toFixed(2)} TL`;
+  };
+  window.mkRunGen = function(idx) {
+    const v = document.getElementById('mk-gen-in').value;
+    const out = document.getElementById('mk-gen-out');
+    if (idx === 4) out.textContent = `${((parseFloat(v)||16)/16).toFixed(3)} rem`;
+    else if (idx === 8) { try { out.textContent = JSON.stringify(JSON.parse(v), null, 2); } catch(e) { out.textContent = 'Geçersiz JSON'; } }
+    else if (idx === 10) out.textContent = btoa(unescape(encodeURIComponent(v)));
+    else if (idx === 11) out.textContent = encodeURIComponent(v);
+    else if (idx === 13) { const list = v.split('\n').filter(Boolean); out.textContent = list.length ? 'Seçilen: ' + list[Math.floor(Math.random()*list.length)] : 'Satır girin'; }
+    else out.textContent = v;
+  };
+})();
+</script>
         body {
             background-color: var(--bg-dark);
             background-image:
