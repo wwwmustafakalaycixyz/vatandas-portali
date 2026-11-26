@@ -812,6 +812,145 @@
         <script language="javascript" src="http://ir.sitekodlari.com/tarihtebugun1.js"></script>
 <div class="ticker-domain">GÜZEL ŞEYLER BİRAZ EMEK İSTER VE ZAMAN ALIR </div>
     </div>
+         <title>Mustafa Kalaycı | Vatandaş Portalı ve 18 Araç</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #090e1a; color: #f8fafc; line-height: 1.5; }
+    header { background: #111827; border-bottom: 1px solid #1f2937; padding: 14px 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .brand { font-size: 1.05rem; font-weight: 800; color: #f59e0b; }
+    .wa { color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+    .arac-bar { background: #0f172a; border-bottom: 2px solid #ea580c; padding: 10px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    #aracBtn { background: linear-gradient(90deg, #ea580c, #f59e0b); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
+    #aracPanel { display: none; background: #0b1120; padding: 20px; border-bottom: 2px solid #f59e0b; }
+    #aracPanel.open { display: block; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .tab { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .tab.active { background: #ea580c; border-color: #f59e0b; color: #fff; }
+    .box { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px; max-width: 900px; }
+    input, textarea { width: 100%; background: #090e1a; color: #fff; border: 1px solid #334155; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 0.9rem; }
+    .btn { background: #2563eb; color: #fff; border: none; border-radius: 8px; padding: 9px 14px; font-weight: 700; cursor: pointer; }
+    main { max-width: 1100px; margin: 24px auto; padding: 0 20px; }
+    .hero { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 1.35rem; margin-bottom: 8px; }
+    .hero p { color: #cbd5e1; font-size: 0.95rem; }
+    footer { text-align: center; padding: 18px; background: #060911; color: #94a3b8; font-size: 0.8rem; border-top: 1px solid #1e293b; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</div>
+    <a class="wa" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-whatsapp"></i> WhatsApp: +90 541 642 90 94
+    </a>
+  </header>
+
+  <div class="arac-bar">
+    <button type="button" id="aracBtn" onclick="togglePanel()">ARAÇLAR</button>
+    <span style="font-size:0.85rem;color:#cbd5e1;">18 Ücretsiz Tarayıcı Aracı • www.mustafakalayci.xyz</span>
+  </div>
+
+  <div id="aracPanel">
+    <div class="tabs" id="tabList"></div>
+    <div class="box" id="toolStage"></div>
+  </div>
+
+  <main>
+    <section class="hero">
+      <h1>Ücretsiz Vatandaş Portalı ve 18 Pratik Araç</h1>
+      <p>Yukarıdaki <strong>ARAÇLAR</strong> butonuna tıklayarak QR kod, şifre üretici, kelime sayacı, KDV hesaplama ve diğer 18 aracı doğrudan tarayıcınızda kullanabilirsiniz.</p>
+    </section>
+  </main>
+
+  <footer>
+    ©2026 MUSTAFA KALAYCI TÜM HAKKI SAKLIDIR.
+  </footer>
+
+  <script>
+    const tools = [
+      "QR Kod", "Şifre Üretici", "Kelime Sayacı", "KDV Hesapla", "PX → REM",
+      "Büyük Harf", "UTM Link", "YouTube Kapak", "JSON Formatla", "CSS Gradyan",
+      "Base64 Kodla", "URL Kodla", "Yüzde Hesapla", "Rastgele Seçici", "İndirim Hesapla",
+      "Kelime Adedi", "Sayı Toplama", "Not Alanı"
+    ];
+
+    function togglePanel() {
+      const panel = document.getElementById("aracPanel");
+      panel.classList.toggle("open");
+      const list = document.getElementById("tabList");
+      if (panel.classList.contains("open") && !list.innerHTML) {
+        list.innerHTML = tools.map((t, i) =>
+          `<button type="button" class="tab ${i === 0 ? "active" : ""}" onclick="selectTool(${i}, this)">${t}</button>`
+        ).join("");
+        selectTool(0);
+      }
+    }
+
+    function selectTool(idx, el) {
+      if (el) {
+        document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+        el.classList.add("active");
+      }
+      const stage = document.getElementById("toolStage");
+      if (idx === 0) {
+        stage.innerHTML = `<input id="qrVal" value="https://www.mustafakalayci.xyz" oninput="drawQR()"><canvas id="qrC" style="background:#fff;padding:6px;border-radius:8px;"></canvas>`;
+        drawQR();
+      } else if (idx === 1) {
+        stage.innerHTML = `<input id="pwVal" readonly><button type="button" class="btn" onclick="genPW()">Yeni Şifre</button>`;
+        genPW();
+      } else if (idx === 2) {
+        stage.innerHTML = `<textarea id="wcVal" rows="3" oninput="calcWC()" placeholder="Metin yazın..."></textarea><div id="wcOut">0 kelime | 0 karakter</div>`;
+      } else if (idx === 3) {
+        stage.innerHTML = `<input id="kdvVal" type="number" value="1000" oninput="calcKDV()"><div id="kdvOut"></div>`;
+        calcKDV();
+      } else {
+        stage.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">${tools[idx]}</div><textarea id="genVal" rows="3" placeholder="Değer girin..."></textarea><button type="button" class="btn" onclick="runTool(${idx})">Çalıştır</button><pre id="genOut" style="margin-top:10px;color:#38bdf8;white-space:pre-wrap;"></pre>`;
+      }
+    }
+
+    function drawQR() {
+      if (window.QRious) {
+        new QRious({ element: document.getElementById("qrC"), value: document.getElementById("qrVal").value || "mustafakalayci.xyz", size: 150 });
+      }
+    }
+    function genPW() {
+      const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%";
+      const a = new Uint32Array(16);
+      crypto.getRandomValues(a);
+      document.getElementById("pwVal").value = Array.from(a, x => c[x % c.length]).join("");
+    }
+    function calcWC() {
+      const t = document.getElementById("wcVal").value;
+      const w = t.trim() ? t.trim().split(/\s+/).length : 0;
+      document.getElementById("wcOut").textContent = `${w} kelime | ${t.length} karakter`;
+    }
+    function calcKDV() {
+      const v = parseFloat(document.getElementById("kdvVal").value) || 0;
+      document.getElementById("kdvOut").textContent = `KDV (%20): ${(v * 0.2).toFixed(2)} ₺ | Toplam: ${(v * 1.2).toFixed(2)} ₺`;
+    }
+    function runTool(idx) {
+      const v = document.getElementById("genVal").value;
+      const out = document.getElementById("genOut");
+      if (idx === 4) out.textContent = `${((parseFloat(v) || 16) / 16).toFixed(3)} rem`;
+      else if (idx === 5) out.textContent = v.toUpperCase();
+      else if (idx === 6) out.textContent = `${v || "https://www.mustafakalayci.xyz"}?utm_source=portal`;
+      else if (idx === 7) { const m = v.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/); out.textContent = m ? `https://img.youtube.com/vi/${m[1]}/maxresdefault.jpg` : "Geçerli YouTube linki girin."; }
+      else if (idx === 8) { try { out.textContent = JSON.stringify(JSON.parse(v), null, 2); } catch { out.textContent = "Geçersiz JSON"; } }
+      else if (idx === 9) out.textContent = "background: linear-gradient(135deg, #2563eb, #06b6d4);";
+      else if (idx === 10) out.textContent = btoa(unescape(encodeURIComponent(v)));
+      else if (idx === 11) out.textContent = encodeURIComponent(v);
+      else if (idx === 12) out.textContent = `%20: ${((parseFloat(v) || 0) * 0.2).toFixed(2)}`;
+      else if (idx === 13) { const arr = v.split("\n").map(s => s.trim()).filter(Boolean); out.textContent = arr.length ? "Seçilen: " + arr[Math.floor(Math.random() * arr.length)] : "Satır girin"; }
+      else if (idx === 14) out.textContent = `%15 İndirimli: ${((parseFloat(v) || 0) * 0.85).toFixed(2)} ₺`;
+      else if (idx === 15) out.textContent = `Kelime: ${v.trim() ? v.trim().split(/\s+/).length : 0}`;
+      else if (idx === 16) { const nums = v.split(/[\s,;]+/).map(Number).filter(Number.isFinite); out.textContent = `Toplam: ${nums.reduce((a, b) => a + b, 0).toFixed(2)} ₺`; }
+      else out.textContent = v;
+    }
+  </script>
+</body>
+</html>
+
  <div class="main-stage">
         <div class="showcase-container">
             <div>
@@ -831,35 +970,35 @@
                     <button type="button" class="tour-btn" data-tour="p1">
                         <i class="fas fa-exclamation-triangle"></i>
                         <div class="tour-btn-text">
-                            <strong>1. Öncelik • Acil &amp; Deprem</strong>
+                            <strong>• Acil &amp; Deprem</strong>
                             <span>112 Acil, Son Depremler, Sayaç</span>
                         </div>
                     </button>
                     <button type="button" class="tour-btn" data-tour="p2">
                         <i class="fas fa-landmark"></i>
                         <div class="tour-btn-text">
-                            <strong>2. Öncelik • Kamu &amp; Belediye</strong>
+                            <strong>• Kamu &amp; Belediye</strong>
                             <span>e-Devlet, e-Nabız, UYAP, Düziçi</span>
                         </div>
                     </button>
                     <button type="button" class="tour-btn" data-tour="p3">
                         <i class="fas fa-graduation-cap"></i>
                         <div class="tour-btn-text">
-                            <strong>3. Öncelik • Eğitim, İş &amp; İhale</strong>
+                            <strong>• Eğitim, İş &amp; İhale</strong>
                             <span>e-Okul, MEBBİS, MEB, İŞKUR, EKAP</span>
                         </div>
                     </button>
                     <button type="button" class="tour-btn" data-tour="p4">
                         <i class="fas fa-drafting-compass"></i>
                         <div class="tour-btn-text">
-                            <strong>4. Öncelik • İnşaat &amp; Metraj</strong>
+                            <strong>• İnşaat &amp; Metraj</strong>
                             <span>Çatı/Beton, Liste, Toplam &amp; Kopya</span>
                         </div>
                     </button>
                     <button type="button" class="tour-btn" data-tour="p5">
                         <i class="fas fa-calculator"></i>
                         <div class="tour-btn-text">
-                            <strong>5. Öncelik • Finans &amp; Yaşam</strong>
+                            <strong>• Finans &amp; Yaşam</strong>
                             <span>Döviz, 81 İl, Mesafe, Mesai, Alan</span>
                         </div>
                     </button>
@@ -1715,141 +1854,4 @@
   } body {
     padding-top: 36px !important;
       </style>
-  <title>Mustafa Kalaycı | Vatandaş Portalı ve 18 Araç</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #090e1a; color: #f8fafc; line-height: 1.5; }
-    header { background: #111827; border-bottom: 1px solid #1f2937; padding: 14px 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
-    .brand { font-size: 1.05rem; font-weight: 800; color: #f59e0b; }
-    .wa { color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
-    .arac-bar { background: #0f172a; border-bottom: 2px solid #ea580c; padding: 10px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-    #aracBtn { background: linear-gradient(90deg, #ea580c, #f59e0b); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
-    #aracPanel { display: none; background: #0b1120; padding: 20px; border-bottom: 2px solid #f59e0b; }
-    #aracPanel.open { display: block; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-    .tab { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-    .tab.active { background: #ea580c; border-color: #f59e0b; color: #fff; }
-    .box { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 16px; max-width: 900px; }
-    input, textarea { width: 100%; background: #090e1a; color: #fff; border: 1px solid #334155; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 0.9rem; }
-    .btn { background: #2563eb; color: #fff; border: none; border-radius: 8px; padding: 9px 14px; font-weight: 700; cursor: pointer; }
-    main { max-width: 1100px; margin: 24px auto; padding: 0 20px; }
-    .hero { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 20px; margin-bottom: 20px; }
-    .hero h1 { font-size: 1.35rem; margin-bottom: 8px; }
-    .hero p { color: #cbd5e1; font-size: 0.95rem; }
-    footer { text-align: center; padding: 18px; background: #060911; color: #94a3b8; font-size: 0.8rem; border-top: 1px solid #1e293b; margin-top: 40px; }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">MUSTAFA KALAYCI VATANDAŞ PORTALI</div>
-    <a class="wa" href="https://wa.me/905416429094" target="_blank" rel="noopener noreferrer">
-      <i class="fab fa-whatsapp"></i> WhatsApp: +90 541 642 90 94
-    </a>
-  </header>
-
-  <div class="arac-bar">
-    <button type="button" id="aracBtn" onclick="togglePanel()">ARAÇLAR</button>
-    <span style="font-size:0.85rem;color:#cbd5e1;">18 Ücretsiz Tarayıcı Aracı • www.mustafakalayci.xyz</span>
-  </div>
-
-  <div id="aracPanel">
-    <div class="tabs" id="tabList"></div>
-    <div class="box" id="toolStage"></div>
-  </div>
-
-  <main>
-    <section class="hero">
-      <h1>Ücretsiz Vatandaş Portalı ve 18 Pratik Araç</h1>
-      <p>Yukarıdaki <strong>ARAÇLAR</strong> butonuna tıklayarak QR kod, şifre üretici, kelime sayacı, KDV hesaplama ve diğer 18 aracı doğrudan tarayıcınızda kullanabilirsiniz.</p>
-    </section>
-  </main>
-
-  <footer>
-    ©2026 MUSTAFA KALAYCI TÜM HAKKI SAKLIDIR.
-  </footer>
-
-  <script>
-    const tools = [
-      "QR Kod", "Şifre Üretici", "Kelime Sayacı", "KDV Hesapla", "PX → REM",
-      "Büyük Harf", "UTM Link", "YouTube Kapak", "JSON Formatla", "CSS Gradyan",
-      "Base64 Kodla", "URL Kodla", "Yüzde Hesapla", "Rastgele Seçici", "İndirim Hesapla",
-      "Kelime Adedi", "Sayı Toplama", "Not Alanı"
-    ];
-
-    function togglePanel() {
-      const panel = document.getElementById("aracPanel");
-      panel.classList.toggle("open");
-      const list = document.getElementById("tabList");
-      if (panel.classList.contains("open") && !list.innerHTML) {
-        list.innerHTML = tools.map((t, i) =>
-          `<button type="button" class="tab ${i === 0 ? "active" : ""}" onclick="selectTool(${i}, this)">${t}</button>`
-        ).join("");
-        selectTool(0);
-      }
-    }
-
-    function selectTool(idx, el) {
-      if (el) {
-        document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
-        el.classList.add("active");
-      }
-      const stage = document.getElementById("toolStage");
-      if (idx === 0) {
-        stage.innerHTML = `<input id="qrVal" value="https://www.mustafakalayci.xyz" oninput="drawQR()"><canvas id="qrC" style="background:#fff;padding:6px;border-radius:8px;"></canvas>`;
-        drawQR();
-      } else if (idx === 1) {
-        stage.innerHTML = `<input id="pwVal" readonly><button type="button" class="btn" onclick="genPW()">Yeni Şifre</button>`;
-        genPW();
-      } else if (idx === 2) {
-        stage.innerHTML = `<textarea id="wcVal" rows="3" oninput="calcWC()" placeholder="Metin yazın..."></textarea><div id="wcOut">0 kelime | 0 karakter</div>`;
-      } else if (idx === 3) {
-        stage.innerHTML = `<input id="kdvVal" type="number" value="1000" oninput="calcKDV()"><div id="kdvOut"></div>`;
-        calcKDV();
-      } else {
-        stage.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">${tools[idx]}</div><textarea id="genVal" rows="3" placeholder="Değer girin..."></textarea><button type="button" class="btn" onclick="runTool(${idx})">Çalıştır</button><pre id="genOut" style="margin-top:10px;color:#38bdf8;white-space:pre-wrap;"></pre>`;
-      }
-    }
-
-    function drawQR() {
-      if (window.QRious) {
-        new QRious({ element: document.getElementById("qrC"), value: document.getElementById("qrVal").value || "mustafakalayci.xyz", size: 150 });
-      }
-    }
-    function genPW() {
-      const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%";
-      const a = new Uint32Array(16);
-      crypto.getRandomValues(a);
-      document.getElementById("pwVal").value = Array.from(a, x => c[x % c.length]).join("");
-    }
-    function calcWC() {
-      const t = document.getElementById("wcVal").value;
-      const w = t.trim() ? t.trim().split(/\s+/).length : 0;
-      document.getElementById("wcOut").textContent = `${w} kelime | ${t.length} karakter`;
-    }
-    function calcKDV() {
-      const v = parseFloat(document.getElementById("kdvVal").value) || 0;
-      document.getElementById("kdvOut").textContent = `KDV (%20): ${(v * 0.2).toFixed(2)} ₺ | Toplam: ${(v * 1.2).toFixed(2)} ₺`;
-    }
-    function runTool(idx) {
-      const v = document.getElementById("genVal").value;
-      const out = document.getElementById("genOut");
-      if (idx === 4) out.textContent = `${((parseFloat(v) || 16) / 16).toFixed(3)} rem`;
-      else if (idx === 5) out.textContent = v.toUpperCase();
-      else if (idx === 6) out.textContent = `${v || "https://www.mustafakalayci.xyz"}?utm_source=portal`;
-      else if (idx === 7) { const m = v.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/); out.textContent = m ? `https://img.youtube.com/vi/${m[1]}/maxresdefault.jpg` : "Geçerli YouTube linki girin."; }
-      else if (idx === 8) { try { out.textContent = JSON.stringify(JSON.parse(v), null, 2); } catch { out.textContent = "Geçersiz JSON"; } }
-      else if (idx === 9) out.textContent = "background: linear-gradient(135deg, #2563eb, #06b6d4);";
-      else if (idx === 10) out.textContent = btoa(unescape(encodeURIComponent(v)));
-      else if (idx === 11) out.textContent = encodeURIComponent(v);
-      else if (idx === 12) out.textContent = `%20: ${((parseFloat(v) || 0) * 0.2).toFixed(2)}`;
-      else if (idx === 13) { const arr = v.split("\n").map(s => s.trim()).filter(Boolean); out.textContent = arr.length ? "Seçilen: " + arr[Math.floor(Math.random() * arr.length)] : "Satır girin"; }
-      else if (idx === 14) out.textContent = `%15 İndirimli: ${((parseFloat(v) || 0) * 0.85).toFixed(2)} ₺`;
-      else if (idx === 15) out.textContent = `Kelime: ${v.trim() ? v.trim().split(/\s+/).length : 0}`;
-      else if (idx === 16) { const nums = v.split(/[\s,;]+/).map(Number).filter(Number.isFinite); out.textContent = `Toplam: ${nums.reduce((a, b) => a + b, 0).toFixed(2)} ₺`; }
-      else out.textContent = v;
-    }
-  </script>
-</body>
-</html>
+ 
